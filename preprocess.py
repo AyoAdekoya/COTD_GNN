@@ -91,22 +91,18 @@ def parse_verilog_netlist(filepath, reffilepath):
             outputs = [parts[0]]
             inputs = parts[1:]
 
-
-        trojanedgates = trojanlabel(gates, reffilepath)
-        if gate_name in trojanedgates:
-            label = "Trojaned"
-            gates.append((gate_name, gate_type, inputs, outputs, label))
-        else:
-            label = "Not_Trojaned"
-            gates.append((gate_name, gate_type, inputs, outputs, label))
+        gates.append((gate_name, gate_type, inputs, outputs))
 
     # 4. Build the graph
     G = nx.DiGraph()
     signal_to_gate = {}
 
+    trojanedgates = trojanlabel(reffilepath)
+
     # Add all gates and outputs
     for name, gate_type, inputs, outputs in gates:
-        G.add_node(name, type=gate_type)
+        trojaned = "Trojaned" if name in trojanedgates else "Not_Trojaned"
+        G.add_node(name, type=gate_type, label=trojaned) 
         for out in outputs:
             signal_to_gate[out] = name
 
@@ -144,27 +140,34 @@ def parse_verilog_netlist(filepath, reffilepath):
 
     return G
 
-def trojanlabel(gates, filepath):
+def trojanlabel(reffilepath):
     trojanedgates = []
-    with open(filepath, 'r') as file:
+    with open(reffilepath, 'r') as file:
         # ref= file.read()
-        next(file)
-        next(file)
-        for line in file:
-            trojanedgates.append(line)
-
+        lines = file.readlines()
+        for line in lines[2:-1]:
+            trojanedgates.append(line.strip('\n'))
     return trojanedgates
 
 
 filepath = sys.argv[1]
-# reffilepath = 'reference/reference/result0.txt'
+# reffilepath = 'reference\reference\result0.txt'
 reffilepath = sys.argv[2]
 G = parse_verilog_netlist(filepath, reffilepath)
 
 print("Printing nodes: ")
 for node, attrs in G.nodes(data=True):
-    print(f"{node}: {attrs['type']}")
+    if 'label' in attrs:
+        print(f"{node}: {attrs['type']}, {attrs['label']}")
+    else:
+        print(f"{node}: {attrs['type']}, ")
 
 print("Printing edges: ")
 for u, v in G.edges():
-    print(f"{u} → {v}")
+    print(f"{u} -> {v}")
+
+for node, attr in G.nodes(data=True):
+    if 'type' not in attr:
+        print(node)
+
+#preprocess.py release(20250520)\release\design0.v reference\reference\result0.txt > GNN_attempt.txt
