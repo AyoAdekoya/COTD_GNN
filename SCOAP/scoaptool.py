@@ -139,7 +139,7 @@ def subModule(y,prefix):
 
 #main block
 
-fileIn = open("./simple-json.txt","r") #Open json file
+fileIn = open("./design20-json.txt","r") #Open json file
 fileOut = open("./OutToScoap.txt","w") #output file
 
 content = fileIn.read() #To copy input file in a variable
@@ -148,7 +148,7 @@ content_dict = json.loads(content) #read as json
 modules = content_dict['modules']  #reach modules
 
 #start parsing modules
-Top = modules['simple']  #to required module
+Top = modules['top']  #to required module
 ports = Top['ports'] #to ports
 fileOut.write('input(0)\ninput(1)\ninput(x)\n')
 for x in ports:                 #loop for getting ports
