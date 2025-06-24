@@ -62,6 +62,8 @@ with open(input_file, "r") as f:
         match = re.match(r"(and|or|not|xor|xnor|nor|nand|buf)\s+(\w+)\((.*?)\);", line)
         if match:
             gate_type, gate_name, ports = match.groups()
+            if gate_type == 'buf':
+                gate_type = 'buff'
             port_list = [p.strip() for p in ports.split(",")]
             out_net = port_list[0]
             in_nets = port_list[1:]
