@@ -86,7 +86,7 @@ with open(input_file, "r") as f:
             ck = get_net_id(port_dict["CK"])
             rn = get_net_id(port_dict.get("RN", "1'b1"))
             sn = get_net_id(port_dict.get("SN", "1'b1"))
-            gate_lines.append((port_dict["Q"], f"{q}=dff({d},{ck},{rn},{sn})"))
+            gate_lines.append((port_dict["Q"], f"{q}=dffcr({d},{ck},{rn},{sn})"))
             gate_output_map[gate_name] = (port_dict["Q"], q)
 
 # Write SCOAP-compatible file
