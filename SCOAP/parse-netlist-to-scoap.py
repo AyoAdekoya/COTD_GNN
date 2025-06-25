@@ -1,10 +1,38 @@
+########################################################################
+# parse-netlist-to-scoap.py 
+# Takes in a verilog netlist in the contest format and creates three files:
+# 1) scoap_formatX.txt a version of the netlist that is compatble for 
+# putting into the SCOAP tool
+# 2) net_mappingX.txt: a file that maps the net numbers used in the original .v file to the 
+# numbering used in the SCOAP tool (not actually useful for anything)
+# 3) gate_output_mappingX.txt: a file that maps the gate numbers to their output
+# nets and the numbering used in the scoap tool
+#
+# Usage: > python parse-netlist-to-scoap.py path_to/designX.v X
+# where X is the design number which will be used to name the output files
+#
+# For example, running 
+# > python parse-netlist-to-scoap.py test-cases/trojan/design7.v 7
+# will create the following files:
+# scoap_format7.txt
+# net_mapping7.txt
+# gate_output_mapping7.txt
+#
+########################################################################
+
 import re
 import sys
 
+# === Input files via command line ===
+if len(sys.argv) != 3:
+    print("Usage: python3 parse-netlist-to-scoap.py <verilog-netlist> <design_number>")
+    sys.exit(1)
+
 input_file = sys.argv[1]
-scoap_output_file = "scoap_format.txt"
-net_mapping_file = "net_mapping.txt"
-gate_mapping_file = "gate_output_mapping.txt"
+design_number = sys.argv[2]
+scoap_output_file = f"scoap_format{design_number}.txt"
+net_mapping_file = f"net_mapping{design_number}.txt"
+gate_mapping_file = f"gate_output_mapping{design_number}.txt"
 
 # Constants
 net_id_map = {"1'b0": 0, "1'b1": 1}
