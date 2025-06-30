@@ -1,11 +1,11 @@
 ########################################################################
 # parse-netlist-to-scoap.py 
 # Takes in a verilog netlist in the contest format and creates three files:
-# 1) scoap_formatX.txt a version of the netlist that is compatble for 
+# 1) scoap_inputX.txt a version of the netlist that is compatble for 
 # putting into the SCOAP tool
 # 2) net_mappingX.txt: a file that maps the net numbers used in the original .v file to the 
 # numbering used in the SCOAP tool (not actually useful for anything)
-# 3) gate_output_mappingX.txt: a file that maps the gate numbers to their output
+# 3) gate_mappingX.txt: a file that maps the gate numbers to their output
 # nets and the numbering used in the scoap tool
 #
 # Usage: > python parse-netlist-to-scoap.py path_to/designX.v X
@@ -14,9 +14,9 @@
 # For example, running 
 # > python parse-netlist-to-scoap.py test-cases/trojan/design7.v 7
 # will create the following files:
-# scoap_format7.txt
+# scoap_input7.txt
 # net_mapping7.txt
-# gate_output_mapping7.txt
+# gate_mapping7.txt
 #
 ########################################################################
 
@@ -30,9 +30,9 @@ if len(sys.argv) != 3:
 
 input_file = sys.argv[1]
 design_number = sys.argv[2]
-scoap_output_file = f"scoap_format{design_number}.txt"
+scoap_output_file = f"scoap_input{design_number}.txt"
 net_mapping_file = f"net_mapping{design_number}.txt"
-gate_mapping_file = f"gate_output_mapping{design_number}.txt"
+gate_mapping_file = f"gate_mapping{design_number}.txt"
 
 # Constants
 net_id_map = {"1'b0": 0, "1'b1": 1}
@@ -56,6 +56,50 @@ def expand_multibit(name, msb, lsb):
     if msb < lsb:
         msb, lsb = lsb, msb
     return [f"{name}[{i}]" for i in range(lsb, msb + 1)]
+
+# Assuming get_net_id and gate_lines, gate_output_map are already defined earlier in your script
+def parse_dff_instance(gate_name, pins, get_net_id, gate_lines, gate_output_map):
+    rn = pins.get("RN", "1'b1")
+    sn = pins.get("SN", "1'b1")
+    clk = pins["CK"]
+    d = pins["D"]
+    q = pins["Q"]
+
+    dff_output_net = f"{gate_name}_dffout"
+    dff_output_id = get_net_id(dff_output_net)
+
+    # Invert RN if needed
+    if rn not in ["1'b0", "1'b1"]:
+        rn_inv = f"{gate_name}_rn_inv"
+        rn_inv_id = get_net_id(rn_inv)
+        rn_id = get_net_id(rn)
+        gate_lines.append((rn_inv, f"{rn_inv_id}=not({rn_id})"))
+        rn_use_id = rn_inv_id
+    else:
+        rn_use_id = get_net_id(rn)
+
+    # DFFCR line
+    d_id = get_net_id(d)
+    clk_id = get_net_id(clk)
+    gate_lines.append((dff_output_net, f"{dff_output_id}=dffcr({d_id},{clk_id},{rn_use_id})"))
+
+    # If SN is used, add extra logic
+    if sn not in ["1'b0", "1'b1"]:
+        sn_inv = f"{gate_name}_sn_inv"
+        sn_inv_id = get_net_id(sn_inv)
+        sn_id = get_net_id(sn)
+        gate_lines.append((sn_inv, f"{sn_inv_id}=not({sn_id})"))
+
+        q_id = get_net_id(q)
+        gate_lines.append((q, f"{q_id}=or({dff_output_id},{sn_inv_id})"))
+    else:
+        q_id = get_net_id(q)
+        gate_lines.append((q, f"{q_id}={dff_output_id}"))
+    
+    # Make q into a primary output
+    gate_lines.append((f"output_{q}", f"output({q_id})"))
+
+    gate_output_map[gate_name] = (q, q_id)
 
 with open(input_file, "r") as f:
     for line in f:
@@ -101,7 +145,7 @@ with open(input_file, "r") as f:
             gate_output_map[gate_name] = (out_net, out_id)
             continue
 
-        # Match dff with named ports
+        # Replace your existing DFF handling code with this:
         if line.startswith("dff"):
             dff_match = re.match(r"dff\s+(\w+)\((.*?)\);", line)
             if not dff_match:
@@ -109,15 +153,11 @@ with open(input_file, "r") as f:
             gate_name, port_block = dff_match.groups()
             port_matches = re.findall(r"\.(\w+)\(([^)]+)\)", port_block)
             port_dict = {k: v.strip() for k, v in port_matches}
+
             if not all(k in port_dict for k in ["Q", "D", "CK"]):
                 continue
-            q = get_net_id(port_dict["Q"])
-            d = get_net_id(port_dict["D"])
-            ck = get_net_id(port_dict["CK"])
-            rn = get_net_id(port_dict.get("RN", "1'b1"))
-            sn = get_net_id(port_dict.get("SN", "1'b1"))
-            gate_lines.append((port_dict["Q"], f"{q}=dffcr({d},{ck},{rn},{sn})"))
-            gate_output_map[gate_name] = (port_dict["Q"], q)
+
+            parse_dff_instance(gate_name, port_dict, get_net_id, gate_lines, gate_output_map)
 
 # Write SCOAP-compatible file
 with open(scoap_output_file, "w") as f:
