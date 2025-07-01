@@ -192,5 +192,3 @@ print()
 print()
 print()
 print()
-
-#preprocess.py release(20250520)\release\design0.v reference\reference\result0.txt > GNN_attempt.txt
