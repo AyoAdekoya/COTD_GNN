@@ -9,7 +9,7 @@ def flatten_bus(signal, width):
 
 gates = []
 
-def parse_verilog_netlist(filepath, reffilepath):
+def parse_netlist(filepath, reffilepath):
     with open(filepath, 'r') as f:
         verilog = f.read()
 
@@ -101,22 +101,22 @@ def parse_verilog_netlist(filepath, reffilepath):
 
     # Add all gates and outputs
     for name, gate_type, inputs, outputs in gates:
-        trojaned = "Trojaned" if name in trojanedgates else "Not_Trojaned"
+        trojaned = 1 if name in trojanedgates else 0
         G.add_node(name, type=gate_type, label=trojaned) 
         for out in outputs:
             signal_to_gate[out] = name
 
     # Add PI nodes
     for pi in primary_inputs:
-        G.add_node(pi, type='PI')
+        G.add_node(pi, type='PI', label=0)
 
     # Add PO nodes
     for po in primary_outputs:
-        G.add_node(po, type='PO')
+        G.add_node(po, type='PO', label=0)
 
     # Add constant nodes
-    G.add_node("CONST_0", type="CONST")
-    G.add_node("CONST_1", type="CONST")
+    G.add_node("CONST_0", type="CONST", label=0)
+    G.add_node("CONST_1", type="CONST", label=0)
 
     # Add edges from inputs/gates to gates
     for name, _, inputs, _ in gates:
@@ -149,25 +149,33 @@ def trojanlabel(reffilepath):
             trojanedgates.append(line.strip('\n'))
     return trojanedgates
 
+# Runs only if running this script directly
+if __name__ == "__main__":
+    # === Input files via command line ===
+    if len(sys.argv) != 3:
+        print("Usage: python3 preprocess_contest.py <verilog-netlist> <trojan_gates_reference>")
+        sys.exit(1)
 
-filepath = sys.argv[1]
-# reffilepath = 'reference\reference\result0.txt'
-reffilepath = sys.argv[2]
-G = parse_verilog_netlist(filepath, reffilepath)
+    filepath = sys.argv[1]
+    # reffilepath = 'reference\reference\result0.txt'
+    reffilepath = sys.argv[2]
+    G = parse_netlist(filepath, reffilepath)
 
-print("Printing nodes: ")
-for node, attrs in G.nodes(data=True):
-    if 'label' in attrs:
-        print(f"{node}: {attrs['type']}, {attrs['label']}")
-    else:
-        print(f"{node}: {attrs['type']}, ")
+    print("Printing nodes: ")
+    for node, attrs in G.nodes(data=True):
+        if 'label' in attrs:
+            print(f"{node}: {attrs['type']}, {attrs['label']}")
+        else:
+            print(f"{node}: {attrs['type']}, ")
 
-print("Printing edges: ")
-for u, v in G.edges():
-    print(f"{u} -> {v}")
+    print("Printing edges: ")
+    for u, v in G.edges():
+        print(f"{u} -> {v}")
 
-for node, attr in G.nodes(data=True):
-    if 'type' not in attr:
-        print(node)
+    for node, attr in G.nodes(data=True):
+        if 'type' not in attr:
+            print(node)
+
+
 
 #preprocess.py release(20250520)\release\design0.v reference\reference\result0.txt > GNN_attempt.txt
