@@ -9,7 +9,7 @@
 # Usage: python3 parse-netlist-to-scoap.py <verilog-netlist> <design_number>
 ########################################################################
 #
-# RAN ON s38417_scan.v from Tjin
+# We use "+" to symbolize the outputs of smaller gates that make up a more complex gate
 #
 import re
 import sys
@@ -21,7 +21,6 @@ if len(sys.argv) != 3:
 input_file      = sys.argv[1]
 design_number   = sys.argv[2]
 scoap_file      = f"scoap_input{design_number}.txt"
-netmap_file     = f"net_mapping{design_number}.txt"
 gatemap_file    = f"gate_mapping{design_number}.txt"
 
 # global state for net IDs
@@ -29,17 +28,9 @@ net_id_map      = {"1'b0": 0, "1'b1": 1}
 net_id_counter  = 2
 ind = 0
 
-def get_net_id(net):
-    global net_id_counter
-    if net == "x": 
-        return None
-    if net not in net_id_map:
-        net_id_map[net] = net_id_counter
-        net_id_counter += 1
-    return net_id_map[net]
-
 # parse and emit liberty.v cells (including SDFFX1)
-def parse_liberty_gate(gtype, pd, get_net_id):
+# , get_net_id
+def parse_liberty_gate(gtype, pd):
     """
     Decompose each liberty cell into SCOAP primitives.
     Always use the REAL Q (or QN) net as the base name, appending _1, _2, … for
@@ -54,9 +45,6 @@ def parse_liberty_gate(gtype, pd, get_net_id):
         else:
             return None
 
-    def ID(net):
-        return str(get_net_id(net))
-
     lines = []
 
     #SDFFX1: 
@@ -67,11 +55,11 @@ def parse_liberty_gate(gtype, pd, get_net_id):
         si = NET("SI")
         se = NET("SE")
         clk = NET("CLK")
-        lines.append(f"not_se{ind} = not({se})")
-        lines.append(f"{out}_1 = and({d}, not_se{ind})")
-        lines.append(f"{out}_2 = and({si}, {se})")
-        lines.append(f"{out}_3 = or({out}_1, {out}_2)")
-        lines.append(f"{out} = dffc({out}_3, {clk})")
+        lines.append(f"not+se{ind} = not({se})")
+        lines.append(f"{out}+1 = and({d}, not+se{ind})")
+        lines.append(f"{out}+2 = and({si}, {se})")
+        lines.append(f"{out}+3 = or({out}+1, {out}+2)")
+        lines.append(f"{out} = dffc({out}+3, {clk})")
         if (NET("QN") is not None):
             out1 = NET("QN")
             lines.append(f"{out1} = not({out})")
@@ -95,15 +83,15 @@ def parse_liberty_gate(gtype, pd, get_net_id):
         out = NET("Q")
         a = NET("IN1")
         b = NET("IN2")
-        lines.append(f"{out}_1 = or({a},{b})")
+        lines.append(f"{out}+1 = or({a},{b})")
         c = NET("IN3")
         d = NET("IN4")
-        lines.append(f"{out}_2 = or({c},{d})")
+        lines.append(f"{out}+2 = or({c},{d})")
         e = NET("IN5")
         f6 = NET("IN6")
-        lines.append(f"{out}_3 = or({e},{f6})")
-        lines.append(f"{out}_4 = and({out}_1,{out}_2)")
-        lines.append(f"{out}   = and({out}_4,{out}_3)")
+        lines.append(f"{out}+3 = or({e},{f6})")
+        lines.append(f"{out}+4 = and({out}+1,{out}+2)")
+        lines.append(f"{out}   = and({out}+4,{out}+3)")
         return out, lines
     
     # OAI222X1: QN = !(IN1|IN2) & (IN3|IN4) & (IN5|IN6)
@@ -111,16 +99,16 @@ def parse_liberty_gate(gtype, pd, get_net_id):
         out = NET("QN")
         a = NET("IN1")
         b = NET("IN2")
-        lines.append(f"{out}_1 = or({a},{b})")
+        lines.append(f"{out}+1 = or({a},{b})")
         c = NET("IN3")
         d = NET("IN4")
-        lines.append(f"{out}_2 = or({c},{d})")
+        lines.append(f"{out}+2 = or({c},{d})")
         e = NET("IN5")
         f6 = NET("IN6")
-        lines.append(f"{out}_3 = or({e},{f6})")
-        lines.append(f"{out}_4 = and({out}_1,{out}_2)")
-        lines.append(f"{out}_5   = and({out}_4,{out}_3)")
-        lines.append(f"{out} = not({out}_5)")
+        lines.append(f"{out}+3 = or({e},{f6})")
+        lines.append(f"{out}+4 = and({out}+1,{out}+2)")
+        lines.append(f"{out}+5   = and({out}+4,{out}+3)")
+        lines.append(f"{out} = not({out}+5)")
 
         return out, lines 
 
@@ -142,8 +130,8 @@ def parse_liberty_gate(gtype, pd, get_net_id):
         d   = NET("D")
         enb = NET("ENB")
 
-        lines.append(f"{out}_1 = not({d})")
-        lines.append(f"{out}   = or({out}_1,{enb})")
+        lines.append(f"{out}+1 = not({d})")
+        lines.append(f"{out}   = or({out}+1,{enb})")
 
         return out, lines
 
@@ -207,8 +195,8 @@ def parse_liberty_gate(gtype, pd, get_net_id):
         i2  = NET("IN2")
         i3  = NET("IN3")
         # build (i1 op i2) first, then op with i3
-        lines.append(f"{out}_1 = {op}({i1},{i2})")
-        lines.append(f"{out}   = {op}({out}_1,{i3})")
+        lines.append(f"{out}+1 = {op}({i1},{i2})")
+        lines.append(f"{out}   = {op}({out}+1,{i3})")
         return out, lines
 
     # 4-input gates: AND4X1, NAND4X0, OR4X1, NOR4X*, etc.
@@ -227,9 +215,9 @@ def parse_liberty_gate(gtype, pd, get_net_id):
         i3  = NET("IN3")
         i4  = NET("IN4")
         # ((i1 op i2) op (i3 op i4))
-        lines.append(f"{out}_1 = {op}({i1},{i2})")
-        lines.append(f"{out}_2 = {op}({i3},{i4})")
-        lines.append(f"{out}   = {op}({out}_1,{out}_2)")
+        lines.append(f"{out}+1 = {op}({i1},{i2})")
+        lines.append(f"{out}+2 = {op}({i3},{i4})")
+        lines.append(f"{out}   = {op}({out}+1,{out}+2)")
         return out, lines
 
     # AO21X1: (IN1&IN2) | IN3
@@ -238,8 +226,8 @@ def parse_liberty_gate(gtype, pd, get_net_id):
         a   = NET("IN1")
         b   = NET("IN2")
         c   = NET("IN3")
-        lines.append(f"{out}_1 = and({a},{b})")
-        lines.append(f"{out}   = or({out}_1,{c})")
+        lines.append(f"{out}+1 = and({a},{b})")
+        lines.append(f"{out}   = or({out}+1,{c})")
         return out, lines
     
     # AOI21X1: !(IN1&IN2) | IN3
@@ -248,9 +236,9 @@ def parse_liberty_gate(gtype, pd, get_net_id):
         a   = NET("IN1")
         b   = NET("IN2")
         c   = NET("IN3")
-        lines.append(f"{out}_1 = and({a},{b})")
-        lines.append(f"{out}_2 = or({out}_1,{c})")
-        lines.append(f"{out}   = not({out}_2)")
+        lines.append(f"{out}+1 = and({a},{b})")
+        lines.append(f"{out}+2 = or({out}+1,{c})")
+        lines.append(f"{out}   = not({out}+2)")
 
         return out, lines
 
@@ -259,9 +247,9 @@ def parse_liberty_gate(gtype, pd, get_net_id):
         out = NET("Q")
         a,b = NET("IN1"), NET("IN2")
         c,d = NET("IN3"), NET("IN4")
-        lines.append(f"{out}_1 = and({a},{b})")
-        lines.append(f"{out}_2 = and({c},{d})")
-        lines.append(f"{out}   = or({out}_1,{out}_2)")
+        lines.append(f"{out}+1 = and({a},{b})")
+        lines.append(f"{out}+2 = and({c},{d})")
+        lines.append(f"{out}   = or({out}+1,{out}+2)")
         return out, lines
     
     # AOI22X1: !(IN1&IN2) | (IN3&IN4)
@@ -269,10 +257,10 @@ def parse_liberty_gate(gtype, pd, get_net_id):
         out = NET("QN")
         a,b = NET("IN1"), NET("IN2")
         c,d = NET("IN3"), NET("IN4")
-        lines.append(f"{out}_1 = and({a},{b})")
-        lines.append(f"{out}_2 = and({c},{d})")
-        lines.append(f"{out}_3 = or({out}_1,{out}_2)")
-        lines.append(f"{out}   = not({out}_3)")
+        lines.append(f"{out}+1 = and({a},{b})")
+        lines.append(f"{out}+2 = and({c},{d})")
+        lines.append(f"{out}+3 = or({out}+1,{out}+2)")
+        lines.append(f"{out}   = not({out}+3)")
         return out, lines
 
     # AO221X1: (IN1&IN2)|(IN3&IN4)|IN5
@@ -281,9 +269,9 @@ def parse_liberty_gate(gtype, pd, get_net_id):
         a,b = NET("IN1"), NET("IN2")
         c,d = NET("IN3"), NET("IN4")
         e   = NET("IN5")
-        lines.append(f"{out}_1 = and({a},{b})")
-        lines.append(f"{out}_2 = and({c},{d})")
-        lines.append(f"{out}   = or({out}_1, {out}_2, {e})")   # OR of the two pairs
+        lines.append(f"{out}+1 = and({a},{b})")
+        lines.append(f"{out}+2 = and({c},{d})")
+        lines.append(f"{out}   = or({out}+1, {out}+2, {e})")   # OR of the two pairs
         return out, lines
     
     # AOI221X1: !(IN1&IN2)|(IN3&IN4)|IN5
@@ -292,10 +280,10 @@ def parse_liberty_gate(gtype, pd, get_net_id):
         a,b = NET("IN1"), NET("IN2")
         c,d = NET("IN3"), NET("IN4")
         e   = NET("IN5")
-        lines.append(f"{out}_1 = and({a},{b})")
-        lines.append(f"{out}_2 = and({c},{d})")
-        lines.append(f"{out}_3 = or({out}_1, {out}_2, {e})")   # OR of the two pairs
-        lines.append(f"{out}   = not({out}_3)")      # OR with IN5
+        lines.append(f"{out}+1 = and({a},{b})")
+        lines.append(f"{out}+2 = and({c},{d})")
+        lines.append(f"{out}+3 = or({out}+1, {out}+2, {e})")   # OR of the two pairs
+        lines.append(f"{out}   = not({out}+3)")      # OR with IN5
         return out, lines
 
     # AO222X1: three pairs OR’d
@@ -304,9 +292,9 @@ def parse_liberty_gate(gtype, pd, get_net_id):
         pairs = [("IN1","IN2"), ("IN3","IN4"), ("IN5","IN6")]
         for idx,(p1,p2) in enumerate(pairs, start=1):
             a = NET(p1); b = NET(p2)
-            lines.append(f"{out}_{idx} = and({a},{b})")
+            lines.append(f"{out}+{idx} = and({a},{b})")
         # OR the three results
-        lines.append(f"{out}     = or({out}_1,{out}_2,{out}_3)")
+        lines.append(f"{out}     = or({out}+1,{out}+2,{out}+3)")
         return out, lines
     
     # AOI222X1: three pairs inverted OR
@@ -315,10 +303,10 @@ def parse_liberty_gate(gtype, pd, get_net_id):
         pairs = [("IN1","IN2"), ("IN3","IN4"), ("IN5","IN6")]
         for idx,(p1,p2) in enumerate(pairs, start=1):
             a = NET(p1); b = NET(p2)
-            lines.append(f"{out}_{idx} = and({a},{b})")
+            lines.append(f"{out}+{idx} = and({a},{b})")
         # OR the three results
-        lines.append(f"{out}_4     = or({out}_1,{out}_2,{out}_3)")
-        lines.append(f"{out} = not({out}_4)")
+        lines.append(f"{out}+4     = or({out}+1,{out}+2,{out}+3)")
+        lines.append(f"{out} = not({out}+4)")
         return out, lines
 
     # OA221X1: (IN1|IN2)&(IN3|IN4)&IN5
@@ -326,13 +314,13 @@ def parse_liberty_gate(gtype, pd, get_net_id):
         out = NET("Q")
         a = NET("IN1")
         b = NET("IN2")
-        lines.append(f"{out}_1 = or({a},{b})")
+        lines.append(f"{out}+1 = or({a},{b})")
         c = NET("IN3")
         d = NET("IN4")
-        lines.append(f"{out}_2 = or({c},{d})")
+        lines.append(f"{out}+2 = or({c},{d})")
         e = NET("IN5")
-        lines.append(f"{out}_3 = and({out}_1,{out}_2)")
-        lines.append(f"{out}   = and({out}_3,{e})")
+        lines.append(f"{out}+3 = and({out}+1,{out}+2)")
+        lines.append(f"{out}   = and({out}+3,{e})")
         return out, lines
     
     # OAI221X1: !(IN1|IN2)&(IN3|IN4)&IN5
@@ -340,14 +328,14 @@ def parse_liberty_gate(gtype, pd, get_net_id):
         out = NET("QN")
         a = NET("IN1")
         b = NET("IN2")
-        lines.append(f"{out}_1 = or({a},{b})")
+        lines.append(f"{out}+1 = or({a},{b})")
         c = NET("IN3")
         d = NET("IN4")
-        lines.append(f"{out}_2 = or({c},{d})")
+        lines.append(f"{out}+2 = or({c},{d})")
         e = NET("IN5")
-        lines.append(f"{out}_3 = and({out}_1,{out}_2)")
-        lines.append(f"{out}_4 = and({out}_3,{e})")
-        lines.append(f"{out}   = not({out}_4)")
+        lines.append(f"{out}+3 = and({out}+1,{out}+2)")
+        lines.append(f"{out}+4 = and({out}+3,{e})")
+        lines.append(f"{out}   = not({out}+4)")
         return out, lines
 
     # OA21X1: (IN1|IN2)&(IN3)
@@ -355,9 +343,9 @@ def parse_liberty_gate(gtype, pd, get_net_id):
         out = NET("Q")
         a = NET("IN1")
         b = NET("IN2")
-        lines.append(f"{out}_1 = or({a},{b})")
+        lines.append(f"{out}+1 = or({a},{b})")
         c = NET("IN3")
-        lines.append(f"{out}   = and({out}_1,{c})")
+        lines.append(f"{out}   = and({out}+1,{c})")
         return out, lines
     
     # OAI21X1: !(IN1|IN2)&(IN3)
@@ -365,10 +353,10 @@ def parse_liberty_gate(gtype, pd, get_net_id):
         out = NET("QN")
         a = NET("IN1")
         b = NET("IN2")
-        lines.append(f"{out}_1 = or({a},{b})")
+        lines.append(f"{out}+1 = or({a},{b})")
         c = NET("IN3")
-        lines.append(f"{out}_2 = and({out}_1,{c})")
-        lines.append(f"{out}   = not({out}_2)")
+        lines.append(f"{out}+2 = and({out}+1,{c})")
+        lines.append(f"{out}   = not({out}+2)")
         return out, lines
 
     # OA22X1: (IN1|IN2)&(IN3|IN4)
@@ -376,11 +364,11 @@ def parse_liberty_gate(gtype, pd, get_net_id):
         out = NET("Q")
         a = NET("IN1")
         b = NET("IN2")
-        lines.append(f"{out}_1 = or({a},{b})")
+        lines.append(f"{out}+1 = or({a},{b})")
         c = NET("IN3")
         d = NET("IN4")
-        lines.append(f"{out}_2 = or({c},{d})")
-        lines.append(f"{out}   = and({out}_1,{out}_2)")
+        lines.append(f"{out}+2 = or({c},{d})")
+        lines.append(f"{out}   = and({out}+1,{out}+2)")
         return out, lines
     
     # OAI22X1: !(IN1|IN2)&(IN3|IN4)
@@ -388,17 +376,18 @@ def parse_liberty_gate(gtype, pd, get_net_id):
         out = NET("QN")
         a = NET("IN1")
         b = NET("IN2")
-        lines.append(f"{out}_1 = or({a},{b})")
+        lines.append(f"{out}+1 = or({a},{b})")
         c = NET("IN3")
         d = NET("IN4")
-        lines.append(f"{out}_2 = or({c},{d})")
-        lines.append(f"{out}_3 = and({out}_1,{out}_2)")
-        lines.append(f"{out}   = not({out}_3)")
-
+        lines.append(f"{out}+2 = or({c},{d})")
+        lines.append(f"{out}+3 = and({out}+1,{out}+2)")
+        lines.append(f"{out}   = not({out}+3)")
         return out, lines
     
+    # if gtype == "DFFARX1":
+
     
-    return None
+    # return None
 
 
 # read and partition
@@ -418,11 +407,11 @@ for kind, names in pattern.findall(text):
         net = n.strip()
         if not net: 
             continue
-        get_net_id(net)
+        # get_net_id(net)
         if kind == "input":
-            input_ports.append((net, net_id_map[net]))
+            input_ports.append((net))
         elif kind == "output":
-            output_ports.append((net, net_id_map[net]))
+            output_ports.append((net))
 
 # process each instance
 # re.MULTILINE makes ^ match the start of each line instead of only 
@@ -434,12 +423,12 @@ for cell_type, inst_name, port_block in gate_re.findall(text):
     pd = dict(re.findall(r"\.(\w+)\s*\(\s*([^)]+)\)", port_block))
     # print(pd)
     # print(port_block)
-    result = parse_liberty_gate(cell_type, pd, get_net_id)
+    result = parse_liberty_gate(cell_type, pd)
     if result:
         out_net, scoap_lines = result
         for line in scoap_lines:
             gate_lines.append((out_net, line))
-        gate_output_map[inst_name] = (out_net, get_net_id(out_net))
+        gate_output_map[inst_name] = (out_net)
         continue
 
 # write scoap_inputX.txt
@@ -448,24 +437,18 @@ with open(scoap_file, "w") as f:
     f.write("input(1)\n")
     f.write("input(x)\n")
 
-    for net, nid in input_ports:
+    for net in input_ports:
         f.write(f"input({net})\n")
-        f.write(f"#{net}  input {nid}\n")
 
-    for net, nid in output_ports:
+    for net in output_ports:
         f.write(f"output({net})\n")
-        f.write(f"#{net}  output {nid}\n")
 
     for _, expr in gate_lines:
         f.write(expr + "\n")
 
 # write mappings
-with open(netmap_file, "w") as f:
-    for net, nid in sorted(net_id_map.items(), key=lambda x: x[1]):
-        f.write(f"{net} -> {nid}\n")
-
 with open(gatemap_file, "w") as f:
-    for gname, (net, nid) in sorted(gate_output_map.items()):
-        f.write(f"{gname} -> {net} (ID: {nid})\n")
+    for gname, net in sorted(gate_output_map.items()):
+        f.write(f"{gname} -> {net}\n")
 
-print(f"Generated {scoap_file}, {netmap_file}, {gatemap_file}")
+print(f"Generated {scoap_file}, {gatemap_file}")
