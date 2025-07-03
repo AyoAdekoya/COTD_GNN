@@ -40,7 +40,11 @@ def parse_liberty_gate(gtype, pd):
     global ind
     def NET(port):
         val = pd.get(port)
-        if (val is not None):
+        if (val == "1'b1"):
+            return '1'
+        elif (val == "1'b0"):
+            return '0'
+        elif (val is not None):
             return val.strip()
         else:
             return None
@@ -76,6 +80,33 @@ def parse_liberty_gate(gtype, pd):
         if (d == "1'b0"):
             d = "0"
         lines.append(f"{out} = dffc({d}, {clk})")
+        return out, lines
+    
+    # Asynch active low set DFF
+    if gtype == "DFFASX1" or gtype == "DFFASX2":
+        out = NET("Q")
+        clk = NET("CLK")
+        setb = NET("SETB")
+        d = NET("D")
+        lines.append(f"{out}+1 = not({setb})")
+        lines.append(f"{out}+2 = dffc({d}, {clk})")
+        lines.append(f"{out} = or({out}+1, {out}+2)")
+        if (NET("QN") is not None):
+            outN = NET("QN")
+            lines.append(f"{outN} = not({out})")
+        return out, lines
+
+    # Asych active low reset DFF
+    if gtype == "DFFARX1" or gtype == "DFFARX2":
+        out = NET("Q")
+        clk = NET("CLK")
+        rstb = NET("RSTB")
+        d = NET("D")
+        lines.append(f"{out}+1 = not({rstb})")
+        lines.append(f"{out} = dffcr({d}, {clk}, {out}+1)")
+        if (NET("QN") is not None):
+            outN = NET("QN")
+            lines.append(f"{outN} = not({out})")
         return out, lines
 
     # OA222X1: Q = (IN1|IN2) & (IN3|IN4) & (IN5|IN6)    
@@ -156,17 +187,34 @@ def parse_liberty_gate(gtype, pd):
         iso = NET("ISO")
         lines.append(f"{out} = and({d},{iso})")
         return out, lines
+    
+    # ISOLORX8
+    if gtype == "ISOLORX8":
+        out = NET("Q")
+        d   = NET("D")
+        iso = NET("ISO")
+        lines.append(f"{out} = or({d},{iso})")
+        return out, lines
 
     # 2-input gates: AND2X1, NAND2X*, OR2X1, NOR2X*, XOR2X1, XNOR2X1
     two_map = {
         "AND2X1":  ("and",  "Q"),
+        "AND2X2":  ("and",  "Q"),
+        "AND2X4":  ("and", "Q"),
         "NAND2X0": ("nand", "QN"),
         "NAND2X1": ("nand", "QN"),
+        "NAND2X2": ("nand", "QN"),
+        "NAND2X4": ("nand", "QN"),
         "OR2X1":   ("or",   "Q"),
+        "OR2X2":   ("or",   "Q"),
+        "OR2X4":   ("or",   "Q"),
         "NOR2X0":  ("nor",  "QN"),
+        "NOR2X1":  ("nor",  "QN"),
         "NOR2X2":  ("nor",  "QN"),
+        "NOR2X4": ("nor", "QN"),
         "XOR2X1":  ("xor",  "Q"),
-        "XNOR2X1": ("xnor", "Q"),
+        "XOR2X2": ("xor", "Q"),
+        "XNOR2X2": ("xnor", "Q"),
     }
     if gtype in two_map:
         op, outp = two_map[gtype]
@@ -179,14 +227,22 @@ def parse_liberty_gate(gtype, pd):
     # 3-input gates: AND3X*, NAND3X*, OR3X1, NOR3X*, XOR3X1, XNOR3X1
     three_map = {
         "AND3X1":  ("and",  "Q"),
+        "AND3X2":  ("and",  "Q"),
         "AND3X4":  ("and",  "Q"),
         "NAND3X0": ("nand", "QN"),
         "NAND3X1": ("nand", "QN"),
+        "NAND3X2": ("nand", "QN"),
+        "NAND3X4": ("nand", "QN"),
         "OR3X1":   ("or",   "Q"),
+        "OR3X2":   ("or",   "Q"),
         "NOR3X0":  ("nor",  "QN"),
         "NOR3X1":  ("nor",  "QN"),
+        "NOR3X2":  ("nor",  "QN"),
+        "NOR3X4":  ("nor",  "QN"),
         "XOR3X1":  ("xor",  "Q"),
+        "XOR3X2":  ("xor",  "Q"),
         "XNOR3X1": ("xnor", "Q"),
+        "XNOR3X2": ("xnor", "Q"),
     }
     if gtype in three_map:
         op, outp = three_map[gtype]
@@ -202,10 +258,16 @@ def parse_liberty_gate(gtype, pd):
     # 4-input gates: AND4X1, NAND4X0, OR4X1, NOR4X*, etc.
     four_map = {
         "AND4X1":  ("and",  "Q"),
+        "AND4X2":  ("and",  "Q"),
+        "AND4X4":  ("and",  "Q"),
         "NAND4X0": ("nand", "QN"),
+        "NAND4X1": ("nand", "QN"),
         "NOR4X0":  ("nor",  "QN"),
         "NOR4X1":  ("nor",  "QN"),
         "OR4X1":   ("or",   "Q"),
+        "OR4X2":   ("or",   "Q"),
+        "OR4X4":   ("or",   "Q"),
+
     }
     if gtype in four_map:
         op, outp = four_map[gtype]
@@ -231,7 +293,7 @@ def parse_liberty_gate(gtype, pd):
         return out, lines
     
     # AOI21X1: !(IN1&IN2) | IN3
-    if gtype == "AOI21X1":
+    if gtype == "AOI21X1" or gtype == "AOI21X2":
         out = NET("QN")
         a   = NET("IN1")
         b   = NET("IN2")
@@ -253,7 +315,7 @@ def parse_liberty_gate(gtype, pd):
         return out, lines
     
     # AOI22X1: !(IN1&IN2) | (IN3&IN4)
-    if gtype == "AOI22X1":
+    if gtype == "AOI22X1" or gtype == "AOI22X2":
         out = NET("QN")
         a,b = NET("IN1"), NET("IN2")
         c,d = NET("IN3"), NET("IN4")
@@ -349,7 +411,7 @@ def parse_liberty_gate(gtype, pd):
         return out, lines
     
     # OAI21X1: !(IN1|IN2)&(IN3)
-    if gtype == "OAI21X1":
+    if gtype == "OAI21X1" or gtype == "OAI21X2":
         out = NET("QN")
         a = NET("IN1")
         b = NET("IN2")
@@ -386,7 +448,18 @@ def parse_liberty_gate(gtype, pd):
     
     # if gtype == "DFFARX1":
 
-    
+    # MUX21X*: (IN1 & S~)|(IN2 & S)
+    if gtype == "MUX21X2" or gtype == "MUX21X1":
+        out = NET("Q")
+        a = NET("IN1")
+        b = NET("IN2")
+        s = NET("S")
+        lines.append(f"{out}+1 = not({s})")
+        lines.append(f"{out}+2 = and({a},{out}+1)")
+        lines.append(f"{out}+3 = and({b},{s})")
+        lines.append(f"{out}   = or({out}+2, {out}+3)")
+        return out, lines
+
     # return None
 
 
@@ -401,17 +474,38 @@ gate_lines      = []
 gate_output_map = {}
 
 # extract inputs/outputs/wires (for mapping/ordering)
-pattern = re.compile(r"(input|output|wire)\s*(.+?);", re.DOTALL)
-for kind, names in pattern.findall(text):
+# pattern = re.compile(r"(input|output|wire)\s*(.+?);", re.DOTALL)
+pattern = re.compile(r"(input|output|wire)\s*(\[[^\]]+\])?\s*(.+?);", re.DOTALL)
+
+def expand_multibit(base_name, msb, lsb):
+    nets = []
+    step = -1 if msb > lsb else 1
+    for i in range(msb, lsb + step, step):
+        nets.append(f"{base_name}[{i}]")
+    return nets
+
+for kind, bus, names in pattern.findall(text):
     for n in names.split(','):
         net = n.strip()
-        if not net: 
+        if not net:
             continue
-        # get_net_id(net)
-        if kind == "input":
-            input_ports.append((net))
-        elif kind == "output":
-            output_ports.append((net))
+
+        if bus:
+            # Extract msb and lsb from bus
+            bus = bus.strip()[1:-1]  # remove brackets
+            msb_str, lsb_str = bus.split(':')
+            msb, lsb = int(msb_str), int(lsb_str)
+
+            expanded_nets = expand_multibit(net, msb, lsb)
+        else:
+            expanded_nets = [net]
+
+        for expanded_net in expanded_nets:
+            if kind == "input":
+                input_ports.append(expanded_net)
+            elif kind == "output":
+                output_ports.append(expanded_net)
+            # (add wire handling if needed)
 
 # process each instance
 # re.MULTILINE makes ^ match the start of each line instead of only 
@@ -431,6 +525,14 @@ for cell_type, inst_name, port_block in gate_re.findall(text):
         gate_output_map[inst_name] = (out_net)
         continue
 
+# ---- ADD THIS ----
+assign_re = re.compile(r"assign\s+((?:\\[^\s]+|\w[\w\[\]\.]*)+)\s*=\s*([^;]+);")
+assign_lines = []
+
+for lhs, rhs in assign_re.findall(text):
+    assign_lines.append(f"{lhs} = {rhs.strip()}")
+# --------------------
+
 # write scoap_inputX.txt
 with open(scoap_file, "w") as f:
     f.write("input(0)\n")
@@ -445,6 +547,9 @@ with open(scoap_file, "w") as f:
 
     for _, expr in gate_lines:
         f.write(expr + "\n")
+
+    for assign in assign_lines:
+        f.write(assign + "\n")
 
 # write mappings
 with open(gatemap_file, "w") as f:
