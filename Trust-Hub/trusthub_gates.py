@@ -40,6 +40,10 @@ def parse_liberty_gate(gtype, pd):
     global ind
     def NET(port):
         val = pd.get(port)
+        if (val == "1'b1"):
+            return "1"
+        elif (val == "1'b0"):
+            return "0"
         if (val is not None):
             return val.strip()
         else:
@@ -71,10 +75,6 @@ def parse_liberty_gate(gtype, pd):
             out = NET("QN")
         clk = NET("CLK")
         d = NET("D")
-        if (d == "1'b1"):
-            d = "1"
-        if (d == "1'b0"):
-            d = "0"
         lines.append(f"{out} = dffc({d}, {clk})")
         return out, lines
 
@@ -107,8 +107,8 @@ def parse_liberty_gate(gtype, pd):
         f6 = NET("IN6")
         lines.append(f"{out}+3 = or({e},{f6})")
         lines.append(f"{out}+4 = and({out}+1,{out}+2)")
-        lines.append(f"{out}+5   = and({out}+4,{out}+3)")
-        lines.append(f"{out} = not({out}+5)")
+        lines.append(f"{out}+5 = and({out}+4,{out}+3)")
+        lines.append(f"{out}   = not({out}+5)")
 
         return out, lines 
 
@@ -203,6 +203,7 @@ def parse_liberty_gate(gtype, pd):
     four_map = {
         "AND4X1":  ("and",  "Q"),
         "NAND4X0": ("nand", "QN"),
+        "NAND4X1": ("nand", "QN"),
         "NOR4X0":  ("nor",  "QN"),
         "NOR4X1":  ("nor",  "QN"),
         "OR4X1":   ("or",   "Q"),
@@ -384,10 +385,27 @@ def parse_liberty_gate(gtype, pd):
         lines.append(f"{out}   = not({out}+3)")
         return out, lines
     
-    # if gtype == "DFFARX1":
-
+    # Pos Edge DFF w/Async Low-Active Reset
+    if gtype == "DFFARX1":
+        out = NET("Q")
+        d = NET("D")
+        clk = NET("CLK")
+        rstb = NET("RSTB")
+        lines.append(f"not+rstb = not({rstb})")
+        lines.append(f"{out} = dffcr({d}, {clk}, not+rstb)")
+        return out, lines
     
-    # return None
+    # Pos Edge DFF w/Async Low-Active Set
+    if gtype == "DFFASX1":
+        ind += 1
+        out = NET("Q")
+        lines.append(f"not+se{ind} = not({set})")
+        if (NET("QN") is not None):
+            out1 = NET("QN")
+            lines.append(f"{out1} = not({out})")
+        return out, lines
+    
+    return None
 
 
 # read and partition
