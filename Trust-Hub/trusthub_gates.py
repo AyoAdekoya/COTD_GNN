@@ -441,8 +441,6 @@ def parse_liberty_gate(gtype, pd):
         lines.append(f"{out}+3 = and({out}+1,{out}+2)")
         lines.append(f"{out}   = not({out}+3)")
         return out, lines
-    
-    # if gtype == "DFFARX1":
 
     # MUX21X*: (IN1 & S~)|(IN2 & S)
     if gtype == "MUX21X2" or gtype == "MUX21X1":
