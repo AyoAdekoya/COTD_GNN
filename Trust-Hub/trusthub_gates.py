@@ -1,12 +1,11 @@
 #!/usr/bin/env python3
 ########################################################################
-# parse-netlist-to-scoap.py 
-# Takes in a verilog netlist in the contest format and creates three files:
+# trusthub_gates.py 
+# Takes in a verilog netlist in the contest format and creates two files:
 # 1) scoap_inputX.txt  – the netlist in SCOAP tool format
-# 2) net_mappingX.txt   – mapping original net names → SCOAP net IDs
-# 3) gate_mappingX.txt  – mapping gate instance names → (output net, SCOAP net ID)
+# 2) gate_mappingX.txt  – mapping gate instance names → output net
 #
-# Usage: python3 parse-netlist-to-scoap.py <verilog-netlist> <design_number>
+# Usage: python(3) trusthub_gates.py <verilog-netlist> <design_number>
 ########################################################################
 #
 # We use "+" to symbolize the outputs of smaller gates that make up a more complex gate
@@ -76,6 +75,16 @@ def parse_liberty_gate(gtype, pd):
         clk = NET("CLK")
         d = NET("D")
         lines.append(f"{out} = dffc({d}, {clk})")
+        return out, lines
+    
+    if gtype == "DFFNX2":
+        out = NET("Q")
+        if (NET("QN") is not None):
+            out = NET("QN")
+        clk = NET("CLK")
+        d = NET("D")
+        lines.append(f"{out}+1 = not({clk})")
+        lines.append(f"{out} = dffc({d}, {out}+1)")
         return out, lines
     
     # Asynch active low set DFF
@@ -210,6 +219,7 @@ def parse_liberty_gate(gtype, pd):
         "NOR2X4": ("nor", "QN"),
         "XOR2X1":  ("xor",  "Q"),
         "XOR2X2": ("xor", "Q"),
+        "XNOR2X1": ("xnor", "Q"),
         "XNOR2X2": ("xnor", "Q"),
     }
     if gtype in two_map:
@@ -369,6 +379,7 @@ def parse_liberty_gate(gtype, pd):
 
     # OA221X1: (IN1|IN2)&(IN3|IN4)&IN5
     if gtype == "OA221X1":
+
         out = NET("Q")
         a = NET("IN1")
         b = NET("IN2")
@@ -454,12 +465,33 @@ def parse_liberty_gate(gtype, pd):
         lines.append(f"{out}   = or({out}+2, {out}+3)")
         return out, lines
 
-    # return None
+    #MUX41X1: 
+    if  gtype == "MUX41X1":
+        out = NET("Q")
+        a = NET("IN1")
+        b = NET("IN2")
+        c = NET("IN3")
+        d = NET("IN4")
+        s0 = NET("S0")
+        s1 = NET("S1")
+        lines.append(f"not+s0   = not({s0})")
+        lines.append(f"not+s1   = not({s1})")
+        lines.append(f"{out}+1  = and({a}, not+s0, not+s1)")
+        lines.append(f"{out}+2  = and({b}, not+s0, {s1})")
+        lines.append(f"{out}+3  = and({c}, {s0}, not+s1)")
+        lines.append(f"{out}+4  = and({d}, {s0}, {s1})")
+        lines.append(f"{out}+5  = or({out}+1, {out}+2, {out}+3)")
+        lines.append(f"{out}    = or({out}+5, {out}+4)")
+        return out, lines
 
+    return None
+
+# type: ignore
 
 # read and partition
 with open(input_file, "r") as f:
     text = f.read()
+
 
 # collect IOs and gate outputs
 input_ports     = []
@@ -524,7 +556,12 @@ assign_re = re.compile(r"assign\s+((?:\\[^\s]+|\w[\w\[\]\.]*)+)\s*=\s*([^;]+);")
 assign_lines = []
 
 for lhs, rhs in assign_re.findall(text):
-    assign_lines.append(f"{lhs} = {rhs.strip()}")
+    if rhs.strip() == "1'b0":
+        assign_lines.append(f"{lhs} = 0")
+    elif rhs.strip() == "1'b1":
+        assign_lines.append(f"{lhs} = 1")
+    else:
+        assign_lines.append(f"{lhs} = {rhs.strip()}")
 # --------------------
 
 # write scoap_inputX.txt
