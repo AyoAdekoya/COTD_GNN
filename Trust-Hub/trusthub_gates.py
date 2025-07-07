@@ -113,6 +113,19 @@ def parse_liberty_gate(gtype, pd):
             outN = NET("QN")
             lines.append(f"{outN} = not({out})")
         return out, lines
+    
+    # Contest's asych active low reset DFF
+    if gtype == "dff":
+        out = NET("Q")
+        clk = NET("CK")
+        rstb = NET("RN")
+        set = NET("SN")
+        d = NET("D")
+        lines.append(f"{out}+1 = not({rstb})")
+        lines.append(f"{out}+2 = not({set})")
+        lines.append(f"{out}+3 = dffcr({d}, {clk}, {out}+1)")
+        lines.append(f"{out}   = or({out}+2, {d})")
+        return out, lines
 
     # OA222X1: Q = (IN1|IN2) & (IN3|IN4) & (IN5|IN6)    
     if gtype == "OA222X1":
@@ -171,12 +184,20 @@ def parse_liberty_gate(gtype, pd):
 
         return out, lines
 
+    # buffer gate
+    if gtype == "buf":
+        out = NET("Q")
+        inp = NET("IN1")
+        lines.append(f"{out} = buff({inp})")
+        return out, lines       
+
     # NBUFFX*: simple buffer
     if gtype.startswith("NBUFF"):
         out = NET("Q")
         inp = NET("IN")
         lines.append(f"{out} = buff({inp})")
         return out, lines
+        
 
     # INVX*: simple inverter
     if gtype.startswith("INV"):
@@ -200,6 +221,13 @@ def parse_liberty_gate(gtype, pd):
         iso = NET("ISO")
         lines.append(f"{out} = or({d},{iso})")
         return out, lines
+    
+    # not gate
+    if gtype == "not":
+        out = NET("Q")
+        a   = NET("IN1")
+        lines.append(f"{out} = not({a})")
+        return out, lines
 
     # 2-input gates: AND2X1, NAND2X*, OR2X1, NOR2X*, XOR2X1, XNOR2X1
     two_map = {
@@ -210,17 +238,23 @@ def parse_liberty_gate(gtype, pd):
         "NAND2X1": ("nand", "QN"),
         "NAND2X2": ("nand", "QN"),
         "NAND2X4": ("nand", "QN"),
+        "nand":    ("nand", "Q"),
         "OR2X1":   ("or",   "Q"),
         "OR2X2":   ("or",   "Q"),
+        "and":      ("and", "Q"),
         "OR2X4":   ("or",   "Q"),
+        "or":       ("or", "Q"),
         "NOR2X0":  ("nor",  "QN"),
         "NOR2X1":  ("nor",  "QN"),
         "NOR2X2":  ("nor",  "QN"),
         "NOR2X4": ("nor", "QN"),
+        "nor":    ("nor", "Q"),
         "XOR2X1":  ("xor",  "Q"),
         "XOR2X2": ("xor", "Q"),
+        "xor":   ("xor", "Q"),
         "XNOR2X1": ("xnor", "Q"),
         "XNOR2X2": ("xnor", "Q"),
+        "xnor": ("xnor", "Q"),
     }
     if gtype in two_map:
         op, outp = two_map[gtype]
@@ -518,8 +552,8 @@ for kind, bus, names in pattern.findall(text):
 
         if bus:
             # Extract msb and lsb from bus
-            bus = bus.strip()[1:-1]  # remove brackets
-            msb_str, lsb_str = bus.split(':')
+            data_bus = bus.strip()[1:-1]  # remove brackets
+            msb_str, lsb_str = data_bus.split(':')
             msb, lsb = int(msb_str), int(lsb_str)
 
             expanded_nets = expand_multibit(net, msb, lsb)
@@ -538,12 +572,26 @@ for kind, bus, names in pattern.findall(text):
 # the start of the string.
 # re.DOTALL makes . match newlines as well, so the (.*?) can span multiple 
 # lines of port connections.
-gate_re = re.compile(r"^\s*(\w+)\s+" + r"(\w+)\s*" + r"\(\s*(.*?)\s*\)\s*;", re.DOTALL | re.MULTILINE)
-for cell_type, inst_name, port_block in gate_re.findall(text):
+trust_re = re.compile(r"^\s*(\w+)\s+" + r"(\w+)\s*" + r"\(\s*(.*?)\s*\)\s*;", re.DOTALL | re.MULTILINE)
+# design_re = re.compile(r'^\s*'+ r'(\w+)\s+'+ r'(\w+)\s*'+ r'\(\s*'+ r'(?!\.)' + r'([^)]+)'
+#     + r'\s*\)\s*;')
+
+## read for the lines in trusthub designs and dff in contest designs
+for cell_type, inst_name, port_block in trust_re.findall(text):
     pd = dict(re.findall(r"\.(\w+)\s*\(\s*([^)]+)\)", port_block))
     # print(pd)
     # print(port_block)
+    result = "", ""
     result = parse_liberty_gate(cell_type, pd)
+    if ('.' not in port_block):
+        pins = [pin.strip() for pin in port_block.split(',')]
+        pin_map = {}
+        if pins:
+            pin_map['Q'] = pins[0]
+            for i, net in enumerate(pins[1:], start=1):
+                pin_map[f'IN{i}'] = net
+        result = parse_liberty_gate(cell_type, pin_map)
+
     if result:
         out_net, scoap_lines = result
         for line in scoap_lines:
