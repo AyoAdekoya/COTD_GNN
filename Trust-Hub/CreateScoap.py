@@ -68,6 +68,25 @@ def parse_liberty_gate(gtype, pd):
             lines.append(f"{out1} = not({out})")
         return out, lines
     
+    if gtype == "SDFFARX1":
+        ind += 1
+        out = NET("Q")
+        d = NET("D")
+        si = NET("SI")
+        se = NET("SE")
+        rst = NET("RSTB")
+        clk = NET("CLK")
+        lines.append(f"not+se{ind} = not({se})")
+        lines.append(f"{out}+1 = and({d}, not+se{ind})")
+        lines.append(f"{out}+2 = and({si}, {se})")
+        lines.append(f"{out}+3 = or({out}+1, {out}+2)")
+        lines.append(f"{out}+4 = not({rst})")
+        lines.append(f"{out} = dffcr({out}+3, {clk}, {out}+4)")
+        if (NET("QN") is not None):
+            out1 = NET("QN")
+            lines.append(f"{out1} = not({out})")
+        return out, lines
+    
     if gtype == "DFFX2":
         out = NET("Q")
         if (NET("QN") is not None):

@@ -75,7 +75,7 @@ def extract_tj_contest(trojan_gates_file):
         try:
             start = lines.index("TROJAN_GATES") + 1
             end = lines.index("END_TROJAN_GATES")
-            trojaned_gates = set(lines[start:end])
+            trojan_gates = set(lines[start:end])
         except ValueError:
             print("Error: TROJANED file is malformed.")
             sys.exit(1)
@@ -84,7 +84,7 @@ def extract_tj_contest(trojan_gates_file):
 
 def get_verilog_filepaths(design_folder):
     # Use glob to find all files in a folder
-    file_list = glob.glob(f"../../{design_folder}/{design_folder}/src/TjIn/*")
+    file_list = glob.glob(f"../../TH-Benchmarks/{design_folder}/src/TjIn/*")
     if not file_list:
         print("No files found!")
         sys.exit()
@@ -93,7 +93,7 @@ def get_verilog_filepaths(design_folder):
         tj_filepath = file_list[0]
 
     # Use glob to find all files in a folder
-    file_list2 = glob.glob(f"../../{design_folder}/{design_folder}/src/TjFree/*")
+    file_list2 = glob.glob(f"../../TH-Benchmarks/{design_folder}/src/TjFree/*")
     if not file_list2:
         print("No files found!")
         sys.exit()
@@ -116,8 +116,8 @@ if __name__ == "__main__":
     design_folder = sys.argv[1]
 
     # Get trojan gates
-    if design_folder.startswith("RS"):    trojaned_gates = extract_tj_readme(f"../../{design_folder}/{design_folder}/Read me.txt/")
-    elif design_folder.startswith("s"):
+    if design_folder.startswith("RS"):    trojaned_gates = extract_tj_readme(f"../../TH-Benchmarks/{design_folder}/Read me.txt")
+    elif design_folder.startswith("s") or design_folder.startswith("wb"):
         tj_filepath, tj_free_filepath = get_verilog_filepaths(design_folder)
         trojaned_gates = extract_tj_netlist(tj_filepath, tj_free_filepath)
     else:
