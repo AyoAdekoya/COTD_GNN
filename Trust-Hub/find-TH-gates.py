@@ -24,7 +24,7 @@ with open(netlist_file, 'r') as f:
 instances = data.split(';')
 
 # Regex to match gate type at start
-gate_regex = re.compile(r'^\s*([A-Z0-9]+)')
+gate_regex = re.compile(r'^\s*([A-Z0-9]+)', re.IGNORECASE)
 
 for inst in instances:
     inst = inst.strip()
