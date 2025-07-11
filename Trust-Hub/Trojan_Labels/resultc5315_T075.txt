@@ -1,0 +1,10 @@
+TROJANED
+TROJAN_GATES
+troj75_0U4
+troj75_0U3
+troj75_0U1
+troj75_0U6
+troj75_0U5
+trojan75_0
+troj75_0U2
+END_TROJAN_GATES
