@@ -133,8 +133,8 @@ def parse_liberty_gate(gtype, pd):
         lines.append(f"{out}+2 = dffc({d}, {clk})")
         lines.append(f"{out} = or({out}+1, {out}+2)")
         if (NET("QN") is not None):
-            outN = NET("QN")
-            lines.append(f"{outN} = not({out})")
+            out1 = NET("QN")
+            lines.append(f"{out1} = not({out})")
         return out, out1, lines
 
     # Load-enabled DFF
@@ -151,7 +151,7 @@ def parse_liberty_gate(gtype, pd):
         lines.append(f"{out}   = dffc({out}+3, {clk})")
         if (NET("QN") is not None):
             out1 = NET("QN")
-            lines.append(f"{outN} = not({out})")
+            lines.append(f"{out1} = not({out})")
         return out, out1, lines
 
     # Asych active low reset DFF
@@ -165,7 +165,7 @@ def parse_liberty_gate(gtype, pd):
         lines.append(f"{out} = dffcr({d}, {clk}, {out}+1)")
         if (NET("QN") is not None):
             out1 = NET("QN")
-            lines.append(f"{outN} = not({out})")
+            lines.append(f"{out1} = not({out})")
         return out, out1, lines
     
     # Contest's asych active low reset DFF
