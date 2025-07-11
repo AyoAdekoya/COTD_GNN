@@ -3,6 +3,7 @@
 import re
 import sys
 import glob
+import os
 
 def extract_tj_readme(readme_file):
     
@@ -103,6 +104,41 @@ def get_verilog_filepaths(design_folder):
     
     return tj_filepath, tj_free_filepath
 
+if __name__ == "__main__":
+    # Step 1: Get all Trojan-free designs
+    trojan_free_files = glob.glob("../../TH-Benchmarks/TRIT-TC/original_designs/*.v")
+
+    # Step 2: Loop through each Trojan-free design
+    for tf_path in trojan_free_files:
+        # Extract the base name without extension (e.g., c2670)
+        design_name = os.path.splitext(os.path.basename(tf_path))[0]
+        
+        # Step 3: Find all Trojan folders for this design
+        trojan_folders = glob.glob(f"../../TH-Benchmarks/TRIT-TC/{design_name}_T*/")
+        
+        for trojan_folder in trojan_folders:
+            # Find Verilog file(s) in this Trojan folder
+            trojan_files = glob.glob(os.path.join(trojan_folder, "*.v"))
+            
+            # You might have one or multiple .v files; loop over them
+            for trojan_file in trojan_files:
+                print(f"Processing Trojan file: {trojan_file} with Trojan-free file: {tf_path}")
+
+                trojan_design_name = os.path.basename(os.path.normpath(trojan_folder))
+
+                # === Call your function here ===
+                trojan_gates = extract_tj_netlist(trojan_file, tf_path)
+                with open(f"result{trojan_design_name}.txt", "w") as f:
+                    f.write("TROJANED\n")
+                    f.write("TROJAN_GATES\n")
+                    for gate in trojan_gates:
+                        f.write(f"{gate}\n")
+
+                    f.write("END_TROJAN_GATES\n")
+
+
+
+
 
 # Test readme funciton
 # if __name__ == "__main__":
@@ -111,24 +147,24 @@ def get_verilog_filepaths(design_folder):
 #     print(gates)
 
 # Test file comparer function
-if __name__ == "__main__":
+# if __name__ == "__main__":
 
-    design_folder = sys.argv[1]
+#     design_folder = sys.argv[1]
 
-    # Get trojan gates
-    if design_folder.startswith("RS"):    trojaned_gates = extract_tj_readme(f"../../TH-Benchmarks/{design_folder}/Read me.txt")
-    elif design_folder.startswith("s") or design_folder.startswith("wb"):
-        tj_filepath, tj_free_filepath = get_verilog_filepaths(design_folder)
-        trojaned_gates = extract_tj_netlist(tj_filepath, tj_free_filepath)
-    else:
-        print("Design type not recognized")
+#     # Get trojan gates
+#     if design_folder.startswith("RS"):    trojaned_gates = extract_tj_readme(f"../../TH-Benchmarks/{design_folder}/Read me.txt")
+#     elif design_folder.startswith("s") or design_folder.startswith("wb"):
+#         tj_filepath, tj_free_filepath = get_verilog_filepaths(design_folder)
+#         trojaned_gates = extract_tj_netlist(tj_filepath, tj_free_filepath)
+#     else:
+#         print("Design type not recognized")
 
-    with open(f"result{design_folder}.txt", "w") as f:
-        f.write("TROJANED\n")
-        f.write("TROJAN_GATES\n")
-        for gate in trojaned_gates:
-            f.write(f"{gate}\n")
+#     with open(f"result{design_folder}.txt", "w") as f:
+#         f.write("TROJANED\n")
+#         f.write("TROJAN_GATES\n")
+#         for gate in trojaned_gates:
+#             f.write(f"{gate}\n")
 
-        f.write("END_TROJAN_GATES\n")
+#         f.write("END_TROJAN_GATES\n")
 
 

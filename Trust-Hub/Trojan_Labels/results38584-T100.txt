@@ -1,0 +1,12 @@
+TROJANED
+TROJAN_GATES
+Trojan_Payload
+NOT_test_se
+Trojan1
+Trojan_Trigger
+Trojan1234_NOT
+Trojan3
+Trojan4
+Trojan5
+Trojan2
+END_TROJAN_GATES

@@ -1,0 +1,13 @@
+TROJANED
+TROJAN_GATES
+troj32_0U3
+troj32_0U2
+troj32_0U6
+troj32_0U7
+troj32_0U5
+troj32_0U1
+troj32_0U9
+troj32_0U4
+trojan32_0
+troj32_0U8
+END_TROJAN_GATES

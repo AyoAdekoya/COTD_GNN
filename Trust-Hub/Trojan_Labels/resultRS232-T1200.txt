@@ -1,0 +1,17 @@
+TROJANED
+TROJAN_GATES
+U302
+U292
+iDatasend_reg_2
+U297
+U300
+iDatasend_reg_1
+U295
+U301
+U293
+U294
+iDatasend_reg_4
+iDatasend_reg_3
+U303
+U296
+END_TROJAN_GATES
