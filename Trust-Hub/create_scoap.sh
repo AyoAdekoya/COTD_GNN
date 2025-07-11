@@ -16,25 +16,25 @@
 # done
 
 
-# Define prefixes
-prefixes=(c2670_T c3540_T c5315_T c6288_T s1423_T s13207_T s15850_T s35932_T)
+# # Define prefixes
+# prefixes=(c2670_T c3540_T c5315_T c6288_T s1423_T s13207_T s15850_T s35932_T)
 
-for prefix in "${prefixes[@]}"; do
-    # Loop through suffixes 001-099
-    for num in $(seq -w 1 219); do
-        design="${prefix}${num}"
+# for prefix in "${prefixes[@]}"; do
+#     # Loop through suffixes 001-099
+#     for num in $(seq -w 1 219); do
+#         design="${prefix}${num}"
         
-        # Example: check if a design file exists
-        if [[ -f "../../TH-Benchmarks/TRIT-TC/${design}/${design}.v" ]]; then
-            echo "Processing design file: ${design}"
+#         # Example: check if a design file exists
+#         if [[ -f "../../TH-Benchmarks/TRIT-TC/${design}/${design}.v" ]]; then
+#             echo "Processing design file: ${design}"
             
-            # Example command
-            python CreateScoap.py "../../TH-Benchmarks/TRIT-TC/${design}/${design}.v" ${design}
-        else
-            echo "File not found: ${design}.v"
-        fi
-    done
-done
+#             # Example command
+#             python CreateScoap.py "../../TH-Benchmarks/TRIT-TC/${design}/${design}.v" ${design}
+#         else
+#             echo "File not found: ${design}.v"
+#         fi
+#     done
+# done
 
 
 # mkdir Scoap_Inputs
