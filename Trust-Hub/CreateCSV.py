@@ -113,7 +113,6 @@ with open(gate_map_file, "r") as f:
 trojaned_gates = extract_tj_contest(trojan_labels)
 
 print(trojaned_gates)
-print(net_to_gate)
 
 # === Step 4: Write final CSV ===
 with open(csv_output, "w", newline="") as csvfile:
@@ -121,11 +120,21 @@ with open(csv_output, "w", newline="") as csvfile:
     writer.writerow(["gate", "CC0", "CC1", "CO", "is_trojan"])
 
     for net in nets:
-        if net not in net_to_gate:
+        if net == '0':
+            gate_name = net_to_gate["1'b0"]
+            cc0, cc1, co = scoap_scores.get('0', ("#N/A", "#N/A", "#N/A"))
+            is_trojan = 1 if gate_name in trojaned_gates else 0
+            writer.writerow([gate_name, cc0, cc1, co, is_trojan])
+        elif net == '1':
+            gate_name = net_to_gate["1'b1"]
+            cc0, cc1, co = scoap_scores.get('1', ("#N/A", "#N/A", "#N/A"))
+            is_trojan = 1 if gate_name in trojaned_gates else 0
+            writer.writerow([gate_name, cc0, cc1, co, is_trojan])
+        elif net not in net_to_gate:
             print(f"Skipping net {net}, no gate found in mapping")
-            continue
-        gate_name = net_to_gate[net]
-        cc0, cc1, co = scoap_scores.get(net, ("#N/A", "#N/A", "#N/A"))
-        is_trojan = 1 if gate_name in trojaned_gates else 0
-        writer.writerow([gate_name, cc0, cc1, co, is_trojan])
+        else:
+            gate_name = net_to_gate[net]
+            cc0, cc1, co = scoap_scores.get(net, ("#N/A", "#N/A", "#N/A"))
+            is_trojan = 1 if gate_name in trojaned_gates else 0
+            writer.writerow([gate_name, cc0, cc1, co, is_trojan])
 
