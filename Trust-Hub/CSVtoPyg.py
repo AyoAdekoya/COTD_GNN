@@ -12,7 +12,7 @@ import torch
 import torch.nn.functional as F
 from torch_geometric.data import Data
 from torch_geometric.utils import from_networkx
-from zScore.py import compute_scoap_stats, normalize_score
+from zScore import compute_scoap_stats, normalize_score
 
 
 # Classifying gatenames into gatetypes
@@ -36,11 +36,11 @@ def gatetype(line: str) -> str | None:
         return "async_reset_ff"
     elif prefix in ("dffle", "dffs", "dffnx", "dffx", "dff"):
         return "dff"
-    elif prefix in ("buf", "ib1", "nbuff", "nb1"):
+    elif prefix in ("buf", "ib", "nbuff", "nb1"):
         return "buffer"
     elif prefix in ("inv", "i", "not"):
         return "inverter"
-    elif prefix == "hi1":
+    elif prefix == "hi":
         return "const1"
     elif prefix.startswith("lsdn"):
         return "shifter"
@@ -119,10 +119,11 @@ def create_graph(netlist_path, csv_path, mapping_path):
             if not row:
                 continue
             name, cc0, cc1, co, trojan = row
+
             gate_attrs[name] = {
-                "cc0": float(cc0),
-                "cc1": float(cc1),
-                "co": float(co),
+                "cc0": normalize_score(cc0, "cc0"),
+                "cc1": normalize_score(cc1, "cc1"),
+                "co": normalize_score(co, "co"),
                 "is_trojan": int(trojan),
             }
 
@@ -312,7 +313,35 @@ def nx_to_pyG(G):
         is_trojan_val = attrs.get("is_trojan", 0)
         labels.append(is_trojan_val)
 
-        # stack to 
+    # stack features and labels
+    X = torch.stack(features)
+    y = torch.tensor(labels, dtype=torch.long) 
+
+    # 4. edge index 
+    edge_list = []
+    for src, dst in G.edges():
+        src_idx = nodeToindex[src]
+        dst_idx = nodeToindex[dst]
+        edge_list.append([src_idx, dst_idx])
+
+    edge_index_tensor = torch.tensor(edge_list, dtype=torch.long)  # [num_edges, 2]
+    edge_index = edge_index_tensor.t().contiguous()                # [2, num_edges]
+
+    # 5) Assemble the PyG Data object
+    data = Data(x=X, edge_index=edge_index, y=y)
+
+    # 6) Attach mappings for later lookup
+    data.node_to_index = nodeToindex
+    data.index_to_node = indexTonode
+    data.type_to_index = typeToindex
+
+    # build index_to_type
+    index_to_type = {}
+    for gate_type, idx in typeToindex.items():
+        index_to_type[idx] = gate_type
+
+    data.index_to_type = index_to_type
+
     return data
 
 
@@ -320,10 +349,13 @@ def nx_to_pyG(G):
 # Command-line execution 
 if __name__ == "__main__":
     if len(sys.argv) != 4:
-        print("Usage: python create_graph.py <netlist.v> <attrs.csv> <mapping.txt>")
+        print("Usage: python CSVtoPyG.py <netlist.v> <attrs.csv> <mapping.txt>")
         sys.exit(1)
 
     netlist, attrs_csv, mapping = sys.argv[1:]
+
+    compute_scoap_stats()
+
     G = create_graph(netlist, attrs_csv, mapping)
     print(f"Built graph with {G.number_of_nodes()} nodes and {G.number_of_edges()} edges.")
 
@@ -335,3 +367,22 @@ if __name__ == "__main__":
     for u, v in G.edges():
         print(f"{u} -> {v}")
 
+    print()
+    print("PyG")
+    data = nx_to_pyG(G)
+    print(data)
+
+    print("Number of nodes:      ", data.num_nodes)
+    print("Number of edges:      ", data.num_edges)
+    print("Feature size per node:", data.num_node_features)
+
+    print("\nFirst 5 node feature vectors:")
+    assert(data.num_nodes is not None)
+    assert(data.x is not None)
+    for i in range(min(5, data.num_nodes)):
+        print(f" Node {i:3d} ({data.index_to_node[i]}):", data.x[i].tolist())
+
+    print("\nFirst 10 labels (is_trojan):")
+    assert isinstance(data.y, torch.Tensor)
+    for i in range(min(10, data.num_nodes)):
+        print(f" Node {i:3d} ({data.index_to_node[i]}):", data.y[i].item())
