@@ -518,12 +518,12 @@ def parse_liberty_gate(gtype, pd):
         return out, out1, lines
     
     # AOI21X1: !(IN1&IN2) | IN3
-    if gtype == "AOI21X1" or gtype == "AOI21X2":
-        out = NET("QN")
+    if gtype == "AOI21X1" or gtype == "AOI21X2" or gtype.startswith("aoi21s"):
+        out = NET("QN") if NET("QN") is not None else NET("Q")
         out1 = None
-        a   = NET("IN1")
-        b   = NET("IN2")
-        c   = NET("IN3")
+        a  = NET("IN1") if NET("IN1") is not None else NET("DIN1")
+        b  = NET("IN2") if NET("IN2") is not None else NET("DIN2")
+        c  = NET("IN3") if NET("IN3") is not None else NET("DIN3")
         lines.append(f"{out}+1 = and({a},{b})")
         lines.append(f"{out}+2 = or({out}+1,{c})")
         lines.append(f"{out}   = not({out}+2)")
