@@ -2998,6 +2998,7 @@ troj12_0U12 -> troj12_0n7
 troj12_0U13 -> troj12_0N98
 troj12_0U14 -> troj12_0n9
 troj12_0U15 -> troj12_0N97
+troj12_0U16 -> troj12_0n16
 troj12_0U17 -> troj12_0n12
 troj12_0U18 -> troj12_0N96
 troj12_0U19 -> troj12_0n6
@@ -3006,6 +3007,7 @@ troj12_0U21 -> troj12_0n18
 troj12_0U22 -> troj12_0n14
 troj12_0U23 -> troj12_0N94
 troj12_0U24 -> troj12_0n15
+troj12_0U3 -> troj12_0N95
 troj12_0U4 -> troj12_0N93
 troj12_0U5 -> troj12_0n3
 troj12_0U6 -> troj12_0n2

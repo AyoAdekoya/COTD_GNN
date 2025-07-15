@@ -6889,7 +6889,10 @@ troj2_0U14 -> troj2_0n10
 troj2_0U15 -> troj2_0N75
 troj2_0U16 -> troj2_0N74
 troj2_0U17 -> troj2_0n14
+troj2_0U20 -> troj2_0n18
 troj2_0U21 -> troj2_0N72
+troj2_0U22 -> troj2_0n19
+troj2_0U23 -> troj2_0n20
 troj2_0U24 -> troj2_0N70
 troj2_0U25 -> troj2_0n11
 troj2_0U3 -> troj2_0n1

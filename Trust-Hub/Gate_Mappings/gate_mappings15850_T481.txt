@@ -3101,6 +3101,7 @@ troj81_0U39 -> troj81_0n18
 troj81_0U40 -> troj81_0N96
 troj81_0U5 -> troj81_0n5
 troj81_0U55 -> troj81_0N94
+troj81_0U56 -> troj81_0n34
 troj81_0U57 -> troj81_0n11
 troj81_0U58 -> troj81_0n23
 troj81_0U6 -> troj81_0N95

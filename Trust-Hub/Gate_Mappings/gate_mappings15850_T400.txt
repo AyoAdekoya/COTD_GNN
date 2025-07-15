@@ -3004,6 +3004,8 @@ troj0_0U15 -> troj0_0n10
 troj0_0U16 -> troj0_0N92
 troj0_0U17 -> troj0_0n14
 troj0_0U18 -> troj0_0N91
+troj0_0U19 -> troj0_0n19
+troj0_0U20 -> troj0_0n21
 troj0_0U22 -> troj0_0n23
 troj0_0U23 -> troj0_0n15
 troj0_0U24 -> troj0_0n11

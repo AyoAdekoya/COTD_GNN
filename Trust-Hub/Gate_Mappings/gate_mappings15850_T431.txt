@@ -2997,6 +2997,7 @@ trig106_0U6 -> trig106_0n6
 trig106_0U7 -> trig106_0n5
 troj31_0Trojan_out0_reg -> Trojan_out0
 troj31_0U10 -> troj31_0n3
+troj31_0U12 -> troj31_0n11
 troj31_0U13 -> troj31_0n14
 troj31_0U14 -> troj31_0n15
 troj31_0U15 -> troj31_0n10

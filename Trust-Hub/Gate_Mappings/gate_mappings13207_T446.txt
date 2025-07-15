@@ -2327,6 +2327,8 @@ troj46_0U15 -> troj46_0n11
 troj46_0U16 -> troj46_0n12
 troj46_0U17 -> troj46_0n10
 troj46_0U18 -> troj46_0N92
+troj46_0U19 -> troj46_0n16
+troj46_0U20 -> troj46_0n17
 troj46_0U22 -> troj46_0n22
 troj46_0U23 -> troj46_0n20
 troj46_0U24 -> troj46_0n19

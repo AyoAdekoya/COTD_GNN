@@ -2393,6 +2393,7 @@ troj50_0U22 -> troj50_0n19
 troj50_0U23 -> troj50_0N74
 troj50_0U24 -> troj50_0n21
 troj50_0U25 -> troj50_0n20
+troj50_0U26 -> troj50_0N73
 troj50_0U27 -> troj50_0n23
 troj50_0U28 -> troj50_0N72
 troj50_0U29 -> troj50_0n22

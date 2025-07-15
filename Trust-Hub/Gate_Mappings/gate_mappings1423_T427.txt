@@ -551,6 +551,7 @@ troj27_0U19 -> troj27_0n14
 troj27_0U20 -> troj27_0N40
 troj27_0U21 -> troj27_0n17
 troj27_0U22 -> troj27_0N38
+troj27_0U23 -> troj27_0n13
 troj27_0U24 -> troj27_0n16
 troj27_0U3 -> troj27_0n1
 troj27_0U4 -> troj27_0n2

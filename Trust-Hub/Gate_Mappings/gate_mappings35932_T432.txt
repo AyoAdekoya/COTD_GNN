@@ -6888,6 +6888,7 @@ troj32_0U13 -> troj32_0N28
 troj32_0U3 -> troj32_0N27
 troj32_0U4 -> troj32_0n1
 troj32_0U5 -> troj32_0n2
+troj32_0U6 -> troj32_0n10
 troj32_0U7 -> troj32_0n11
 troj32_0U8 -> troj32_0n6
 troj32_0U9 -> troj32_0n3

@@ -2381,6 +2381,7 @@ troj36_0U19 -> troj36_0n15
 troj36_0U20 -> troj36_0N69
 troj36_0U21 -> troj36_0N68
 troj36_0U22 -> troj36_0N67
+troj36_0U23 -> troj36_0n21
 troj36_0U24 -> troj36_0N66
 troj36_0U25 -> troj36_0n26
 troj36_0U26 -> troj36_0n24

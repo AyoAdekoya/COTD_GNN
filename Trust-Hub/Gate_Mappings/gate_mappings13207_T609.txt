@@ -2413,12 +2413,15 @@ troj9_0U25 -> troj9_0n18
 troj9_0U26 -> troj9_0n23
 troj9_0U27 -> troj9_0n24
 troj9_0U28 -> troj9_0n22
+troj9_0U29 -> troj9_0n28
 troj9_0U30 -> troj9_0n29
+troj9_0U31 -> troj9_0n30
 troj9_0U33 -> troj9_0n25
 troj9_0U34 -> troj9_0N97
 troj9_0U35 -> troj9_0N96
 troj9_0U4 -> troj9_0n2
 troj9_0U50 -> troj9_0N94
+troj9_0U51 -> troj9_0n19
 troj9_0U53 -> troj9_0n12
 troj9_0U54 -> troj9_0n1
 troj9_0U56 -> troj9_0n14

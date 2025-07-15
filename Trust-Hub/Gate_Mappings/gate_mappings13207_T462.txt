@@ -2355,6 +2355,8 @@ troj62_0U13 -> troj62_0n10
 troj62_0U14 -> troj62_0n5
 troj62_0U15 -> troj62_0n11
 troj62_0U16 -> troj62_0n12
+troj62_0U17 -> troj62_0N42
+troj62_0U18 -> troj62_0N41
 troj62_0U19 -> troj62_0n16
 troj62_0U20 -> troj62_0N38
 troj62_0U3 -> troj62_0n1

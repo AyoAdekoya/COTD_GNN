@@ -3073,6 +3073,7 @@ troj58_0U16 -> troj58_0n12
 troj58_0U17 -> troj58_0n13
 troj58_0U18 -> troj58_0N87
 troj58_0U19 -> troj58_0n14
+troj58_0U20 -> troj58_0n16
 troj58_0U21 -> troj58_0N85
 troj58_0U22 -> troj58_0n21
 troj58_0U24 -> troj58_0N84

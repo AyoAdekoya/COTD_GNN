@@ -2997,6 +2997,7 @@ trig174_0U6 -> trig174_0n1
 troj46_0Trojan_out0_reg -> Trojan_out0
 troj46_0U10 -> troj46_0n10
 troj46_0U11 -> troj46_0n5
+troj46_0U12 -> troj46_0n13
 troj46_0U13 -> troj46_0n23
 troj46_0U14 -> troj46_0n17
 troj46_0U15 -> troj46_0n19

@@ -3061,6 +3061,7 @@ troj73_0U15 -> troj73_0n4
 troj73_0U16 -> troj73_0n12
 troj73_0U17 -> troj73_0n13
 troj73_0U18 -> troj73_0n19
+troj73_0U19 -> troj73_0N80
 troj73_0U20 -> troj73_0n21
 troj73_0U21 -> troj73_0N79
 troj73_0U22 -> troj73_0n16

@@ -2320,6 +2320,7 @@ troj69_0Trojan_out0_reg -> Trojan_out0
 troj69_0U10 -> troj69_0n11
 troj69_0U11 -> troj69_0N97
 troj69_0U12 -> troj69_0n16
+troj69_0U13 -> troj69_0n15
 troj69_0U14 -> troj69_0N96
 troj69_0U15 -> troj69_0n12
 troj69_0U16 -> troj69_0n6
@@ -2329,6 +2330,7 @@ troj69_0U19 -> troj69_0n7
 troj69_0U20 -> troj69_0N94
 troj69_0U21 -> troj69_0n10
 troj69_0U23 -> troj69_0N98
+troj69_0U3 -> troj69_0N95
 troj69_0U4 -> troj69_0N93
 troj69_0U5 -> troj69_0n3
 troj69_0U6 -> troj69_0n2

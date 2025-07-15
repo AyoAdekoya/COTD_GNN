@@ -3002,6 +3002,7 @@ troj87_0U13 -> troj87_0n10
 troj87_0U14 -> troj87_0n16
 troj87_0U15 -> troj87_0n13
 troj87_0U16 -> troj87_0n14
+troj87_0U17 -> troj87_0n17
 troj87_0U18 -> troj87_0n8
 troj87_0U19 -> troj87_0N58
 troj87_0U20 -> troj87_0n4

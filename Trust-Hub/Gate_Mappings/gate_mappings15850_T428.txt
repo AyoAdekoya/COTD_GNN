@@ -2998,6 +2998,7 @@ troj28_0U13 -> troj28_0n15
 troj28_0U14 -> troj28_0n6
 troj28_0U15 -> troj28_0n4
 troj28_0U16 -> troj28_0n11
+troj28_0U17 -> troj28_0n18
 troj28_0U18 -> troj28_0n9
 troj28_0U19 -> troj28_0n17
 troj28_0U20 -> troj28_0n12
@@ -3007,6 +3008,7 @@ troj28_0U23 -> troj28_0N58
 troj28_0U3 -> troj28_0N57
 troj28_0U4 -> troj28_0n1
 troj28_0U5 -> troj28_0n2
+troj28_0U7 -> troj28_0n5
 troj28_0U8 -> troj28_0n3
 troj28_0U9 -> troj28_0n8
 troj28_0state_reg_0_ -> ('troj28_0state_0_', 'troj28_0n16')

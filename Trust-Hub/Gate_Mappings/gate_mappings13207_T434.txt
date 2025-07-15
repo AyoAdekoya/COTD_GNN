@@ -2420,6 +2420,7 @@ troj34_0U24 -> troj34_0n24
 troj34_0U25 -> troj34_0N98
 troj34_0U26 -> troj34_0n26
 troj34_0U27 -> troj34_0N97
+troj34_0U29 -> troj34_0n27
 troj34_0U3 -> troj34_0n1
 troj34_0U30 -> troj34_0N96
 troj34_0U32 -> troj34_0n33

@@ -6885,10 +6885,12 @@ troj26_0U10 -> troj26_0n6
 troj26_0U11 -> troj26_0n4
 troj26_0U12 -> troj26_0N41
 troj26_0U13 -> troj26_0N38
+troj26_0U3 -> troj26_0N39
 troj26_0U4 -> troj26_0N37
 troj26_0U5 -> troj26_0n1
 troj26_0U6 -> troj26_0n2
 troj26_0U7 -> troj26_0n3
+troj26_0U8 -> troj26_0N42
 troj26_0state_reg_0_ -> troj26_0state_0_
 troj26_0state_reg_1_ -> ('troj26_0state_1_', 'troj26_0n5')
 troj26_0state_reg_2_ -> ('troj26_0state_2_', 'troj26_0n7')

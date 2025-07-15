@@ -2327,6 +2327,7 @@ troj64_0U15 -> troj64_0N79
 troj64_0U16 -> troj64_0n16
 troj64_0U17 -> troj64_0n17
 troj64_0U18 -> troj64_0N78
+troj64_0U19 -> troj64_0n19
 troj64_0U20 -> troj64_0n21
 troj64_0U21 -> troj64_0n20
 troj64_0U22 -> troj64_0n11

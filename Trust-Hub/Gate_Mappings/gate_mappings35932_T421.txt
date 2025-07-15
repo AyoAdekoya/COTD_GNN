@@ -6889,6 +6889,7 @@ troj21_0U13 -> troj21_0n18
 troj21_0U14 -> troj21_0n8
 troj21_0U15 -> troj21_0n19
 troj21_0U16 -> troj21_0n9
+troj21_0U17 -> troj21_0n5
 troj21_0U18 -> troj21_0n17
 troj21_0U19 -> troj21_0n12
 troj21_0U20 -> troj21_0n11

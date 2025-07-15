@@ -517,6 +517,7 @@ troj12_0U3 -> troj12_0n1
 troj12_0U4 -> troj12_0n4
 troj12_0U5 -> troj12_0n7
 troj12_0U7 -> troj12_0n8
+troj12_0U8 -> troj12_0n6
 troj12_0state_reg_0_ -> ('troj12_0state_0_', 'troj12_0n2')
 troj12_0state_reg_1_ -> ('troj12_0state_1_', 'troj12_0n5')
 troj12_1U1 -> Trigger_en1_12

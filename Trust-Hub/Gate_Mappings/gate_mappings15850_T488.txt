@@ -3077,7 +3077,10 @@ troj88_0U19 -> troj88_0n15
 troj88_0U20 -> troj88_0n16
 troj88_0U21 -> troj88_0n19
 troj88_0U22 -> troj88_0n23
+troj88_0U23 -> troj88_0n22
+troj88_0U24 -> troj88_0N91
 troj88_0U25 -> troj88_0N90
+troj88_0U27 -> troj88_0n27
 troj88_0U28 -> troj88_0n20
 troj88_0U29 -> troj88_0n24
 troj88_0U3 -> troj88_0n1

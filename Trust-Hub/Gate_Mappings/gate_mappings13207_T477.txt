@@ -2340,6 +2340,7 @@ troj77_0U5 -> troj77_0n2
 troj77_0U6 -> troj77_0n1
 troj77_0U7 -> troj77_0n3
 troj77_0U8 -> troj77_0n4
+troj77_0U9 -> troj77_0N93
 troj77_0state_reg_0_ -> ('troj77_0state_0_', 'troj77_0n9')
 troj77_0state_reg_1_ -> ('troj77_0state_1_', 'troj77_0n14')
 troj77_0state_reg_2_ -> ('troj77_0state_2_', 'troj77_0n13')

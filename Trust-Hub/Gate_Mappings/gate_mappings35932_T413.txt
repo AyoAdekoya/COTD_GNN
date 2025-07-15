@@ -6921,6 +6921,8 @@ troj13_0U11 -> troj13_0n8
 troj13_0U12 -> troj13_0n4
 troj13_0U13 -> troj13_0n9
 troj13_0U14 -> troj13_0n10
+troj13_0U15 -> troj13_0N42
+troj13_0U16 -> troj13_0N40
 troj13_0U17 -> troj13_0n14
 troj13_0U18 -> troj13_0n15
 troj13_0U19 -> troj13_0N38

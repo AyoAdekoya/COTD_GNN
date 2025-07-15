@@ -6886,7 +6886,9 @@ trig111_0U7 -> trig111_0n1
 trig111_0U8 -> trig111_0n7
 troj36_0Trojan_out0_reg -> Trojan_out0
 troj36_0U3 -> troj36_0n1
+troj36_0U4 -> troj36_0n2
 troj36_0U5 -> troj36_0n6
+troj36_0U6 -> troj36_0n4
 troj36_0U7 -> troj36_0n7
 troj36_0U8 -> troj36_0n5
 troj36_0U9 -> troj36_0n3

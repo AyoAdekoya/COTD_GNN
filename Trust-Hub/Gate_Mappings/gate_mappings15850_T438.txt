@@ -3078,6 +3078,7 @@ troj38_0U22 -> troj38_0n20
 troj38_0U23 -> troj38_0n19
 troj38_0U24 -> troj38_0n18
 troj38_0U25 -> troj38_0N92
+troj38_0U26 -> troj38_0n24
 troj38_0U27 -> troj38_0N91
 troj38_0U28 -> troj38_0n28
 troj38_0U29 -> troj38_0n30

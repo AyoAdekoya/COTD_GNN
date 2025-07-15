@@ -6892,9 +6892,12 @@ troj6_0U16 -> troj6_0N69
 troj6_0U17 -> troj6_0N68
 troj6_0U18 -> troj6_0n15
 troj6_0U19 -> troj6_0n16
+troj6_0U20 -> troj6_0N67
 troj6_0U22 -> troj6_0n18
 troj6_0U23 -> troj6_0n14
 troj6_0U24 -> troj6_0N66
+troj6_0U25 -> troj6_0n20
+troj6_0U26 -> troj6_0n21
 troj6_0U27 -> troj6_0N64
 troj6_0U3 -> troj6_0n1
 troj6_0U4 -> troj6_0n2

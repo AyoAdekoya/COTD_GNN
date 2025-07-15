@@ -2414,6 +2414,7 @@ troj32_0U20 -> troj32_0n16
 troj32_0U21 -> troj32_0n17
 troj32_0U22 -> troj32_0N93
 troj32_0U23 -> troj32_0n21
+troj32_0U24 -> troj32_0n19
 troj32_0U25 -> troj32_0n24
 troj32_0U26 -> troj32_0n25
 troj32_0U27 -> troj32_0N88

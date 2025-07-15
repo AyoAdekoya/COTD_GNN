@@ -2398,6 +2398,7 @@ troj2_0U22 -> troj2_0n19
 troj2_0U23 -> troj2_0N74
 troj2_0U24 -> troj2_0N73
 troj2_0U25 -> troj2_0n23
+troj2_0U26 -> troj2_0n24
 troj2_0U27 -> troj2_0n18
 troj2_0U28 -> troj2_0n25
 troj2_0U29 -> troj2_0N70

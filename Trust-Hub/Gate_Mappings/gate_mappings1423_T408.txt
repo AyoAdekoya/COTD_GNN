@@ -540,6 +540,7 @@ troj8_0U13 -> troj8_0n4
 troj8_0U14 -> troj8_0n7
 troj8_0U15 -> troj8_0n11
 troj8_0U16 -> troj8_0n12
+troj8_0U17 -> troj8_0N41
 troj8_0U18 -> troj8_0N40
 troj8_0U19 -> troj8_0n16
 troj8_0U20 -> troj8_0N38
