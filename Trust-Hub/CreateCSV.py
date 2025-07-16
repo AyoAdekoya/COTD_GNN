@@ -17,6 +17,7 @@
 import re
 import csv
 import sys
+import ast
 from TjLabeler import extract_tj_contest
 # from trusthub_gates import gate_output_map
 
@@ -68,13 +69,30 @@ while i < len(lines):
 
 # === Step 2: Parse gate → net mapping, store as net → gate instead ===
 net_to_gate = {}
+gate_to_net = {}
 
-with open(gate_map_file, "r") as f:
+with open(gate_map_file) as f:
     for line in f:
-        match = re.match(r"(\S+)\s*->\s*(\S+)", line)
-        if match:
-            gate_name, net_name = match.groups()
-            net_to_gate[net_name] = gate_name
+        if "->" not in line:
+            continue
+        gate, net = line.split("->")
+        key = gate.strip()
+        value = net.strip()
+        try:
+            value = ast.literal_eval(value)
+        except:
+            pass
+        gate_to_net[key] = value
+
+# 3) Invert net-to-gate mapping
+net_to_gate = {}
+for gate_name, net_name in gate_to_net.items():
+    if isinstance(net_name, (list, tuple)):
+        for net in net_name:
+            net_to_gate[net] = gate_name
+    else:
+        net_to_gate[net_name] = gate_name
+
 
 # # === Step 3: Parse trojan gate list ===
 # import glob
@@ -131,7 +149,7 @@ with open(csv_output, "w", newline="") as csvfile:
             is_trojan = 1 if gate_name in trojaned_gates else 0
             writer.writerow([gate_name, cc0, cc1, co, is_trojan])
         elif net not in net_to_gate:
-            print(f"Skipping net {net}, no gate found in mapping")
+            pass
         else:
             gate_name = net_to_gate[net]
             cc0, cc1, co = scoap_scores.get(net, ("#N/A", "#N/A", "#N/A"))
