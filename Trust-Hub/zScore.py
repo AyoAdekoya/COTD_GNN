@@ -29,9 +29,9 @@ def compute_scoap_stats(folder_path="Scoap_Scores"):
                 try:
                     _, cc0, cc1, co, *_ = row
                     # Convert to float, handle "#INF"
-                    cc0_f = float("inf") if cc0 == "#INF" else float(cc0)
-                    cc1_f = float("inf") if cc1 == "#INF" else float(cc1)
-                    co_f  = float("inf") if co == "#INF" else float(co)
+                    cc0_f = float(10000) if cc0 == "#INF" else float(cc0)
+                    cc1_f = float(10000) if cc1 == "#INF" else float(cc1)
+                    co_f  = float(10000) if co == "#INF" else float(co)
 
                     if not np.isinf(cc0_f):
                         cc0_vals.append(cc0_f)
@@ -70,7 +70,7 @@ def normalize_score(value, score_type):
         return 0.0  # avoid division by zero
 
     # Convert to float if needed
-    val = float("inf") if value == "#INF" else float(value)
+    val = float(10000) if value == "#INF" else float(value)
     if np.isinf(val):
         return np.inf
 
@@ -78,7 +78,7 @@ def normalize_score(value, score_type):
 
 if __name__ == "__main__":
         # First, compute and store global stats
-    compute_scoap_stats()
+    compute_scoap_stats("Trojan_GNN/Trust-Hub/Scoap_Scores")
     print(scoap_stats)
 
     # Then normalize a score
