@@ -3,27 +3,82 @@ import torch.nn.functional as F
 from torch_geometric.data import Data
 from torch_geometric.loader import DataLoader
 from torch_geometric.nn import GCNConv, BatchNorm
-from CSVtoPyG import create_graph, nx_to_pyG, typeToindex, indexTonode
+from CSVtoPyg import create_all_data
+from zScore import compute_scoap_stats
+import random
 
+
+def save_datasets(train_list, test_list, save_dir="saved_datasets"):
+    import os
+    os.makedirs(save_dir, exist_ok=True)
+    torch.save(train_list, f"{save_dir}/train_dataset.pt")
+    torch.save(test_list, f"{save_dir}/test_dataset.pt")
+    print(f"Datasets saved in {save_dir}/")
+
+def load_datasets(save_dir="saved_datasets"):
+    train_list = torch.load(f"{save_dir}/train_dataset.pt", weights_only=False)
+    test_list  = torch.load(f"{save_dir}/test_dataset.pt", weights_only=False)
+    return train_list, test_list
+
+def get_loaders_from_saved(batch_size=1, shuffle_train=True, save_dir="saved_datasets"):
+    train_list, test_list = load_datasets(save_dir)
+    train_loader = DataLoader(train_list, batch_size=batch_size, shuffle=shuffle_train)
+    test_loader  = DataLoader(test_list, batch_size=batch_size, shuffle=False)
+    return train_loader, test_loader
+
+
+def get_loaders(batch_size=1, shuffle_train=True):
+    compute_scoap_stats(folder_path="Trojan_GNN/Trust-Hub/Scoap_Scores")
+
+    # Get the data lists
+    trojan_list, free_list = create_all_data()
+
+    # Remove None entries
+    trojan_list = [d for d in trojan_list if d is not None]
+    free_list   = [d for d in free_list if d is not None]
+
+    # Shuffle
+    random.shuffle(trojan_list)
+    random.shuffle(free_list)
+
+    # Split 80/20
+    def split_80_20(lst):
+        split_idx = int(len(lst) * 0.8)
+        return lst[:split_idx], lst[split_idx:]
+
+    trojan_train, trojan_test = split_80_20(trojan_list)
+    free_train,   free_test   = split_80_20(free_list)
+
+    # Combine
+    train_dataset = trojan_train + free_train
+    test_dataset  = trojan_test  + free_test
+
+    # Final shuffle
+    random.shuffle(train_dataset)
+    random.shuffle(test_dataset)
+
+    # DataLoaders
+    train_loader = DataLoader(train_dataset, batch_size=batch_size, shuffle=shuffle_train)
+    test_loader  = DataLoader(test_dataset, batch_size=batch_size, shuffle=False)
+
+    return train_loader, test_loader
 
 def train():
-    # Placeholder: initialize your training and testing data loaders
-    # Example:
-    # train_dataset = [...]  # list of Data objects for training graphs
-    # test_dataset  = [...]  # list of Data objects for testing graphs
-    # train_loader = DataLoader(train_dataset, batch_size=32, shuffle=True)
-    # test_loader  = DataLoader(test_dataset,  batch_size=32)
-    train_loader = None  # TODO: replace with actual DataLoader
-    test_loader  = None  # TODO: replace with actual DataLoader
+    train_loader, test_loader = get_loaders_from_saved()
 
-    # Create your model
-    in_dim      = None  # will be set once we inspect a batch
+    print("Training model...")
+
     hidden_dim  = 64
     num_classes = 2  # binary classification
 
+    # Get first batch to determine input dimension
+    first_batch = next(iter(train_loader))
+    in_dim = first_batch.num_node_features
+
+    # Now create model
     model = TrojanGNN(in_dim, hidden_dim, num_classes)
 
-    # Use Adam optimizer and CrossEntropyLoss
+    # Optimizer and loss
     optimizer = torch.optim.Adam(model.parameters(), lr=1e-3)
     criterion = torch.nn.CrossEntropyLoss()
 
@@ -33,19 +88,15 @@ def train():
 
     for epoch in range(num_epochs):
         for batch in train_loader:
-            # Ensure input dimension is set
-            if in_dim is None:
-                in_dim = batch.num_node_features
-                model = TrojanGNN(in_dim, hidden_dim, num_classes)
-
             optimizer.zero_grad()
             x = batch.x
             edge_index = batch.edge_index
 
-            # Forward pass
+            x = torch.nan_to_num(x, nan=0.0, posinf=0.0, neginf=0.0)
+        
             out = model(x, edge_index)
 
-            # Compute loss on training nodes
+            # Compute loss
             loss = criterion(out, batch.y)
             loss.backward()
             optimizer.step()
@@ -62,20 +113,15 @@ def train():
             x = batch.x
             edge_index = batch.edge_index
 
-            # Forward pass
             out = model(x, edge_index)
-
-            # Predictions
             preds = out.argmax(dim=1)
 
-            # Update counts
             correct_batch = (preds == batch.y).sum().item()
             total_batch = batch.y.size(0)
 
             correct += correct_batch
             total += total_batch
 
-    # Compute accuracy
     if total > 0:
         accuracy = correct / total
         print(f"Test Accuracy: {accuracy*100:.2f}% ({correct}/{total})")
@@ -110,12 +156,34 @@ class TrojanGNN(torch.nn.Module):
 
 
 if __name__ == '__main__':
-    # Example of building a graph from files
-    # netlist_path = 'design.v'
-    # attrs_csv    = 'attrs.csv'
-    # mapping_txt  = 'mapping.txt'
-    # G = create_graph(netlist_path, attrs_csv, mapping_txt)
-    # data = nx_to_pyG(G)
-    
-    # Now train the model
+    # Run this part to save datasets as a file #########################
+
+    # compute_scoap_stats()
+    # trojan_list, free_list = create_all_data()
+
+    # # Remove None
+    # trojan_list = [d for d in trojan_list if d is not None]
+    # free_list = [d for d in free_list if d is not None]
+
+    # # Split
+    # def split_80_20(lst):
+    #     idx = int(len(lst) * 0.8)
+    #     return lst[:idx], lst[idx:]
+
+    # tj_train, tj_test = split_80_20(trojan_list)
+    # fr_train, fr_test = split_80_20(free_list)
+
+    # train_dataset = tj_train + fr_train
+    # test_dataset  = tj_test  + fr_test
+
+    # # Shuffle
+    # import random
+    # random.shuffle(train_dataset)
+    # random.shuffle(test_dataset)
+
+    # # Save to disk
+    # save_datasets(train_dataset, test_dataset)
+
+    ####################################################################
+    # Run this part to retrieve the saved datasets
     train()
