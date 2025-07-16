@@ -39,14 +39,15 @@ def parse_liberty_gate(gtype, pd):
     global ind
     def NET(port):
         val = pd.get(port)
-        if (val == "1'b1"):
-            return '1'
-        elif (val == "1'b0"):
-            return '0'
-        elif (val is not None):
-            return val.strip()
-        else:
+        if val is None:
             return None
+        elif val == "1'b1" or "1'b1" in val:
+            return '1'
+        elif val == "1'b0" or "1'b0" in val:
+            return '0'
+        else:
+            return val.strip()
+
 
     lines = []
 
@@ -581,6 +582,115 @@ def parse_liberty_gate(gtype, pd):
         lines.append(f"{out}    = not({out}+2)")
         return out, out1, lines
     
+    # AOI23s2: !((IN1&IN2)|(IN3&IN4&IN5))
+    if gtype.startswith("aoi23"):
+        out = NET("Q") #if NET("Q") is not None else NET("QN")
+        out1 = None
+        a  = NET("IN1") if NET("IN1") is not None else NET("DIN1")
+        b  = NET("IN2") if NET("IN2") is not None else NET("DIN2")
+        c  = NET("IN3") if NET("IN3") is not None else NET("DIN3")
+        d  = NET("IN4") if NET("IN4") is not None else NET("DIN4")
+        e  = NET("IN5") if NET("IN5") is not None else NET("DIN5")
+        lines.append(f"{out}+1  = and({c},{d},{e})")
+        lines.append(f"{out}+2  = and({a},{b})")
+        lines.append(f"{out}+3  = or({out}+1, {out}+2)")
+        lines.append(f"{out}    = not({out}+3)")
+        return out, out1, lines
+    
+    # AOI42s2: !((IN1&IN2&IN3&IN4)|(IN5&IN6))
+    if gtype.startswith("aoi42s"):
+        out = NET("Q") #if NET("Q") is not None else NET("QN")
+        out1 = None
+        a  = NET("IN1") if NET("IN1") is not None else NET("DIN1")
+        b  = NET("IN2") if NET("IN2") is not None else NET("DIN2")
+        c  = NET("IN3") if NET("IN3") is not None else NET("DIN3")
+        d  = NET("IN4") if NET("IN4") is not None else NET("DIN4")
+        e  = NET("IN5") if NET("IN5") is not None else NET("DIN5")
+        f6  = NET("IN6") if NET("IN6") is not None else NET("DIN6")
+        lines.append(f"{out}+1  = and({a},{b},{c})")
+        lines.append(f"{out}+2  = and({out}+1,{d})")
+        lines.append(f"{out}+3  = and({e},{f6})")
+        lines.append(f"{out}+4  = or({out}+2, {out}+3)")
+        lines.append(f"{out}    = not({out}+4)")
+        return out, out1, lines
+    
+    # AOI123s2: !((IN1)|(IN2&IN3)|(IN4&IN5&IN6))
+    if gtype.startswith("aoi123s"):
+        out = NET("Q") #if NET("Q") is not None else NET("QN")
+        out1 = None
+        a  = NET("IN1") if NET("IN1") is not None else NET("DIN1")
+        b  = NET("IN2") if NET("IN2") is not None else NET("DIN2")
+        c  = NET("IN3") if NET("IN3") is not None else NET("DIN3")
+        d  = NET("IN4") if NET("IN4") is not None else NET("DIN4")
+        e  = NET("IN5") if NET("IN5") is not None else NET("DIN5")
+        f6  = NET("IN6") if NET("IN6") is not None else NET("DIN6")
+        lines.append(f"{out}+1  = and({d},{e},{f6})")
+        lines.append(f"{out}+2  = and({b},{c})")
+        lines.append(f"{out}+3  = or({a}, {out}+2, {out}+1)")
+        lines.append(f"{out}    = not({out}+3)")
+        return out, out1, lines
+    
+    # AOI33s2: !((IN1&IN2&IN3)|(IN4&IN5&IN6))
+    if gtype.startswith("aoi33s"):
+        out = NET("Q") #if NET("Q") is not None else NET("QN")
+        out1 = None
+        a  = NET("IN1") if NET("IN1") is not None else NET("DIN1")
+        b  = NET("IN2") if NET("IN2") is not None else NET("DIN2")
+        c  = NET("IN3") if NET("IN3") is not None else NET("DIN3")
+        d  = NET("IN4") if NET("IN4") is not None else NET("DIN4")
+        e  = NET("IN5") if NET("IN5") is not None else NET("DIN5")
+        f6  = NET("IN6") if NET("IN6") is not None else NET("DIN6")
+        lines.append(f"{out}+1  = and({a},{b},{c})")
+        lines.append(f"{out}+2  = and({c},{d},{e})")
+        lines.append(f"{out}+3  = or({out}+1, {out}+2)")
+        lines.append(f"{out}    = not({out}+3)")
+        return out, out1, lines
+    
+    # AOAI1112s1: !((IN1|IN2|IN3)|(IN4&IN5)))
+    if gtype.startswith("aoai1112"):
+        out = NET("Q") #if NET("Q") is not None else NET("QN")
+        out1 = None
+        a  = NET("IN1") if NET("IN1") is not None else NET("DIN1")
+        b  = NET("IN2") if NET("IN2") is not None else NET("DIN2")
+        c  = NET("IN3") if NET("IN3") is not None else NET("DIN3")
+        d  = NET("IN4") if NET("IN4") is not None else NET("DIN4")
+        e  = NET("IN5") if NET("IN5") is not None else NET("DIN5")
+        lines.append(f"{out}+1  = and({d},{e})")
+        lines.append(f"{out}+2  = or({a}, {b}, {c})")
+        lines.append(f"{out}+3  = or({out}+1, {out}+2)")
+        lines.append(f"{out}    = not({out}+3)")
+        return out, out1, lines
+    
+    # AOAI122s2: !((IN1)|(IN2&IN3)|(IN4&IN5)))
+    if gtype.startswith("aoai122s"):
+        out = NET("Q") #if NET("Q") is not None else NET("QN")
+        out1 = None
+        a  = NET("IN1") if NET("IN1") is not None else NET("DIN1")
+        b  = NET("IN2") if NET("IN2") is not None else NET("DIN2")
+        c  = NET("IN3") if NET("IN3") is not None else NET("DIN3")
+        d  = NET("IN4") if NET("IN4") is not None else NET("DIN4")
+        e  = NET("IN5") if NET("IN5") is not None else NET("DIN5")
+        lines.append(f"{out}+1  = and({b},{c})")
+        lines.append(f"{out}+2  = and({d},{e})")
+        lines.append(f"{out}+3  = or({a}, {out}+1, {out}+2)")
+        lines.append(f"{out}    = not({out}+3)")
+        return out, out1, lines
+    
+    # OAI1112s1: !((IN1|IN2|IN3)|(IN4&IN5)))
+    if gtype.startswith("oai1112"):
+        out = NET("Q") if NET("Q") is not None else NET("QN")
+        out1 = None
+        a  = NET("IN1") if NET("IN1") is not None else NET("DIN1")
+        b  = NET("IN2") if NET("IN2") is not None else NET("DIN2")
+        c  = NET("IN3") if NET("IN3") is not None else NET("DIN3")
+        d  = NET("IN4") if NET("IN4") is not None else NET("DIN4")
+        e  = NET("IN5") if NET("IN5") is not None else NET("DIN5")
+        lines.append(f"{out}+1  = or({d},{e})")
+        lines.append(f"{out}+2  = and({a}, {b}, {c})")
+        lines.append(f"{out}+3  = and({out}+1, {out}+2)")
+        lines.append(f"{out}    = not({out}+3)")
+        return out, out1, lines
+
     # AO221X1: (IN1&IN2)|(IN3&IN4)|IN5
     if gtype == "AO221X1":
         out = NET("Q")
@@ -662,6 +772,23 @@ def parse_liberty_gate(gtype, pd):
         lines.append(f"{out}   = not({out}+4)")
         return out, out1, lines
 
+    # OAI24s*: !(IN1|IN2)&(IN3|IN4)&IN5
+    if gtype.startswith("oai24s"):
+        out = NET("QN") if NET("QN") is not None else NET("Q")
+        out1 = None
+        a = NET("IN1") if NET("IN1") is not None else NET("DIN1")
+        b = NET("IN2") if NET("IN2") is not None else NET("DIN2")
+        c = NET("IN3") if NET("IN3") is not None else NET("DIN3")
+        d = NET("IN4") if NET("IN4") is not None else NET("DIN4")
+        e = NET("IN5") if NET("IN5") is not None else NET("DIN5")
+        f6 = NET("IN6") if NET("IN6") is not None else NET("DIN6")
+        lines.append(f"{out}+1 = or({a},{b})")
+        lines.append(f"{out}+2 = or({c},{d},{e})")
+        lines.append(f"{out}+3 = or({out}+2, {f6})")
+        lines.append(f"{out}+4 = and({out}+3,{out}+1)")
+        lines.append(f"{out}   = not({out}+4)")
+        return out, out1, lines
+
     # OA21X1: (IN1|IN2)&(IN3)
     if gtype == "OA21X1":
         out = NET("Q")
@@ -738,6 +865,37 @@ def parse_liberty_gate(gtype, pd):
         lines.append(f"{out}    = not({out}+2)")
         return out, out1, lines
     
+    # OAI22s1: !((IN1|IN2)&(IN3|IN4))
+    if gtype.startswith("oai22s"):
+        out = NET("Q")
+        out1 = None
+        a = NET("DIN1")
+        b = NET("DIN2")
+        c = NET("DIN3")
+        d = NET("DIN4")
+        lines.append(f"{out}+1  = or({a}, {b})")
+        lines.append(f"{out}+2  = or({c}, {d})")
+        lines.append(f"{out}+3  = and({out}+1, {out}+2)")
+        lines.append(f"{out}    = not({out}+3)")
+        return out, out1, lines
+    
+    # OAI222s1: !((IN1|IN2)&(IN3|IN4)&(IN5|IN6))
+    if gtype.startswith("oai222s"):
+        out = NET("Q")
+        out1 = None
+        a = NET("DIN1")
+        b = NET("DIN2")
+        c = NET("DIN3")
+        d = NET("DIN4")
+        e = NET("DIN5")
+        f6 = NET("DIN6")
+        lines.append(f"{out}+1  = or({a}, {b})")
+        lines.append(f"{out}+2  = or({c}, {d})")
+        lines.append(f"{out}+3  = or({e}, {f6})")
+        lines.append(f"{out}+4  = and({out}+1, {out}+2, {out}+3)")
+        lines.append(f"{out}    = not({out}+4)")
+        return out, out1, lines
+    
     # OAI321s1: !((IN1|IN2|IN3)&(IN4|IN5)&IN6)
     if gtype.startswith("oai321"):
         out = NET("Q")
@@ -753,6 +911,55 @@ def parse_liberty_gate(gtype, pd):
         lines.append(f"{out}+3  = and({out}+1, {out}+2, {f6})")
         lines.append(f"{out}    = not({out}+3)")
         return out, out1, lines
+    
+    # OAI322s1: !((IN1|IN2|IN3)&(IN4|IN5)&(IN6&IN7))
+    if gtype.startswith("oai322"):
+        out = NET("Q")
+        out1 = None
+        a = NET("DIN1")
+        b = NET("DIN2")
+        c = NET("DIN3")
+        d = NET("DIN4")
+        e = NET("DIN5")
+        f6 = NET("DIN6")
+        g = NET("DIN7")
+        lines.append(f"{out}+1  = or({a}, {b}, {c})")
+        lines.append(f"{out}+2  = or({d}, {e})")
+        lines.append(f"{out}+3  = or({f6},{g})")
+        lines.append(f"{out}+4  = and({out}+1, {out}+2, {out}+3)")
+        lines.append(f"{out}    = not({out}+4)")
+        return out, out1, lines
+
+    # OAI32s1: !((IN1|IN2|IN3)&(IN4|IN5))
+    if gtype.startswith("oai32s"):
+        out = NET("Q") if NET("Q") is not None else NET("QN")
+        out1 = None
+        a  = NET("IN1") if NET("IN1") is not None else NET("DIN1")
+        b  = NET("IN2") if NET("IN2") is not None else NET("DIN2")
+        c  = NET("IN3") if NET("IN3") is not None else NET("DIN3")
+        d  = NET("IN4") if NET("IN4") is not None else NET("DIN4")
+        e  = NET("IN5") if NET("IN5") is not None else NET("DIN5")
+        lines.append(f"{out}+1  = or({a}, {b}, {c})")
+        lines.append(f"{out}+2  = or({d}, {e})")
+        lines.append(f"{out}+3  = and({out}+1, {out}+2)")
+        lines.append(f"{out}    = not({out}+3)")
+        return out, out1, lines
+    
+    # OAI33s3: !((IN1|IN2|IN3)&(IN4|IN5|IN6))
+    if gtype.startswith("oai33s"):
+        out = NET("Q") if NET("Q") is not None else NET("QN")
+        out1 = None
+        a  = NET("IN1") if NET("IN1") is not None else NET("DIN1")
+        b  = NET("IN2") if NET("IN2") is not None else NET("DIN2")
+        c  = NET("IN3") if NET("IN3") is not None else NET("DIN3")
+        d  = NET("IN4") if NET("IN4") is not None else NET("DIN4")
+        e  = NET("IN5") if NET("IN5") is not None else NET("DIN5")
+        f6  = NET("IN6") if NET("IN6") is not None else NET("DIN6")
+        lines.append(f"{out}+1  = or({a}, {b}, {c})")
+        lines.append(f"{out}+2  = or({d}, {e}, {f6})")
+        lines.append(f"{out}+3  = and({out}+1, {out}+2)")
+        lines.append(f"{out}    = not({out}+3)")
+        return out, out1, lines
 
     # MUX21X*: (IN1 & S~)|(IN2 & S)
     if gtype == "MUX21X2" or gtype == "MUX21X1" or gtype.startswith("mxi21") or gtype.startswith("mx21"):
@@ -766,9 +973,22 @@ def parse_liberty_gate(gtype, pd):
         lines.append(f"{out}+3 = and({b},{s})")
         lines.append(f"{out}   = or({out}+2, {out}+3)")
         return out, out1, lines
+    
+    # DSMXC31s*: (IN1 & CLK~)|(IN2 & CLK)
+    if gtype.startswith("dsmxc31"):
+        out = NET("Q")
+        out1 = None
+        a = NET("IN1") if NET("IN1") is not None else NET("DIN1")
+        b = NET("IN2") if NET("IN2") is not None else NET("DIN2")
+        clk = NET("CLK")
+        lines.append(f"{out}+1 = not({clk})")
+        lines.append(f"{out}+2 = and({a},{out}+1)")
+        lines.append(f"{out}+3 = and({b},{clk})")
+        lines.append(f"{out}   = or({out}+2, {out}+3)")
+        return out, out1, lines
 
     #MUX41X1: 
-    if  gtype == "MUX41X1" or gtype == "mxi41s1":
+    if  gtype == "MUX41X1" or gtype.startswith("mxi41s") or gtype.startswith("mx41"):
         out = NET("Q")
         out1 = None
         a  = NET("IN1") if NET("IN1") is not None else NET("DIN1")
