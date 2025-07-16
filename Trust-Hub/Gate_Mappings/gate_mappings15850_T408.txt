@@ -3007,6 +3007,7 @@ troj8_0U19 -> troj8_0n10
 troj8_0U20 -> troj8_0N58
 troj8_0U21 -> troj8_0n17
 troj8_0U22 -> troj8_0n8
+troj8_0U23 -> troj8_0n21
 troj8_0U3 -> troj8_0N57
 troj8_0U4 -> troj8_0n1
 troj8_0U5 -> troj8_0n2

@@ -2322,13 +2322,17 @@ troj3_0U10 -> troj3_0n5
 troj3_0U11 -> troj3_0n4
 troj3_0U12 -> troj3_0n8
 troj3_0U13 -> troj3_0n9
+troj3_0U14 -> troj3_0N87
 troj3_0U15 -> troj3_0n12
 troj3_0U16 -> troj3_0N86
+troj3_0U17 -> troj3_0n15
+troj3_0U18 -> troj3_0N85
 troj3_0U19 -> troj3_0n17
 troj3_0U20 -> troj3_0n14
 troj3_0U21 -> troj3_0n16
 troj3_0U22 -> troj3_0n19
 troj3_0U23 -> troj3_0N82
+troj3_0U24 -> troj3_0N84
 troj3_0U3 -> troj3_0n1
 troj3_0U4 -> troj3_0n2
 troj3_0U5 -> troj3_0n3

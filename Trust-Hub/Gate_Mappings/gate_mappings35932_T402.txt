@@ -6943,6 +6943,7 @@ troj2_0U4 -> troj2_0N33
 troj2_0U5 -> troj2_0n4
 troj2_0U6 -> troj2_0n5
 troj2_0U7 -> troj2_0n2
+troj2_0U8 -> troj2_0n1
 troj2_0U9 -> troj2_0n6
 troj2_0state_reg_0_ -> troj2_0state_0_
 troj2_0state_reg_1_ -> ('troj2_0state_1_', 'troj2_0n9')

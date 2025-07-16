@@ -2325,7 +2325,9 @@ troj1_0U14 -> troj1_0n1
 troj1_0U15 -> troj1_0n11
 troj1_0U16 -> troj1_0n12
 troj1_0U17 -> troj1_0N99
+troj1_0U18 -> troj1_0N98
 troj1_0U19 -> troj1_0n18
+troj1_0U20 -> troj1_0N97
 troj1_0U21 -> troj1_0n22
 troj1_0U22 -> troj1_0n21
 troj1_0U23 -> troj1_0n20

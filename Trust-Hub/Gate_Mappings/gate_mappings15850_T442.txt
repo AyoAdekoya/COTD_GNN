@@ -3029,10 +3029,12 @@ troj42_0U13 -> troj42_0N37
 troj42_0U14 -> troj42_0N35
 troj42_0U15 -> troj42_0N33
 troj42_0U16 -> troj42_0n11
+troj42_0U17 -> troj42_0N36
 troj42_0U3 -> troj42_0N34
 troj42_0U4 -> troj42_0N32
 troj42_0U5 -> troj42_0n4
 troj42_0U6 -> troj42_0n5
+troj42_0U7 -> troj42_0n1
 troj42_0U8 -> troj42_0n2
 troj42_0U9 -> troj42_0n6
 troj42_0state_reg_0_ -> troj42_0state_0_

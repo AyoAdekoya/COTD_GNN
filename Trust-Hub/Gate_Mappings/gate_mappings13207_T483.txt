@@ -2319,10 +2319,12 @@ trig252_0U5 -> trig252_0n1
 troj83_0Trojan_out0_reg -> Trojan_out0
 troj83_0U10 -> troj83_0n20
 troj83_0U11 -> troj83_0n14
+troj83_0U12 -> troj83_0n21
 troj83_0U13 -> troj83_0n18
 troj83_0U14 -> troj83_0n7
 troj83_0U15 -> troj83_0n12
 troj83_0U16 -> troj83_0n19
+troj83_0U17 -> troj83_0n17
 troj83_0U18 -> troj83_0n9
 troj83_0U19 -> troj83_0N58
 troj83_0U20 -> troj83_0n8

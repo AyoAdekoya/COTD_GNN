@@ -2318,7 +2318,9 @@ trig201_0U4 -> trig201_0n1
 trig201_0U5 -> trig201_0n4
 troj61_0Trojan_out0_reg -> Trojan_out0
 troj61_0U10 -> troj61_0n3
+troj61_0U11 -> troj61_0n5
 troj61_0U12 -> troj61_0N28
+troj61_0U13 -> troj61_0n12
 troj61_0U3 -> troj61_0N27
 troj61_0U4 -> troj61_0n1
 troj61_0U5 -> troj61_0n2

@@ -3000,6 +3000,7 @@ troj43_0U13 -> troj43_0n6
 troj43_0U14 -> troj43_0n10
 troj43_0U15 -> troj43_0n11
 troj43_0U16 -> troj43_0N69
+troj43_0U17 -> troj43_0N68
 troj43_0U18 -> troj43_0n13
 troj43_0U19 -> troj43_0n15
 troj43_0U20 -> troj43_0n14

@@ -2394,6 +2394,7 @@ troj16_0U45 -> troj16_0n8
 troj16_0U46 -> troj16_0n11
 troj16_0U47 -> troj16_0n1
 troj16_0U48 -> troj16_0n4
+troj16_0U49 -> troj16_0n13
 troj16_0U5 -> troj16_0N65
 troj16_0U6 -> troj16_0n7
 troj16_0U7 -> troj16_0N63

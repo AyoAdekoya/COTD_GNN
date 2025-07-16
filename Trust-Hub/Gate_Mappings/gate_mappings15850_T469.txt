@@ -3002,7 +3002,9 @@ troj69_0U12 -> troj69_0n8
 troj69_0U13 -> troj69_0n9
 troj69_0U14 -> troj69_0N93
 troj69_0U15 -> troj69_0N92
+troj69_0U16 -> troj69_0N91
 troj69_0U17 -> troj69_0n19
+troj69_0U18 -> troj69_0n20
 troj69_0U19 -> troj69_0n16
 troj69_0U20 -> troj69_0n17
 troj69_0U21 -> troj69_0n23

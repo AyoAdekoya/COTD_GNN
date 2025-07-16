@@ -6917,12 +6917,14 @@ trig17_0U3 -> trig17_0n1
 trig17_0U4 -> trig17_0n3
 trig17_0U5 -> trig17_0n4
 troj4_0Trojan_out0_reg -> Trojan_out0
+troj4_0U10 -> troj4_0n3
 troj4_0U11 -> troj4_0n4
 troj4_0U12 -> troj4_0n9
 troj4_0U13 -> troj4_0n10
 troj4_0U14 -> troj4_0n5
 troj4_0U15 -> troj4_0n11
 troj4_0U16 -> troj4_0n12
+troj4_0U17 -> troj4_0N42
 troj4_0U18 -> troj4_0N41
 troj4_0U19 -> troj4_0n15
 troj4_0U20 -> troj4_0n14

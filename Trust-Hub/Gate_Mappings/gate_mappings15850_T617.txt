@@ -3052,6 +3052,7 @@ troj17_0U11 -> troj17_0n4
 troj17_0U12 -> troj17_0n30
 troj17_0U13 -> troj17_0n19
 troj17_0U14 -> troj17_0n8
+troj17_0U15 -> troj17_0n24
 troj17_0U16 -> troj17_0n15
 troj17_0U17 -> troj17_0n23
 troj17_0U18 -> troj17_0n26

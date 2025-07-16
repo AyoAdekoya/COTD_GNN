@@ -2332,6 +2332,7 @@ troj14_0Trojan_out0_reg -> Trojan_out0
 troj14_0U3 -> troj14_0n1
 troj14_0U4 -> troj14_0n4
 troj14_0U5 -> troj14_0n7
+troj14_0U6 -> troj14_0n3
 troj14_0U7 -> troj14_0n8
 troj14_0U8 -> troj14_0n6
 troj14_0state_reg_0_ -> ('troj14_0state_0_', 'troj14_0n2')

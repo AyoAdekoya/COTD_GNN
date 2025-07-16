@@ -516,6 +516,7 @@ troj19_0U15 -> troj19_0n15
 troj19_0U16 -> troj19_0N91
 troj19_0U17 -> troj19_0n18
 troj19_0U18 -> troj19_0n19
+troj19_0U19 -> troj19_0N90
 troj19_0U20 -> troj19_0n16
 troj19_0U21 -> troj19_0n21
 troj19_0U22 -> troj19_0n20

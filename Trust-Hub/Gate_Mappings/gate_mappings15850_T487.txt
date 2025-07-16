@@ -3006,11 +3006,13 @@ troj87_0U17 -> troj87_0n17
 troj87_0U18 -> troj87_0n8
 troj87_0U19 -> troj87_0N58
 troj87_0U20 -> troj87_0n4
+troj87_0U21 -> troj87_0n19
 troj87_0U3 -> troj87_0N57
 troj87_0U4 -> troj87_0n1
 troj87_0U5 -> troj87_0n2
 troj87_0U6 -> troj87_0n18
 troj87_0U7 -> troj87_0n3
+troj87_0U8 -> troj87_0n5
 troj87_0U9 -> troj87_0n11
 troj87_0state_reg_0_ -> troj87_0state_0_
 troj87_0state_reg_1_ -> ('troj87_0state_1_', 'troj87_0n7')

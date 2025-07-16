@@ -2322,6 +2322,7 @@ troj5_0U10 -> troj5_0n13
 troj5_0U11 -> troj5_0n11
 troj5_0U12 -> troj5_0n14
 troj5_0U13 -> troj5_0n19
+troj5_0U14 -> troj5_0n17
 troj5_0U15 -> troj5_0n5
 troj5_0U16 -> troj5_0n8
 troj5_0U17 -> troj5_0N58
@@ -2332,6 +2333,7 @@ troj5_0U4 -> troj5_0n1
 troj5_0U5 -> troj5_0n2
 troj5_0U6 -> troj5_0n3
 troj5_0U8 -> troj5_0n7
+troj5_0U9 -> troj5_0n18
 troj5_0state_reg_0_ -> ('troj5_0state_0_', 'troj5_0n16')
 troj5_0state_reg_1_ -> ('troj5_0state_1_', 'troj5_0n10')
 troj5_0state_reg_2_ -> ('troj5_0state_2_', 'troj5_0n6')

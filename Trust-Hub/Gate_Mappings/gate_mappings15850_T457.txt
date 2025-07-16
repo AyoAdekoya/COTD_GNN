@@ -3009,6 +3009,7 @@ troj57_0U20 -> troj57_0n18
 troj57_0U21 -> troj57_0n15
 troj57_0U22 -> troj57_0n11
 troj57_0U23 -> troj57_0N84
+troj57_0U24 -> troj57_0n22
 troj57_0U25 -> troj57_0n16
 troj57_0U26 -> troj57_0N82
 troj57_0U27 -> troj57_0n20

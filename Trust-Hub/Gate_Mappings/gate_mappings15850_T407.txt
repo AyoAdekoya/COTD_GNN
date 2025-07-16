@@ -3062,6 +3062,7 @@ troj7_0Trojan_out0_reg -> Trojan_out0
 troj7_0U10 -> troj7_0n12
 troj7_0U11 -> troj7_0n7
 troj7_0U12 -> troj7_0n13
+troj7_0U13 -> troj7_0n14
 troj7_0U14 -> troj7_0n15
 troj7_0U15 -> troj7_0n4
 troj7_0U16 -> troj7_0n5
@@ -3082,6 +3083,8 @@ troj7_0U3 -> troj7_0n1
 troj7_0U30 -> troj7_0n28
 troj7_0U31 -> troj7_0N70
 troj7_0U32 -> troj7_0n27
+troj7_0U33 -> troj7_0n26
+troj7_0U34 -> troj7_0N72
 troj7_0U4 -> troj7_0n2
 troj7_0U5 -> troj7_0n3
 troj7_0U6 -> troj7_0N71

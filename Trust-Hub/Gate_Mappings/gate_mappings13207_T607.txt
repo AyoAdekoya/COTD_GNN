@@ -2345,6 +2345,7 @@ trig22_0U5 -> trig22_0n1
 troj7_0Trojan_out0_reg -> Trojan_out0
 troj7_0U11 -> troj7_0n10
 troj7_0U12 -> troj7_0n2
+troj7_0U13 -> troj7_0n18
 troj7_0U14 -> troj7_0n12
 troj7_0U15 -> troj7_0n6
 troj7_0U16 -> troj7_0n7

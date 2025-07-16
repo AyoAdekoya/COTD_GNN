@@ -2998,6 +2998,7 @@ troj50_0Trojan_out0_reg -> Trojan_out0
 troj50_0U10 -> troj50_0N91
 troj50_0U11 -> troj50_0n9
 troj50_0U12 -> troj50_0N90
+troj50_0U13 -> troj50_0n17
 troj50_0U14 -> troj50_0n13
 troj50_0U15 -> troj50_0n14
 troj50_0U16 -> troj50_0n18

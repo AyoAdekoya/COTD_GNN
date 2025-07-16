@@ -6890,9 +6890,12 @@ troj11_0U14 -> troj11_0n1
 troj11_0U15 -> troj11_0n11
 troj11_0U16 -> troj11_0n12
 troj11_0U17 -> troj11_0N99
+troj11_0U18 -> troj11_0n15
 troj11_0U19 -> troj11_0n16
+troj11_0U20 -> troj11_0N97
 troj11_0U21 -> troj11_0n22
 troj11_0U22 -> troj11_0N96
+troj11_0U23 -> troj11_0n24
 troj11_0U24 -> troj11_0n25
 troj11_0U25 -> troj11_0n18
 troj11_0U26 -> troj11_0n20

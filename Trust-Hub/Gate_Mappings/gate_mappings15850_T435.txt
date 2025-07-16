@@ -3069,6 +3069,8 @@ trig121_0U2 -> trig121_0n1
 trig121_0U3 -> trig121_0n2
 trig121_0U4 -> trig121_0n3
 troj35_0Trojan_out0_reg -> Trojan_out0
+troj35_0U10 -> troj35_0n9
+troj35_0U11 -> troj35_0n10
 troj35_0U12 -> troj35_0n1
 troj35_0U13 -> troj35_0n2
 troj35_0U14 -> troj35_0n11
@@ -3077,6 +3079,7 @@ troj35_0U16 -> troj35_0n12
 troj35_0U17 -> troj35_0n13
 troj35_0U18 -> troj35_0N81
 troj35_0U19 -> troj35_0N80
+troj35_0U20 -> troj35_0n16
 troj35_0U21 -> troj35_0N79
 troj35_0U22 -> troj35_0n20
 troj35_0U23 -> troj35_0N78

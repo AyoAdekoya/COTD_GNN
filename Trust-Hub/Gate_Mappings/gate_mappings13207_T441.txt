@@ -2354,6 +2354,7 @@ troj41_0U19 -> troj41_0n16
 troj41_0U20 -> troj41_0N33
 troj41_0U21 -> troj41_0n14
 troj41_0U22 -> troj41_0N36
+troj41_0U23 -> troj41_0N35
 troj41_0U3 -> troj41_0n1
 troj41_0U4 -> troj41_0N34
 troj41_0U5 -> troj41_0n5

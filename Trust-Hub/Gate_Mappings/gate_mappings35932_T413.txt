@@ -6926,12 +6926,14 @@ troj13_0U16 -> troj13_0N40
 troj13_0U17 -> troj13_0n14
 troj13_0U18 -> troj13_0n15
 troj13_0U19 -> troj13_0N38
+troj13_0U20 -> troj13_0N41
 troj13_0U3 -> troj13_0n1
 troj13_0U4 -> troj13_0N39
 troj13_0U5 -> troj13_0N37
 troj13_0U6 -> troj13_0n5
 troj13_0U7 -> troj13_0n6
 troj13_0U8 -> troj13_0n7
+troj13_0U9 -> troj13_0n2
 troj13_0state_reg_0_ -> ('troj13_0state_0_', 'troj13_0n13')
 troj13_0state_reg_1_ -> ('troj13_0state_1_', 'troj13_0n11')
 troj13_0state_reg_2_ -> ('troj13_0state_2_', 'troj13_0n12')

@@ -3070,6 +3070,8 @@ troj88_0U10 -> troj88_0n10
 troj88_0U11 -> troj88_0n11
 troj88_0U12 -> troj88_0n12
 troj88_0U13 -> troj88_0n4
+troj88_0U14 -> troj88_0n13
+troj88_0U15 -> troj88_0n14
 troj88_0U16 -> troj88_0n3
 troj88_0U17 -> troj88_0n6
 troj88_0U18 -> troj88_0n7
@@ -3080,12 +3082,15 @@ troj88_0U22 -> troj88_0n23
 troj88_0U23 -> troj88_0n22
 troj88_0U24 -> troj88_0N91
 troj88_0U25 -> troj88_0N90
+troj88_0U26 -> troj88_0n26
 troj88_0U27 -> troj88_0n27
 troj88_0U28 -> troj88_0n20
 troj88_0U29 -> troj88_0n24
 troj88_0U3 -> troj88_0n1
 troj88_0U30 -> troj88_0N88
 troj88_0U31 -> troj88_0n18
+troj88_0U32 -> troj88_0N93
+troj88_0U33 -> troj88_0N92
 troj88_0U4 -> troj88_0n2
 troj88_0U5 -> troj88_0N89
 troj88_0U6 -> troj88_0n5

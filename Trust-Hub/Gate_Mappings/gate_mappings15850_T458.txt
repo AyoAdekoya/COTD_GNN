@@ -3065,6 +3065,8 @@ trig213_0U5 -> trig213_0n6
 trig213_0U6 -> trig213_0n5
 trig213_0U7 -> trig213_0n4
 troj58_0Trojan_out0_reg -> Trojan_out0
+troj58_0U10 -> troj58_0n9
+troj58_0U11 -> troj58_0n10
 troj58_0U12 -> troj58_0n2
 troj58_0U13 -> troj58_0n3
 troj58_0U14 -> troj58_0n11
@@ -3076,12 +3078,14 @@ troj58_0U19 -> troj58_0n14
 troj58_0U20 -> troj58_0n16
 troj58_0U21 -> troj58_0N85
 troj58_0U22 -> troj58_0n21
+troj58_0U23 -> troj58_0n24
 troj58_0U24 -> troj58_0N84
 troj58_0U25 -> troj58_0n23
 troj58_0U26 -> troj58_0n20
 troj58_0U27 -> troj58_0n19
 troj58_0U28 -> troj58_0N82
 troj58_0U29 -> troj58_0N86
+troj58_0U3 -> troj58_0n1
 troj58_0U4 -> troj58_0N83
 troj58_0U5 -> troj58_0N81
 troj58_0U6 -> troj58_0n5

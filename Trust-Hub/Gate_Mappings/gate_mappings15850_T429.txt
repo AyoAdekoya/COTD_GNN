@@ -3077,7 +3077,9 @@ troj29_0U28 -> troj29_0n25
 troj29_0U29 -> troj29_0n26
 troj29_0U3 -> troj29_0n1
 troj29_0U30 -> troj29_0N70
+troj29_0U31 -> troj29_0N72
 troj29_0U4 -> troj29_0n2
+troj29_0U5 -> troj29_0n5
 troj29_0U6 -> troj29_0N71
 troj29_0U7 -> troj29_0n8
 troj29_0U8 -> troj29_0N69

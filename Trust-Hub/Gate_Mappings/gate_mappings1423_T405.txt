@@ -569,15 +569,19 @@ troj5_0U11 -> troj5_0n12
 troj5_0U12 -> troj5_0n3
 troj5_0U13 -> troj5_0n2
 troj5_0U14 -> troj5_0n5
+troj5_0U15 -> troj5_0n14
+troj5_0U16 -> troj5_0n15
 troj5_0U17 -> troj5_0n4
 troj5_0U18 -> troj5_0n7
 troj5_0U19 -> troj5_0n8
 troj5_0U20 -> troj5_0n16
 troj5_0U21 -> troj5_0n17
 troj5_0U22 -> troj5_0N93
+troj5_0U23 -> troj5_0n20
 troj5_0U24 -> troj5_0n21
 troj5_0U25 -> troj5_0n19
 troj5_0U26 -> troj5_0n26
+troj5_0U27 -> troj5_0N91
 troj5_0U28 -> troj5_0n30
 troj5_0U29 -> troj5_0n29
 troj5_0U3 -> troj5_0n1
@@ -590,6 +594,7 @@ troj5_0U35 -> troj5_0n33
 troj5_0U36 -> troj5_0n31
 troj5_0U37 -> troj5_0N88
 troj5_0U38 -> troj5_0n34
+troj5_0U39 -> troj5_0N92
 troj5_0U4 -> troj5_0N89
 troj5_0U5 -> troj5_0n6
 troj5_0U6 -> troj5_0N87

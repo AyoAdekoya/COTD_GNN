@@ -2402,8 +2402,10 @@ trig99_0U5 -> trig99_0n1
 trig99_0U6 -> trig99_0n5
 trig99_0U7 -> trig99_0n6
 troj32_0Trojan_out0_reg -> Trojan_out0
+troj32_0U10 -> troj32_0n12
 troj32_0U11 -> troj32_0n13
 troj32_0U12 -> troj32_0n5
+troj32_0U13 -> troj32_0n14
 troj32_0U14 -> troj32_0n15
 troj32_0U15 -> troj32_0n3
 troj32_0U16 -> troj32_0n2
@@ -2421,6 +2423,8 @@ troj32_0U27 -> troj32_0N88
 troj32_0U28 -> troj32_0n20
 troj32_0U29 -> troj32_0N92
 troj32_0U3 -> troj32_0n1
+troj32_0U30 -> troj32_0N91
+troj32_0U31 -> troj32_0N90
 troj32_0U4 -> troj32_0N89
 troj32_0U5 -> troj32_0n6
 troj32_0U6 -> troj32_0N87

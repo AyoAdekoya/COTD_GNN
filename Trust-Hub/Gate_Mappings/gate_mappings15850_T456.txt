@@ -3012,6 +3012,7 @@ trig199_0U4 -> trig199_0n3
 trig199_0U5 -> trig199_0n1
 trig199_0U6 -> trig199_0n5
 troj56_0Trojan_out0_reg -> Trojan_out0
+troj56_0U10 -> troj56_0n5
 troj56_0U11 -> troj56_0n9
 troj56_0U12 -> troj56_0n8
 troj56_0U3 -> troj56_0n10

@@ -3020,10 +3020,12 @@ trig34_0U3 -> trig34_0n3
 trig34_0U4 -> trig34_0n1
 trig34_0U5 -> trig34_0n4
 troj6_0Trojan_out0_reg -> Trojan_out0
+troj6_0U10 -> troj6_0n10
 troj6_0U11 -> troj6_0n11
 troj6_0U12 -> troj6_0n12
 troj6_0U13 -> troj6_0n13
 troj6_0U14 -> troj6_0n8
+troj6_0U15 -> troj6_0n15
 troj6_0U3 -> troj6_0n1
 troj6_0U4 -> troj6_0n2
 troj6_0U5 -> troj6_0n5

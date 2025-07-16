@@ -6921,6 +6921,7 @@ troj37_0U16 -> troj37_0n8
 troj37_0U3 -> troj37_0N34
 troj37_0U4 -> troj37_0N32
 troj37_0U5 -> troj37_0n4
+troj37_0U6 -> troj37_0n1
 troj37_0U7 -> troj37_0n2
 troj37_0U8 -> troj37_0n5
 troj37_0U9 -> troj37_0n3

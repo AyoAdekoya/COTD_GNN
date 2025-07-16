@@ -515,12 +515,14 @@ troj4_0U13 -> troj4_0n6
 troj4_0U14 -> troj4_0n10
 troj4_0U15 -> troj4_0n11
 troj4_0U16 -> troj4_0N69
+troj4_0U17 -> troj4_0N68
 troj4_0U18 -> troj4_0N67
 troj4_0U19 -> troj4_0n18
 troj4_0U20 -> troj4_0n14
 troj4_0U21 -> troj4_0N64
 troj4_0U22 -> troj4_0n12
 troj4_0U23 -> troj4_0n15
+troj4_0U24 -> troj4_0N66
 troj4_0U3 -> troj4_0n1
 troj4_0U4 -> troj4_0n2
 troj4_0U5 -> troj4_0n3

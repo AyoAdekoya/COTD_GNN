@@ -570,6 +570,8 @@ trig9_0U4 -> trig9_0n5
 trig9_0U5 -> trig9_0n2
 trig9_0U6 -> trig9_0n1
 troj0_0Trojan_out0_reg -> Trojan_out0
+troj0_0U10 -> troj0_0n9
+troj0_0U11 -> troj0_0n10
 troj0_0U12 -> troj0_0n1
 troj0_0U13 -> troj0_0n2
 troj0_0U14 -> troj0_0n11
@@ -579,6 +581,7 @@ troj0_0U17 -> troj0_0n13
 troj0_0U18 -> troj0_0N81
 troj0_0U19 -> troj0_0n16
 troj0_0U20 -> troj0_0n18
+troj0_0U21 -> troj0_0N79
 troj0_0U22 -> troj0_0n22
 troj0_0U23 -> troj0_0N78
 troj0_0U24 -> troj0_0n23
@@ -589,6 +592,7 @@ troj0_0U28 -> troj0_0n14
 troj0_0U29 -> troj0_0n26
 troj0_0U3 -> troj0_0N77
 troj0_0U30 -> troj0_0n19
+troj0_0U31 -> troj0_0N80
 troj0_0U4 -> troj0_0n3
 troj0_0U5 -> troj0_0N75
 troj0_0U6 -> troj0_0n5

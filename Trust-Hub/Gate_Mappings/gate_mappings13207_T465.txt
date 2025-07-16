@@ -2328,9 +2328,11 @@ troj65_0U13 -> troj65_0n3
 troj65_0U14 -> troj65_0N58
 troj65_0U15 -> troj65_0n8
 troj65_0U16 -> troj65_0n12
+troj65_0U17 -> troj65_0n15
 troj65_0U3 -> troj65_0N57
 troj65_0U4 -> troj65_0n1
 troj65_0U5 -> troj65_0n2
+troj65_0U6 -> troj65_0n16
 troj65_0U7 -> troj65_0n10
 troj65_0U8 -> troj65_0n9
 troj65_0U9 -> troj65_0n17

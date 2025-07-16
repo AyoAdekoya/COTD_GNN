@@ -2386,12 +2386,16 @@ troj17_0U11 -> troj17_0n12
 troj17_0U12 -> troj17_0n2
 troj17_0U13 -> troj17_0n13
 troj17_0U14 -> troj17_0n3
+troj17_0U15 -> troj17_0n14
+troj17_0U16 -> troj17_0n15
 troj17_0U17 -> troj17_0n7
 troj17_0U18 -> troj17_0n4
 troj17_0U19 -> troj17_0n8
 troj17_0U20 -> troj17_0n16
 troj17_0U21 -> troj17_0n17
+troj17_0U22 -> troj17_0N87
 troj17_0U23 -> troj17_0N86
+troj17_0U24 -> troj17_0n23
 troj17_0U25 -> troj17_0n18
 troj17_0U26 -> troj17_0n27
 troj17_0U27 -> troj17_0n26

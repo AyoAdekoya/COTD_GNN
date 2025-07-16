@@ -3012,6 +3012,7 @@ troj30_0U24 -> troj30_0N82
 troj30_0U25 -> troj30_0n12
 troj30_0U26 -> troj30_0n22
 troj30_0U27 -> troj30_0n10
+troj30_0U28 -> troj30_0N86
 troj30_0U29 -> troj30_0N85
 troj30_0U3 -> troj30_0n1
 troj30_0U4 -> troj30_0n2

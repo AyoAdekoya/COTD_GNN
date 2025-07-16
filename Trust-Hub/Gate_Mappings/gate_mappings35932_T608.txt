@@ -6962,6 +6962,7 @@ trig38_0U5 -> trig38_0n4
 troj8_0Trojan_out0_reg -> Trojan_out0
 troj8_0U10 -> troj8_0n12
 troj8_0U11 -> troj8_0n5
+troj8_0U12 -> troj8_0n13
 troj8_0U13 -> troj8_0n14
 troj8_0U14 -> troj8_0n3
 troj8_0U15 -> troj8_0n2
@@ -6970,9 +6971,11 @@ troj8_0U17 -> troj8_0n7
 troj8_0U18 -> troj8_0n8
 troj8_0U19 -> troj8_0n15
 troj8_0U20 -> troj8_0n16
+troj8_0U21 -> troj8_0N93
 troj8_0U22 -> troj8_0n18
 troj8_0U23 -> troj8_0n23
 troj8_0U24 -> troj8_0n22
+troj8_0U25 -> troj8_0N91
 troj8_0U26 -> troj8_0n29
 troj8_0U27 -> troj8_0n30
 troj8_0U28 -> troj8_0n24
@@ -6989,6 +6992,7 @@ troj8_0U5 -> troj8_0n6
 troj8_0U6 -> troj8_0N87
 troj8_0U7 -> troj8_0n9
 troj8_0U8 -> troj8_0n10
+troj8_0U9 -> troj8_0n11
 troj8_0state_reg_0_ -> ('troj8_0state_0_', 'troj8_0n25')
 troj8_0state_reg_1_ -> ('troj8_0state_1_', 'troj8_0n19')
 troj8_0state_reg_2_ -> ('troj8_0state_2_', 'troj8_0n26')

@@ -2993,7 +2993,9 @@ trig93_0U2 -> trig93_0n1
 trig93_0U3 -> trig93_0n3
 trig93_0U4 -> trig93_0n2
 troj28_0Trojan_out0_reg -> Trojan_out0
+troj28_0U10 -> troj28_0n22
 troj28_0U11 -> troj28_0n13
+troj28_0U12 -> troj28_0n23
 troj28_0U13 -> troj28_0n15
 troj28_0U14 -> troj28_0n6
 troj28_0U15 -> troj28_0n4
@@ -3005,9 +3007,11 @@ troj28_0U20 -> troj28_0n12
 troj28_0U21 -> troj28_0n20
 troj28_0U22 -> troj28_0n19
 troj28_0U23 -> troj28_0N58
+troj28_0U24 -> troj28_0n24
 troj28_0U3 -> troj28_0N57
 troj28_0U4 -> troj28_0n1
 troj28_0U5 -> troj28_0n2
+troj28_0U6 -> troj28_0n21
 troj28_0U7 -> troj28_0n5
 troj28_0U8 -> troj28_0n3
 troj28_0U9 -> troj28_0n8

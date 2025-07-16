@@ -3085,6 +3085,8 @@ troj81_0U19 -> troj81_0n12
 troj81_0U20 -> troj81_0n16
 troj81_0U21 -> troj81_0n17
 troj81_0U22 -> troj81_0N99
+troj81_0U23 -> troj81_0n20
+troj81_0U24 -> troj81_0N98
 troj81_0U25 -> troj81_0n27
 troj81_0U26 -> troj81_0n26
 troj81_0U27 -> troj81_0n24
@@ -3104,6 +3106,7 @@ troj81_0U55 -> troj81_0N94
 troj81_0U56 -> troj81_0n34
 troj81_0U57 -> troj81_0n11
 troj81_0U58 -> troj81_0n23
+troj81_0U59 -> troj81_0n4
 troj81_0U6 -> troj81_0N95
 troj81_0U60 -> troj81_0n13
 troj81_0U61 -> troj81_0n14

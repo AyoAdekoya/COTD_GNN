@@ -3083,6 +3083,7 @@ troj23_0U10 -> troj23_0n12
 troj23_0U11 -> troj23_0n5
 troj23_0U12 -> troj23_0n3
 troj23_0U13 -> troj23_0n2
+troj23_0U14 -> troj23_0n13
 troj23_0U15 -> troj23_0n14
 troj23_0U16 -> troj23_0n4
 troj23_0U17 -> troj23_0n7
@@ -3092,6 +3093,7 @@ troj23_0U20 -> troj23_0n16
 troj23_0U21 -> troj23_0N93
 troj23_0U22 -> troj23_0n19
 troj23_0U23 -> troj23_0n20
+troj23_0U24 -> troj23_0N92
 troj23_0U25 -> troj23_0n22
 troj23_0U26 -> troj23_0n24
 troj23_0U27 -> troj23_0N91
@@ -3110,6 +3112,7 @@ troj23_0U5 -> troj23_0n6
 troj23_0U6 -> troj23_0N87
 troj23_0U7 -> troj23_0n9
 troj23_0U8 -> troj23_0n10
+troj23_0U9 -> troj23_0n11
 troj23_0state_reg_0_ -> ('troj23_0state_0_', 'troj23_0n29')
 troj23_0state_reg_1_ -> ('troj23_0state_1_', 'troj23_0n17')
 troj23_0state_reg_2_ -> ('troj23_0state_2_', 'troj23_0n18')

@@ -2377,6 +2377,8 @@ trig249_0U2 -> trig249_0n2
 trig249_0U3 -> trig249_0n1
 troj80_0Trojan_out0_reg -> Trojan_out0
 troj80_0U10 -> troj80_0n9
+troj80_0U11 -> troj80_0n10
+troj80_0U12 -> troj80_0n11
 troj80_0U13 -> troj80_0n1
 troj80_0U14 -> troj80_0n2
 troj80_0U15 -> troj80_0n12

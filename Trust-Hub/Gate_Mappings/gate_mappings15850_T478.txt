@@ -3061,6 +3061,7 @@ trig263_0U4 -> trig263_0n1
 trig263_0U5 -> trig263_0n4
 trig263_0U6 -> trig263_0n5
 troj78_0Trojan_out0_reg -> Trojan_out0
+troj78_0U10 -> troj78_0n11
 troj78_0U11 -> troj78_0n12
 troj78_0U12 -> troj78_0n4
 troj78_0U13 -> troj78_0n3
@@ -3080,6 +3081,7 @@ troj78_0U26 -> troj78_0n24
 troj78_0U27 -> troj78_0n30
 troj78_0U28 -> troj78_0n26
 troj78_0U29 -> troj78_0n17
+troj78_0U3 -> troj78_0n1
 troj78_0U30 -> troj78_0n20
 troj78_0U31 -> troj78_0n29
 troj78_0U32 -> troj78_0n19

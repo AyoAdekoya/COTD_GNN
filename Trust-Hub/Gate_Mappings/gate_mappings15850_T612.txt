@@ -2994,6 +2994,7 @@ trig38_0U3 -> trig38_0n1
 trig38_0U4 -> trig38_0n3
 troj12_0Trojan_out0_reg -> Trojan_out0
 troj12_0U10 -> troj12_0N99
+troj12_0U11 -> troj12_0n8
 troj12_0U12 -> troj12_0n7
 troj12_0U13 -> troj12_0N98
 troj12_0U14 -> troj12_0n9

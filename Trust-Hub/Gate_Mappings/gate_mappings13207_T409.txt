@@ -2386,6 +2386,7 @@ troj9_0U20 -> troj9_0n16
 troj9_0U21 -> troj9_0N75
 troj9_0U22 -> troj9_0n22
 troj9_0U23 -> troj9_0n20
+troj9_0U24 -> troj9_0N72
 troj9_0U25 -> troj9_0n23
 troj9_0U26 -> troj9_0n25
 troj9_0U27 -> troj9_0N70
@@ -2393,7 +2394,10 @@ troj9_0U28 -> troj9_0n27
 troj9_0U29 -> troj9_0n17
 troj9_0U3 -> troj9_0n1
 troj9_0U30 -> troj9_0n19
+troj9_0U31 -> troj9_0N74
+troj9_0U32 -> troj9_0N73
 troj9_0U4 -> troj9_0n2
+troj9_0U5 -> troj9_0n5
 troj9_0U6 -> troj9_0N71
 troj9_0U7 -> troj9_0n8
 troj9_0U8 -> troj9_0N69

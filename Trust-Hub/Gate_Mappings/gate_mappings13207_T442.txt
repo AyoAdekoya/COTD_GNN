@@ -2414,6 +2414,7 @@ troj42_0U30 -> troj42_0n21
 troj42_0U31 -> troj42_0N88
 troj42_0U32 -> troj42_0n29
 troj42_0U33 -> troj42_0N93
+troj42_0U34 -> troj42_0N91
 troj42_0U4 -> troj42_0N89
 troj42_0U48 -> troj42_0n7
 troj42_0U49 -> troj42_0n25
@@ -2423,6 +2424,7 @@ troj42_0U51 -> troj42_0n18
 troj42_0U52 -> troj42_0n12
 troj42_0U53 -> troj42_0n2
 troj42_0U54 -> troj42_0n14
+troj42_0U55 -> troj42_0n11
 troj42_0U6 -> troj42_0N87
 troj42_0U7 -> troj42_0n9
 troj42_0state_reg_0_ -> ('troj42_0state_0_', 'troj42_0n27')

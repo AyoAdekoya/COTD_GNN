@@ -2325,10 +2325,12 @@ troj11_0U13 -> troj11_0n9
 troj11_0U14 -> troj11_0N99
 troj11_0U15 -> troj11_0n11
 troj11_0U16 -> troj11_0N98
+troj11_0U17 -> troj11_0n14
 troj11_0U18 -> troj11_0n10
 troj11_0U19 -> troj11_0n17
 troj11_0U20 -> troj11_0n20
 troj11_0U21 -> troj11_0n13
+troj11_0U22 -> troj11_0N96
 troj11_0U23 -> troj11_0n24
 troj11_0U24 -> troj11_0n23
 troj11_0U25 -> troj11_0N94

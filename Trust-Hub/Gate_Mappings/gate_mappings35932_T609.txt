@@ -6883,6 +6883,7 @@ trig40_0U4 -> trig40_0n3
 troj9_0Trojan_out0_reg -> Trojan_out0
 troj9_0U10 -> troj9_0n13
 troj9_0U11 -> troj9_0n9
+troj9_0U12 -> troj9_0n22
 troj9_0U13 -> troj9_0n6
 troj9_0U14 -> troj9_0n17
 troj9_0U15 -> troj9_0n7
@@ -6892,6 +6893,7 @@ troj9_0U18 -> troj9_0n5
 troj9_0U19 -> troj9_0n19
 troj9_0U20 -> troj9_0n11
 troj9_0U21 -> troj9_0N58
+troj9_0U22 -> troj9_0n20
 troj9_0U3 -> troj9_0N57
 troj9_0U4 -> troj9_0n1
 troj9_0U5 -> troj9_0n2

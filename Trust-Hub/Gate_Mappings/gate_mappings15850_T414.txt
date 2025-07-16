@@ -3028,6 +3028,7 @@ troj14_0Trojan_out0_reg -> Trojan_out0
 troj14_0U10 -> troj14_0n6
 troj14_0U11 -> troj14_0n7
 troj14_0U12 -> troj14_0N37
+troj14_0U13 -> troj14_0N35
 troj14_0U14 -> troj14_0n8
 troj14_0U15 -> troj14_0n9
 troj14_0U16 -> troj14_0N36
@@ -3036,6 +3037,7 @@ troj14_0U18 -> troj14_0N33
 troj14_0U3 -> troj14_0N34
 troj14_0U4 -> troj14_0N32
 troj14_0U5 -> troj14_0n4
+troj14_0U6 -> troj14_0n1
 troj14_0U7 -> troj14_0n2
 troj14_0U8 -> troj14_0n5
 troj14_0U9 -> troj14_0n3

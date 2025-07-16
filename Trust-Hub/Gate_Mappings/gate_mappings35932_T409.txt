@@ -6893,7 +6893,9 @@ troj9_0U16 -> troj9_0n12
 troj9_0U17 -> troj9_0N74
 troj9_0U18 -> troj9_0N73
 troj9_0U19 -> troj9_0n15
+troj9_0U20 -> troj9_0n16
 troj9_0U21 -> troj9_0N72
+troj9_0U22 -> troj9_0n20
 troj9_0U23 -> troj9_0n13
 troj9_0U24 -> troj9_0N70
 troj9_0U25 -> troj9_0n11

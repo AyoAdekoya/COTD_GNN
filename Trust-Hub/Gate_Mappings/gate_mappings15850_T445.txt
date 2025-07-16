@@ -2997,14 +2997,17 @@ troj45_0Trojan_out0_reg -> Trojan_out0
 troj45_0U10 -> troj45_0n5
 troj45_0U11 -> troj45_0n7
 troj45_0U12 -> troj45_0n8
+troj45_0U13 -> troj45_0N75
 troj45_0U14 -> troj45_0N74
 troj45_0U15 -> troj45_0n12
 troj45_0U16 -> troj45_0n13
 troj45_0U17 -> troj45_0n15
+troj45_0U18 -> troj45_0N72
 troj45_0U19 -> troj45_0n11
 troj45_0U20 -> troj45_0n16
 troj45_0U21 -> troj45_0N70
 troj45_0U22 -> troj45_0n14
+troj45_0U23 -> troj45_0N73
 troj45_0U3 -> troj45_0n1
 troj45_0U4 -> troj45_0n2
 troj45_0U5 -> troj45_0n3

@@ -2326,7 +2326,9 @@ troj29_0U13 -> troj29_0n6
 troj29_0U14 -> troj29_0n10
 troj29_0U15 -> troj29_0n11
 troj29_0U16 -> troj29_0N69
+troj29_0U17 -> troj29_0n17
 troj29_0U18 -> troj29_0N67
+troj29_0U19 -> troj29_0N66
 troj29_0U20 -> troj29_0n18
 troj29_0U21 -> troj29_0n21
 troj29_0U22 -> troj29_0n20

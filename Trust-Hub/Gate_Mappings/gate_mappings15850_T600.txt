@@ -3041,6 +3041,7 @@ troj0_0U13 -> troj0_0n13
 troj0_0U14 -> troj0_0n23
 troj0_0U15 -> troj0_0n7
 troj0_0U16 -> troj0_0n10
+troj0_0U17 -> troj0_0n30
 troj0_0U18 -> troj0_0n12
 troj0_0U19 -> troj0_0n24
 troj0_0U20 -> troj0_0n4
@@ -3062,6 +3063,7 @@ troj0_0U34 -> troj0_0n34
 troj0_0U35 -> troj0_0n18
 troj0_0U4 -> troj0_0n2
 troj0_0U5 -> troj0_0n36
+troj0_0U6 -> troj0_0n3
 troj0_0U7 -> troj0_0n6
 troj0_0U8 -> troj0_0n5
 troj0_0U9 -> troj0_0n8

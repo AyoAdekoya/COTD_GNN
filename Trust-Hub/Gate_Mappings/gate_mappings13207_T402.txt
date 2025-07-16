@@ -2402,9 +2402,11 @@ troj2_0U26 -> troj2_0n24
 troj2_0U27 -> troj2_0n18
 troj2_0U28 -> troj2_0n25
 troj2_0U29 -> troj2_0N70
+troj2_0U3 -> troj2_0n1
 troj2_0U30 -> troj2_0n26
 troj2_0U31 -> troj2_0n22
 troj2_0U32 -> troj2_0n20
+troj2_0U33 -> troj2_0N72
 troj2_0U4 -> troj2_0n2
 troj2_0U5 -> troj2_0N71
 troj2_0U6 -> troj2_0n7

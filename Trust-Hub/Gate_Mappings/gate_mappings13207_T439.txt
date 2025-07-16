@@ -2324,6 +2324,7 @@ troj39_0U11 -> troj39_0n7
 troj39_0U12 -> troj39_0n8
 troj39_0U13 -> troj39_0N75
 troj39_0U14 -> troj39_0N74
+troj39_0U15 -> troj39_0n11
 troj39_0U16 -> troj39_0n13
 troj39_0U17 -> troj39_0N73
 troj39_0U18 -> troj39_0n17

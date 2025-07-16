@@ -2364,6 +2364,7 @@ troj22_0U13 -> troj22_0n6
 troj22_0U14 -> troj22_0n35
 troj22_0U15 -> troj22_0n22
 troj22_0U16 -> troj22_0n9
+troj22_0U17 -> troj22_0n28
 troj22_0U18 -> troj22_0n23
 troj22_0U19 -> troj22_0n3
 troj22_0U20 -> troj22_0n29
@@ -2382,6 +2383,7 @@ troj22_0U31 -> troj22_0n24
 troj22_0U32 -> troj22_0n17
 troj22_0U33 -> troj22_0n30
 troj22_0U4 -> troj22_0n33
+troj22_0U5 -> troj22_0n2
 troj22_0U6 -> troj22_0n5
 troj22_0U7 -> troj22_0n4
 troj22_0U8 -> troj22_0n7

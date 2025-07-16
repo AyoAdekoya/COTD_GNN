@@ -946,6 +946,6 @@ trig39_0n3 = not(n272)
 trig39_0n1+1 = or(n340,n296)
 trig39_0n1+2 = or(n267,n265,n251)
 trig39_0n1   = or(trig39_0n1+1,trig39_0n1+2)
-Trojan_out0 = buff(troj9_01'b0)
+Trojan_out0 = buff(0)
 n150 = xor(tempn150,Trojan_out0)
 test_so = G729

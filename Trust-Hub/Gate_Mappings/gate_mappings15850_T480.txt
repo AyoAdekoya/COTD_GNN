@@ -2995,6 +2995,7 @@ troj80_0U10 -> troj80_0n5
 troj80_0U11 -> troj80_0n4
 troj80_0U12 -> troj80_0n8
 troj80_0U13 -> troj80_0n9
+troj80_0U14 -> troj80_0N87
 troj80_0U15 -> troj80_0n13
 troj80_0U16 -> troj80_0n11
 troj80_0U17 -> troj80_0n10

@@ -3000,6 +3000,7 @@ troj7_0Trojan_out0_reg -> Trojan_out0
 troj7_0U10 -> troj7_0n10
 troj7_0U11 -> troj7_0n8
 troj7_0U12 -> troj7_0N28
+troj7_0U13 -> troj7_0n12
 troj7_0U3 -> troj7_0N27
 troj7_0U4 -> troj7_0n1
 troj7_0U5 -> troj7_0n2

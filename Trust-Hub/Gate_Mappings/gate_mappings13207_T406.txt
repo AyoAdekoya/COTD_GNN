@@ -2401,9 +2401,13 @@ troj6_0U21 -> troj6_0n9
 troj6_0U22 -> troj6_0n18
 troj6_0U23 -> troj6_0n19
 troj6_0U24 -> troj6_0N87
+troj6_0U25 -> troj6_0n20
+troj6_0U27 -> troj6_0N86
 troj6_0U28 -> troj6_0n30
+troj6_0U29 -> troj6_0N85
 troj6_0U31 -> troj6_0n22
 troj6_0U32 -> troj6_0N84
+troj6_0U33 -> troj6_0n32
 troj6_0U35 -> troj6_0n27
 troj6_0U36 -> troj6_0n33
 troj6_0U38 -> troj6_0n29
@@ -2411,6 +2415,7 @@ troj6_0U39 -> troj6_0n35
 troj6_0U4 -> troj6_0n2
 troj6_0U40 -> troj6_0N82
 troj6_0U5 -> troj6_0N83
+troj6_0U53 -> troj6_0n34
 troj6_0U54 -> troj6_0n23
 troj6_0U55 -> troj6_0n31
 troj6_0U56 -> troj6_0n25
@@ -2419,6 +2424,7 @@ troj6_0U58 -> troj6_0n12
 troj6_0U59 -> troj6_0n4
 troj6_0U6 -> troj6_0n7
 troj6_0U60 -> troj6_0n1
+troj6_0U61 -> troj6_0n11
 troj6_0U62 -> troj6_0n14
 troj6_0U7 -> troj6_0N81
 troj6_0U8 -> troj6_0n10

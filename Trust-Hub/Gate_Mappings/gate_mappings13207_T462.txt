@@ -2349,6 +2349,7 @@ trig208_0U3 -> trig208_0n3
 trig208_0U4 -> trig208_0n4
 trig208_0U5 -> trig208_0n2
 troj62_0Trojan_out0_reg -> Trojan_out0
+troj62_0U10 -> troj62_0n3
 troj62_0U11 -> troj62_0n4
 troj62_0U12 -> troj62_0n9
 troj62_0U13 -> troj62_0n10
@@ -2359,6 +2360,7 @@ troj62_0U17 -> troj62_0N42
 troj62_0U18 -> troj62_0N41
 troj62_0U19 -> troj62_0n16
 troj62_0U20 -> troj62_0N38
+troj62_0U21 -> troj62_0N40
 troj62_0U3 -> troj62_0n1
 troj62_0U4 -> troj62_0n2
 troj62_0U5 -> troj62_0N39

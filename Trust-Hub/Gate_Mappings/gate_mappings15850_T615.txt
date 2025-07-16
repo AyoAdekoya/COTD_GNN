@@ -3016,9 +3016,11 @@ trig47_0U7 -> trig47_0n6
 troj15_0Trojan_out0_reg -> Trojan_out0
 troj15_0U10 -> troj15_0n14
 troj15_0U11 -> troj15_0n9
+troj15_0U12 -> troj15_0n8
 troj15_0U13 -> troj15_0n11
 troj15_0U14 -> troj15_0n10
 troj15_0U3 -> troj15_0n12
+troj15_0U4 -> troj15_0n1
 troj15_0U5 -> troj15_0n4
 troj15_0U6 -> troj15_0n2
 troj15_0U7 -> troj15_0n6

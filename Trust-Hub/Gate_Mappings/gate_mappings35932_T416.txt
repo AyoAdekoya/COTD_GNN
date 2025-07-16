@@ -6932,6 +6932,7 @@ trig61_0U5 -> trig61_0n4
 trig61_0U6 -> trig61_0n3
 troj16_0Trojan_out0_reg -> Trojan_out0
 troj16_0U10 -> troj16_0n13
+troj16_0U11 -> troj16_0n14
 troj16_0U12 -> troj16_0n15
 troj16_0U13 -> troj16_0n4
 troj16_0U14 -> troj16_0n3

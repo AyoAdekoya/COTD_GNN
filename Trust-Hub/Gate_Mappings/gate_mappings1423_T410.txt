@@ -584,8 +584,10 @@ troj10_0U20 -> troj10_0n16
 troj10_0U21 -> troj10_0n17
 troj10_0U22 -> troj10_0N99
 troj10_0U24 -> troj10_0N98
+troj10_0U25 -> troj10_0n24
 troj10_0U26 -> troj10_0n21
 troj10_0U28 -> troj10_0N97
+troj10_0U29 -> troj10_0n30
 troj10_0U3 -> troj10_0n1
 troj10_0U30 -> troj10_0n23
 troj10_0U34 -> troj10_0n19
@@ -596,11 +598,13 @@ troj10_0U5 -> troj10_0n5
 troj10_0U54 -> troj10_0N94
 troj10_0U55 -> troj10_0n18
 troj10_0U56 -> troj10_0n20
+troj10_0U57 -> troj10_0N96
 troj10_0U58 -> troj10_0n34
 troj10_0U59 -> troj10_0n11
 troj10_0U6 -> troj10_0N95
 troj10_0U60 -> troj10_0n32
 troj10_0U61 -> troj10_0n26
+troj10_0U62 -> troj10_0n4
 troj10_0U63 -> troj10_0n13
 troj10_0U64 -> troj10_0n14
 troj10_0U65 -> troj10_0n7

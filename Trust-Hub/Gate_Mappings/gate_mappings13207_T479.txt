@@ -2329,6 +2329,7 @@ troj79_0U16 -> troj79_0n15
 troj79_0U17 -> troj79_0n17
 troj79_0U18 -> troj79_0n14
 troj79_0U19 -> troj79_0n12
+troj79_0U20 -> troj79_0n16
 troj79_0U21 -> troj79_0N88
 troj79_0U22 -> troj79_0n13
 troj79_0U23 -> troj79_0n10
@@ -2338,6 +2339,7 @@ troj79_0U5 -> troj79_0n2
 troj79_0U6 -> troj79_0n1
 troj79_0U7 -> troj79_0n3
 troj79_0U8 -> troj79_0n4
+troj79_0U9 -> troj79_0N93
 troj79_0state_reg_0_ -> ('troj79_0state_0_', 'troj79_0n9')
 troj79_0state_reg_1_ -> ('troj79_0state_1_', 'troj79_0n7')
 troj79_0state_reg_2_ -> ('troj79_0state_2_', 'troj79_0n11')

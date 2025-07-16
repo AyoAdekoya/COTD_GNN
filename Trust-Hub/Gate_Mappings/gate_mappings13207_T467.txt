@@ -2323,6 +2323,8 @@ troj67_0U13 -> troj67_0N75
 troj67_0U14 -> troj67_0n9
 troj67_0U15 -> troj67_0N74
 troj67_0U16 -> troj67_0N73
+troj67_0U17 -> troj67_0n12
+troj67_0U18 -> troj67_0N72
 troj67_0U19 -> troj67_0n10
 troj67_0U20 -> troj67_0N70
 troj67_0U21 -> troj67_0n11

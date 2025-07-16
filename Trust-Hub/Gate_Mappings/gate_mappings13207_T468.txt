@@ -2321,6 +2321,7 @@ troj68_0Trojan_out0_reg -> Trojan_out0
 troj68_0U10 -> troj68_0n6
 troj68_0U11 -> troj68_0N42
 troj68_0U12 -> troj68_0N41
+troj68_0U13 -> troj68_0N40
 troj68_0U14 -> troj68_0N38
 troj68_0U3 -> troj68_0n1
 troj68_0U4 -> troj68_0n2

@@ -505,6 +505,7 @@ trig66_0U3 -> trig66_0n2
 trig66_0U4 -> trig66_0n3
 troj17_0Trojan_out0_reg -> Trojan_out0
 troj17_0U10 -> troj17_0n4
+troj17_0U11 -> troj17_0N40
 troj17_0U12 -> troj17_0N38
 troj17_0U3 -> troj17_0N39
 troj17_0U4 -> troj17_0N37

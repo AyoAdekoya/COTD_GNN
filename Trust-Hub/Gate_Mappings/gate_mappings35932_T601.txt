@@ -6906,6 +6906,7 @@ troj1_0U5 -> troj1_0n1
 troj1_0U6 -> troj1_0n4
 troj1_0U7 -> troj1_0n10
 troj1_0U8 -> troj1_0n11
+troj1_0U9 -> troj1_0n3
 troj1_0state_reg_0_ -> ('troj1_0state_0_', 'troj1_0n5')
 troj1_0state_reg_1_ -> ('troj1_0state_1_', 'troj1_0n6')
 troj1_1U1 -> Trigger_en1_1

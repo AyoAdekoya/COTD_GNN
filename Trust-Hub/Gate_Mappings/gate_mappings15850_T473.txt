@@ -3054,6 +3054,8 @@ trig247_0U4 -> trig247_0n1
 trig247_0U5 -> trig247_0n4
 trig247_0U6 -> trig247_0n5
 troj73_0Trojan_out0_reg -> Trojan_out0
+troj73_0U10 -> troj73_0n9
+troj73_0U11 -> troj73_0n10
 troj73_0U12 -> troj73_0n1
 troj73_0U13 -> troj73_0n2
 troj73_0U14 -> troj73_0n11
@@ -3070,6 +3072,7 @@ troj73_0U24 -> troj73_0n22
 troj73_0U25 -> troj73_0n18
 troj73_0U26 -> troj73_0N76
 troj73_0U27 -> troj73_0n20
+troj73_0U28 -> troj73_0N81
 troj73_0U29 -> troj73_0N78
 troj73_0U3 -> troj73_0N77
 troj73_0U4 -> troj73_0n3

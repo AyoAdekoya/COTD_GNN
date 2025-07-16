@@ -519,6 +519,7 @@ troj12_0U21 -> troj12_0n22
 troj12_0U22 -> troj12_0n21
 troj12_0U23 -> troj12_0n11
 troj12_0U24 -> troj12_0N90
+troj12_0U25 -> troj12_0n24
 troj12_0U26 -> troj12_0n25
 troj12_0U27 -> troj12_0n23
 troj12_0U28 -> troj12_0n14

@@ -6963,6 +6963,8 @@ troj28_0U11 -> troj28_0n13
 troj28_0U12 -> troj28_0n3
 troj28_0U13 -> troj28_0n2
 troj28_0U14 -> troj28_0n5
+troj28_0U15 -> troj28_0n14
+troj28_0U16 -> troj28_0n15
 troj28_0U17 -> troj28_0n4
 troj28_0U18 -> troj28_0n7
 troj28_0U19 -> troj28_0n8
@@ -6970,10 +6972,12 @@ troj28_0U20 -> troj28_0n16
 troj28_0U21 -> troj28_0n17
 troj28_0U22 -> troj28_0N99
 troj28_0U23 -> troj28_0n19
+troj28_0U24 -> troj28_0N98
 troj28_0U25 -> troj28_0N97
 troj28_0U26 -> troj28_0n25
 troj28_0U27 -> troj28_0N96
 troj28_0U28 -> troj28_0n28
+troj28_0U29 -> troj28_0n27
 troj28_0U3 -> troj28_0n1
 troj28_0U30 -> troj28_0n31
 troj28_0U31 -> troj28_0n24

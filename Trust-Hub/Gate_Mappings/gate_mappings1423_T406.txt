@@ -511,8 +511,10 @@ troj6_0U11 -> troj6_0n7
 troj6_0U12 -> troj6_0n8
 troj6_0U13 -> troj6_0N81
 troj6_0U14 -> troj6_0n11
+troj6_0U15 -> troj6_0N80
 troj6_0U16 -> troj6_0n16
 troj6_0U17 -> troj6_0n15
+troj6_0U18 -> troj6_0N79
 troj6_0U19 -> troj6_0n18
 troj6_0U20 -> troj6_0n17
 troj6_0U21 -> troj6_0n9

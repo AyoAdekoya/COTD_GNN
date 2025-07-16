@@ -3043,6 +3043,8 @@ troj2_0Trojan_out0_reg -> Trojan_out0
 troj2_0U10 -> troj2_0n3
 troj2_0U11 -> troj2_0n7
 troj2_0U12 -> troj2_0n8
+troj2_0U13 -> troj2_0N38
+troj2_0U14 -> troj2_0N37
 troj2_0U15 -> troj2_0N36
 troj2_0U16 -> troj2_0n11
 troj2_0U17 -> troj2_0N34
@@ -3051,6 +3053,7 @@ troj2_0U4 -> troj2_0N33
 troj2_0U5 -> troj2_0n4
 troj2_0U6 -> troj2_0n5
 troj2_0U7 -> troj2_0n2
+troj2_0U8 -> troj2_0n1
 troj2_0U9 -> troj2_0n6
 troj2_0state_reg_0_ -> ('troj2_0state_0_', 'troj2_0n9')
 troj2_0state_reg_1_ -> ('troj2_0state_1_', 'troj2_0n10')

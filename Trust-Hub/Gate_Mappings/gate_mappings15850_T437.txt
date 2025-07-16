@@ -3059,6 +3059,7 @@ troj37_0Trojan_out0_reg -> Trojan_out0
 troj37_0U10 -> troj37_0n12
 troj37_0U11 -> troj37_0n7
 troj37_0U12 -> troj37_0n13
+troj37_0U13 -> troj37_0n14
 troj37_0U14 -> troj37_0n15
 troj37_0U15 -> troj37_0n5
 troj37_0U16 -> troj37_0n4
@@ -3069,8 +3070,10 @@ troj37_0U20 -> troj37_0n16
 troj37_0U21 -> troj37_0n17
 troj37_0U22 -> troj37_0N75
 troj37_0U23 -> troj37_0N74
+troj37_0U24 -> troj37_0n21
 troj37_0U25 -> troj37_0n18
 troj37_0U26 -> troj37_0N73
+troj37_0U27 -> troj37_0n23
 troj37_0U28 -> troj37_0N72
 troj37_0U29 -> troj37_0n25
 troj37_0U3 -> troj37_0n1

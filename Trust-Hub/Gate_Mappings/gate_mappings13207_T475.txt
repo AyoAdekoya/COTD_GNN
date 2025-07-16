@@ -2405,6 +2405,7 @@ troj75_0U26 -> troj75_0n28
 troj75_0U27 -> troj75_0n26
 troj75_0U28 -> troj75_0n21
 troj75_0U29 -> troj75_0N84
+troj75_0U30 -> troj75_0n30
 troj75_0U31 -> troj75_0n27
 troj75_0U32 -> troj75_0n29
 troj75_0U33 -> troj75_0n24
@@ -2413,6 +2414,7 @@ troj75_0U4 -> troj75_0N83
 troj75_0U48 -> troj75_0N86
 troj75_0U49 -> troj75_0N82
 troj75_0U50 -> troj75_0N85
+troj75_0U51 -> troj75_0n16
 troj75_0U52 -> troj75_0n11
 troj75_0U53 -> troj75_0n17
 troj75_0U54 -> troj75_0n4

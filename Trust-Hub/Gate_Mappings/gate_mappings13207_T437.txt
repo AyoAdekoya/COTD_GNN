@@ -2324,10 +2324,12 @@ troj37_0U14 -> troj37_0n11
 troj37_0U15 -> troj37_0N79
 troj37_0U16 -> troj37_0n15
 troj37_0U17 -> troj37_0n17
+troj37_0U18 -> troj37_0N78
 troj37_0U19 -> troj37_0n18
 troj37_0U20 -> troj37_0n19
 troj37_0U21 -> troj37_0n14
 troj37_0U22 -> troj37_0N76
+troj37_0U23 -> troj37_0N81
 troj37_0U24 -> troj37_0N80
 troj37_0U3 -> troj37_0n1
 troj37_0U4 -> troj37_0n2
