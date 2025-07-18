@@ -3,6 +3,8 @@
 import glob
 import os
 import re
+from CSVtoPyg import create_graph, nx_to_pyG
+from zScore import compute_scoap_stats
 
 def create_all_data():
     verilog_files = []
@@ -12,7 +14,9 @@ def create_all_data():
     design_names_free = []
     data_objects_free = []
 
-    base_folder = "TH-Benchmarks"
+    # base_folder = "TH-Benchmarks"
+    base_folder = "TH_Trojans"
+
 
     verilog_files = []
     design_names = []
@@ -90,7 +94,7 @@ def create_all_data():
                             if match:
                                 design_name_free = match.group(1) + "free"
 
-                            design_names_free.append(design_name_free)
+                            design_names_free.append(design_name_free) #type: ignore
                 else:
                     v_files = glob.glob(os.path.join(sub_path, "*.v"))
                     if v_files:
@@ -131,10 +135,10 @@ def create_all_data():
         print(f"  Netlist: {netlist_path}")
         print(f"  SCOAP CSV: {scoap_csv_path}")
         print(f"  Gate mapping: {gate_mapping_path}")
-        # G = create_graph(netlist_path, scoap_csv_path, gate_mapping_path)
-        # data = nx_to_pyG(G)
+        G = create_graph(netlist_path, scoap_csv_path, gate_mapping_path)
+        data = nx_to_pyG(G, design_name)
         print("-" * 60)
-        # return data
+        return data
 
     missing_files = []
 
@@ -167,4 +171,5 @@ def create_all_data():
 
 
 if __name__ == "__main__":
+    compute_scoap_stats()
     create_all_data()

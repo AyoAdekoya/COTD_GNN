@@ -17,8 +17,10 @@ function Log-Msg {
 #     "s1423_T","s13207_T","s15850_T","s35932_T"
 # )
 
-$designs = @(
-    "s1423_T","s13207_T","s15850_T","s35932_T"
+# $designs = @(
+#     "s1423_T","s13207_T","s15850_T","s35932_T"
+# )
+$designs = @("s15850_T"
 )
 
 $scoapExe  = "C:\Users\adeyo\OneDrive\Desktop\IntelResearch\SCOAP_Analysis_Tool-master\SCOAP_Analysis_Tool-master\SCOAPTOOL.EXE"
@@ -28,7 +30,7 @@ $outputBase= "C:\Users\adeyo\OneDrive\Desktop\IntelResearch\ICsDesign\Trojan_GNN
 # Create Shell COM for AppActivate if needed
 $wshell = New-Object -ComObject WScript.Shell
 
-# Launch SCOAP tool once
+# Launch SCOAP tool oncec
 Start-Process -FilePath $scoapExe
 Start-Sleep -Seconds 7
 $wshell.AppActivate("Testability Measurement Tool") | Out-Null
@@ -37,7 +39,7 @@ Log-Msg "Launched and focused SCOAP tool"
 
 # Outer loop over design prefixes
 foreach ($prefix in $designs) {
-    for ($num = 1; $num -le 219; $num++) {
+    for ($num = 443; $num -le 489; $num++) {
         $suffix = $num.ToString("000")
         $inputFile  = "$inputBase$prefix$suffix.txt"
         $outputFile = "$outputBase$prefix$suffix.txt"
@@ -48,7 +50,7 @@ foreach ($prefix in $designs) {
             # Open input (Ctrl+O)
             Start-Sleep -Milliseconds 500
             $wshell.AppActivate("Testability Measurement Tool") | Out-Null
-            # Start-Sleep -Milliseconds 200
+            Start-Sleep -Milliseconds 500
             [System.Windows.Forms.SendKeys]::SendWait("^o")
             Start-Sleep -Milliseconds 500
 
@@ -60,16 +62,17 @@ foreach ($prefix in $designs) {
             # Start-Sleep -Milliseconds 250
             [System.Windows.Forms.SendKeys]::SendWait("{ENTER}")
             Log-Msg "Opened input: $inputFile"
-            Start-Sleep -Seconds 3
+            Start-Sleep -Seconds 7
 
             # Save output (Shift+Ctrl+S)
             [System.Windows.Forms.SendKeys]::SendWait("+^s")
-            Start-Sleep -Milliseconds 500
+            Start-Sleep -Milliseconds 700
 
             # [System.Windows.Forms.SendKeys]::SendWait("$outputFile")
             [System.Windows.Forms.Clipboard]::SetText($outputFile)   
+            Start-Sleep -Milliseconds 200
             [System.Windows.Forms.SendKeys]::SendWait('^v')
-            Start-Sleep -Milliseconds 100
+            Start-Sleep -Milliseconds 200
             # Start-Sleep -Milliseconds 250
             [System.Windows.Forms.SendKeys]::SendWait("{ENTER}")
             Start-Sleep -Seconds 2

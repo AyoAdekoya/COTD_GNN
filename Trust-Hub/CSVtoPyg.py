@@ -123,9 +123,12 @@ def create_graph(netlist_path, csv_path, mapping_path):
             name, cc0, cc1, co, trojan = row
 
             gate_attrs[name] = {
-                "cc0": normalize_score(cc0, "cc0"),
-                "cc1": normalize_score(cc1, "cc1"),
-                "co": normalize_score(co, "co"),
+                # "cc0": normalize_score(cc0, "cc0"),
+                # "cc1": normalize_score(cc1, "cc1"),
+                # "co": normalize_score(co, "co"),
+                "cc0": cc0,
+                "cc1": cc1,
+                "co": co,
                 "is_trojan": int(trojan),
             }
 
@@ -257,10 +260,14 @@ def create_graph(netlist_path, csv_path, mapping_path):
             driver = resolve_driver(net)
             if driver:
                 G.add_edge(driver, inst_name)
+
+        for node in G.nodes():
+            G.nodes[node]['outdegree'] = G.out_degree(node)
+            G.nodes[node]['indegree']  = G.in_degree(node)
     return G
 
 
-def nx_to_pyG(G):
+def nx_to_pyG(G, design_name):
     # create type set from looping through nodes
     # convert to list
     # have a mapping of nodeToindex and indexTonode to help with the pyG data
@@ -308,10 +315,16 @@ def nx_to_pyG(G):
         cc0 = torch.tensor([cc0_val], dtype=torch.float)
         cc1 = torch.tensor([cc1_val], dtype=torch.float)
         co  = torch.tensor([co_val],  dtype=torch.float)
-        
+        indeg_val = attrs.get("indegree",  0)
+        outdeg_val = attrs.get("outdegree", 0)
+        indegree  = torch.tensor([indeg_val], dtype=torch.float)
+        outdegree = torch.tensor([outdeg_val], dtype=torch.float)
+
         # add to features vector
-        feature_vector = torch.cat([one_hot, cc0, cc1, co], dim=0)
+        feature_vector = torch.cat([one_hot, cc0, cc1, co, indegree, outdegree],dim=0)
         features.append(feature_vector)
+        # feature_vector = torch.cat([one_hot, cc0, cc1, co], dim=0)
+        # features.append(feature_vector)
 
         # save its label
         is_trojan_val = attrs.get("is_trojan", 0)
@@ -338,6 +351,7 @@ def nx_to_pyG(G):
     data.node_to_index = nodeToindex
     data.index_to_node = indexTonode
     data.type_to_index = typeToindex
+    data.design_name = design_name
 
     # build index_to_type
     index_to_type = {}
@@ -365,7 +379,8 @@ def create_all_data():
     design_names_free = []
     data_objects_free = []
 
-    base_folder = "TH-Benchmarks"
+    # base_folder = "TH-Benchmarks"
+    base_folder = "TH_Trojans"
 
     verilog_files = []
     design_names = []
@@ -446,7 +461,7 @@ def create_all_data():
                             if match:
                                 design_name_free = match.group(1) + "free"
 
-                            design_names_free.append(design_name_free)
+                            design_names_free.append(design_name_free) # type: ignore
                 else:
                     v_files = glob.glob(os.path.join(sub_path, "*.v"))
                     if v_files:
@@ -470,7 +485,7 @@ def create_all_data():
             design_name_free = design_name.split('-')[0] + "-free"
             design_names_free.extend([design_name_free] * len(v_files_free))
 
-    def create_data(netlist_path, scoap_csv_path, gate_mapping_path):
+    def create_data(netlist_path, scoap_csv_path, gate_mapping_path, design_name):
         # Your custom processing logic here
         print("Processing files:")
         print(f"  Netlist: {netlist_path}")
@@ -479,7 +494,7 @@ def create_all_data():
         G = create_graph(netlist_path, scoap_csv_path, gate_mapping_path)
         print(f"Built graph with {G.number_of_nodes()} nodes and {G.number_of_edges()} edges.")
         try:
-            data = nx_to_pyG(G)
+            data = nx_to_pyG(G, design_name)
         except:
             print(f"Cannot run nx to pyG for file {netlist_path}")
             data = None
@@ -497,7 +512,7 @@ def create_all_data():
             print(f"Skipping {design_name} — missing mapping or SCOAP file")
             continue
 
-        data_objects.append(create_data(netlist_file, scoap_file, gate_map_file))
+        data_objects.append(create_data(netlist_file, scoap_file, gate_map_file, design_name))
 
     for netlist_file, design_name in zip(verilog_files_free, design_names_free):
         gate_map_file = f"Trojan_GNN/Trust-Hub/Gate_Mappings/gate_mapping{design_name}.txt"
@@ -508,7 +523,7 @@ def create_all_data():
             print(f"Skipping {design_name} — missing mapping or SCOAP file")
             continue
 
-        data_objects_free.append(create_data(netlist_file, scoap_file, gate_map_file))
+        data_objects_free.append(create_data(netlist_file, scoap_file, gate_map_file, design_name))
 
     return data_objects, data_objects_free
 
