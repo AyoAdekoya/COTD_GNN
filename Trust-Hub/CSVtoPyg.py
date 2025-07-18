@@ -3,7 +3,6 @@
 # need to read the original .v file to get the wires that connect each node
 # read csv to create the nodes, and use the wires as the only edges that exist in the graph
 
-import sys
 import csv
 import os
 import glob
@@ -15,6 +14,7 @@ import torch.nn.functional as F
 from torch_geometric.data import Data
 from torch_geometric.utils import from_networkx
 from zScore import compute_scoap_stats, normalize_score
+from get_net_depth import add_distance_attributes
 
 
 # Classifying gatenames into gatetypes
@@ -257,10 +257,19 @@ def create_graph(netlist_path, csv_path, mapping_path):
             driver = resolve_driver(net)
             if driver:
                 G.add_edge(driver, inst_name)
+
+        # Adding indegree and outdegree of each node
+        for node in G.nodes():
+            G.nodes[node]['outdegree'] = G.out_degree(node)
+            G.nodes[node]['indegree'] = G.in_degree(node)
+
+        # Add distance from PI and PO to graph
+        add_distance_attributes(G)
+        
     return G
 
 
-def nx_to_pyG(G):
+def nx_to_pyG(G, design_name):
     # create type set from looping through nodes
     # convert to list
     # have a mapping of nodeToindex and indexTonode to help with the pyG data
@@ -299,6 +308,8 @@ def nx_to_pyG(G):
         type_tensor = torch.tensor(type_index, dtype=torch.long)
         # calling one hot encoding for tensors
         one_hot = F.one_hot(type_tensor, num_classes=num_types).float()
+        # decrease influence of one hot encoded indices
+        one_hot /= 25
     
         # get SCOAP values
         cc0_val = attrs.get("cc0")
@@ -308,9 +319,24 @@ def nx_to_pyG(G):
         cc0 = torch.tensor([cc0_val], dtype=torch.float)
         cc1 = torch.tensor([cc1_val], dtype=torch.float)
         co  = torch.tensor([co_val],  dtype=torch.float)
+
+        indegree_val = attrs.get('indegree', 0)
+        outdegree_val = attrs.get('outdegree', 0)
+
+        dist_from_pi_val = attrs.get('dist_from_pi')
+        dist_to_po_val = attrs.get('dist_to_po')
+
+
+        indegree = torch.tensor([indegree_val], dtype=torch.float)
+        outdegree = torch.tensor([outdegree_val], dtype=torch.float)
+
+        dist_from_pi = torch.tensor([dist_from_pi_val], dtype=torch.float)
+        dist_to_po = torch.tensor([dist_to_po_val], dtype=torch.float)
+
         
+        ###### FIX THIS ###################
         # add to features vector
-        feature_vector = torch.cat([one_hot, cc0, cc1, co], dim=0)
+        feature_vector = torch.cat([one_hot, cc0, cc1, co, indegree, outdegree, dist_from_pi, dist_to_po], dim=0)
         features.append(feature_vector)
 
         # save its label
@@ -338,6 +364,7 @@ def nx_to_pyG(G):
     data.node_to_index = nodeToindex
     data.index_to_node = indexTonode
     data.type_to_index = typeToindex
+    data.design_name = design_name
 
     # build index_to_type
     index_to_type = {}
@@ -370,39 +397,39 @@ def create_all_data():
     verilog_files = []
     design_names = []
 
-    # Tj contest design files
-    test_cases_folder = "Trojan_GNN/test-cases"
+    # # Tj contest design files
+    # test_cases_folder = "Trojan_GNN/test-cases"
 
-    for subfolder in ["trojan"]:
-        sub_path = os.path.join(test_cases_folder, subfolder)
-        if not os.path.isdir(sub_path):
-            continue
+    # for subfolder in ["trojan"]:
+    #     sub_path = os.path.join(test_cases_folder, subfolder)
+    #     if not os.path.isdir(sub_path):
+    #         continue
 
-        v_files = glob.glob(os.path.join(sub_path, "*.v"))
-        for v_file in v_files:
-            filename = os.path.basename(v_file)
-            # Extract number from designXXX.v
-            match = re.match(r"design(\d+)\.v", filename)
-            if match:
-                design_num = match.group(1)
-                verilog_files.append(v_file)
-                design_names.append(design_num)
+    #     v_files = glob.glob(os.path.join(sub_path, "*.v"))
+    #     for v_file in v_files:
+    #         filename = os.path.basename(v_file)
+    #         # Extract number from designXXX.v
+    #         match = re.match(r"design(\d+)\.v", filename)
+    #         if match:
+    #             design_num = match.group(1)
+    #             verilog_files.append(v_file)
+    #             design_names.append(design_num)
 
-    # Tj free contest designs
-    for subfolder in ["trojan_free"]:
-        sub_path = os.path.join(test_cases_folder, subfolder)
-        if not os.path.isdir(sub_path):
-            continue
+    # # Tj free contest designs
+    # for subfolder in ["trojan_free"]:
+    #     sub_path = os.path.join(test_cases_folder, subfolder)
+    #     if not os.path.isdir(sub_path):
+    #         continue
 
-        v_files = glob.glob(os.path.join(sub_path, "*.v"))
-        for v_file in v_files:
-            filename = os.path.basename(v_file)
-            # Extract number from designXXX.v
-            match = re.match(r"design(\d+)\.v", filename)
-            if match:
-                design_num = match.group(1)
-                verilog_files_free.append(v_file)
-                design_names_free.append(design_num)
+    #     v_files = glob.glob(os.path.join(sub_path, "*.v"))
+    #     for v_file in v_files:
+    #         filename = os.path.basename(v_file)
+    #         # Extract number from designXXX.v
+    #         match = re.match(r"design(\d+)\.v", filename)
+    #         if match:
+    #             design_num = match.group(1)
+    #             verilog_files_free.append(v_file)
+    #             design_names_free.append(design_num)
 
     # Tj trusthub files
     for design_folder in os.listdir(base_folder):
@@ -470,16 +497,16 @@ def create_all_data():
             design_name_free = design_name.split('-')[0] + "-free"
             design_names_free.extend([design_name_free] * len(v_files_free))
 
-    def create_data(netlist_path, scoap_csv_path, gate_mapping_path):
+    def create_data(netlist_path, scoap_csv_path, gate_mapping_path, design_name):
         # Your custom processing logic here
-        print("Processing files:")
-        print(f"  Netlist: {netlist_path}")
-        print(f"  SCOAP CSV: {scoap_csv_path}")
-        print(f"  Gate mapping: {gate_mapping_path}")
+        print(f"Processing file {design_name}:")
+        # print(f"  Netlist: {netlist_path}")
+        # print(f"  SCOAP CSV: {scoap_csv_path}")
+        # print(f"  Gate mapping: {gate_mapping_path}")
         G = create_graph(netlist_path, scoap_csv_path, gate_mapping_path)
         print(f"Built graph with {G.number_of_nodes()} nodes and {G.number_of_edges()} edges.")
         try:
-            data = nx_to_pyG(G)
+            data = nx_to_pyG(G, design_name)
         except:
             print(f"Cannot run nx to pyG for file {netlist_path}")
             data = None
@@ -497,7 +524,7 @@ def create_all_data():
             print(f"Skipping {design_name} — missing mapping or SCOAP file")
             continue
 
-        data_objects.append(create_data(netlist_file, scoap_file, gate_map_file))
+        data_objects.append(create_data(netlist_file, scoap_file, gate_map_file, design_name))
 
     for netlist_file, design_name in zip(verilog_files_free, design_names_free):
         gate_map_file = f"Trojan_GNN/Trust-Hub/Gate_Mappings/gate_mapping{design_name}.txt"
@@ -508,7 +535,7 @@ def create_all_data():
             print(f"Skipping {design_name} — missing mapping or SCOAP file")
             continue
 
-        data_objects_free.append(create_data(netlist_file, scoap_file, gate_map_file))
+        data_objects_free.append(create_data(netlist_file, scoap_file, gate_map_file, design_name))
 
     return data_objects, data_objects_free
 
@@ -543,6 +570,7 @@ if __name__ == "__main__":
     for data in data_list:
         if data:
             print(f"Tj data object:------------------")
+            print(f"Design name: {data.design_name}")
             print("Number of nodes:      ", data.num_nodes)
             print("Number of edges:      ", data.num_edges)
             print("Feature size per node:", data.num_node_features)
@@ -562,6 +590,7 @@ if __name__ == "__main__":
     for data in data_free_list:
         if data:
             print(f"Tj free data object:---------------")
+            print(f"Design name: {data.design_name}")
             print("Number of nodes:      ", data.num_nodes)
             print("Number of edges:      ", data.num_edges)
             print("Feature size per node:", data.num_node_features)

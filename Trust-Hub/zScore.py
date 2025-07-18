@@ -18,6 +18,8 @@ def compute_scoap_stats(folder_path="Scoap_Scores"):
     cc0_vals, cc1_vals, co_vals = [], [], []
 
     file_list = glob.glob(f"{folder_path}/gate_scores*.csv")
+    if not file_list:
+        print("No files found. Make sure relative path is correct")
 
     for file_path in file_list:
         with open(file_path, "r", newline="") as f:
