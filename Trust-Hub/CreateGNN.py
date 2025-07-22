@@ -16,34 +16,45 @@ test_dataset = []
 def save_datasets(train_list, test_list, save_dir="saved_datasets"):
     import os
     os.makedirs(save_dir, exist_ok=True)
-    torch.save(train_list, f"{save_dir}/train_dataset.pt")
-    torch.save(test_list, f"{save_dir}/test_dataset.pt")
+    torch.save(train_list, f"{save_dir}/contesttrain_dataset.pt")
+    torch.save(test_list, f"{save_dir}/contesttest_dataset.pt")
     # torch.save(val_list, f"{save_dir}/val_dataset.pt")
     print(f"Datasets saved in {save_dir}/")
 
 def load_datasets(save_dir="saved_datasets"):
-    train_list = torch.load(f"{save_dir}/train_dataset.pt", weights_only=False)
-    test_list  = torch.load(f"{save_dir}/test_dataset.pt", weights_only=False)
+    train_list = torch.load(f"{save_dir}/contesttrain_dataset.pt", weights_only=False)
+    test_list  = torch.load(f"{save_dir}/contesttest_dataset.pt", weights_only=False)
     # val_list  = torch.load(f"{save_dir}/val_dataset.pt", weights_only=False)
     return train_list, test_list
 
 def get_loaders_from_saved(batch_size=1, shuffle_train=True, save_dir="saved_datasets"):
+    # this is technically saving trojan and free not train and test
     train_dataset, test_dataset = load_datasets(save_dir)
+    # training = list(train_dataset)
+    # train = training[:-2]
+    # trojaned_list = train[:100]
 
-    # trojaned_list = [trojan_list[i] for i in range (28)]
+    total = train_dataset + test_dataset
+    random.shuffle(total)
     # freed_list = [free_list[i] for i in range (12)]
 
-    # trojan_train, trojan_test = split_80_20(trojaned_list)
+    # Split 80/20
+    def split_80_20(lst):
+        split_idx = int(len(lst) * 0.8)
+        return lst[:split_idx], lst[split_idx:]
+    
+    trojan_train, trojan_test = split_80_20(total)
     # free_train,   free_test   = split_80_20(freed_list)
    
     # # Combine
-    # train_dataset = trojan_train + free_train
-    # test_dataset  = trojan_test  + free_test
+    train_dataset = trojan_train
+    test_dataset  = trojan_test 
 
+    print("Total graphs: ", len(train_dataset) + len(test_dataset))
     graph_weights = []
     for data in train_dataset:
         pos = int((data.y==1).sum().item())
-        graph_weights.append(pos + 0.2)  # add a small epsilon so 0‑positive graphs still get sampled
+        graph_weights.append(pos + 0.1)  # add a small epsilon so 0‑positive graphs still get sampled
 
     sampler = WeightedRandomSampler(weights=graph_weights,num_samples=len(graph_weights),
                                     replacement=True)
@@ -64,6 +75,9 @@ def get_loaders(batch_size=1, shuffle_train=True):
     # Remove None entries
     trojan_list = [d for d in trojan_list if d is not None]
     free_list   = [d for d in free_list if d is not None]
+
+    # trojaned_list = [trojan_list[i] for i in range(28)]
+    # freed_list = [free_list[i] for i in range (12)]
 
     # n = len(trojan_list)
     # split = int(n * 0.8)
@@ -96,6 +110,8 @@ def get_loaders(batch_size=1, shuffle_train=True):
     train_dataset = trojan_train + free_train
     test_dataset  = trojan_test  + free_test
 
+    print("Total graphs: ", len(train_dataset) + len(test_dataset))
+
 # Possibly only testing on some nodes maybe
     # for d in train_dataset:
     #     num = d.num_nodes
@@ -111,24 +127,24 @@ def get_loaders(batch_size=1, shuffle_train=True):
     random.shuffle(test_dataset)
 
     # DataLoaders
-    graph_weights = []
-    for data in train_dataset:
-        pos = int((data.y==1).sum().item())
-        graph_weights.append(pos + 0.2)  # add a small epsilon so 0‑positive graphs still get sampled
+    # graph_weights = []
+    # for data in train_dataset:
+    #     pos = int((data.y==1).sum().item())
+    #     graph_weights.append(pos + 0.2)  # add a small epsilon so 0‑positive graphs still get sampled
 
-    sampler = WeightedRandomSampler(weights=graph_weights,num_samples=len(graph_weights),
-                                    replacement=True)
+    # sampler = WeightedRandomSampler(weights=graph_weights,num_samples=len(graph_weights),
+    #                                 replacement=True)
 
-    train_loader = DataLoader(train_dataset, batch_size=batch_size,sampler=sampler)
-    # train_loader = DataLoader(train_dataset, batch_size=batch_size, shuffle=shuffle_train)
+    # train_loader = DataLoader(train_dataset, batch_size=batch_size,sampler=sampler)
+    train_loader = DataLoader(train_dataset, batch_size=batch_size, shuffle=shuffle_train)
     test_loader  = DataLoader(test_dataset, batch_size=batch_size, shuffle=False)
     # val_loader = DataLoader(val_dataset, batch_size=batch_size, shuffle=shuffle_train)
 
     return train_loader, test_loader
 
 def train():
-    # train_loader, test_loader = get_loaders_from_saved()
-    train_loader, test_loader = get_loaders()
+    train_loader, test_loader = get_loaders_from_saved()
+    # train_loader, test_loader = get_loaders()
 
     print("Training model...")
 
@@ -153,14 +169,17 @@ def train():
     class_weights = torch.tensor([1, num_neg/num_pos], dtype=torch.float)
 
     # criterion = torch.nn.CrossEntropyLoss(weight=class_weights)
-    criterion = FocalLoss(weight=class_weights, gamma=1.0, reduction='mean')
+    # criterion = FocalLoss(weight=class_weights)
+    criterion = FocalLoss(weight=torch.tensor([1,1], dtype=torch.float))
+
 
     # Training loop
-    num_epochs = 50
+    num_epochs = 10
     model.train()
 
     for epoch in range(num_epochs):
         for batch in train_loader:
+            print(f"Training with {batch.design_name}.")
             optimizer.zero_grad()
             x = batch.x
             edge_index = batch.edge_index
@@ -258,7 +277,7 @@ def train():
     # print(f"Indices of misclassified graphs: {misclassified_graphs}")
 
 class FocalLoss(nn.Module):
-    def __init__(self, weight: torch.Tensor|None = None, gamma: float = 0.5, reduction='mean'):
+    def __init__(self, weight: torch.Tensor|None = None, gamma: float = 2.0, reduction='mean'):
         super().__init__()
         self.weight    = weight
         self.gamma     = gamma
@@ -266,7 +285,7 @@ class FocalLoss(nn.Module):
 
     def forward(self, logits, targets):
         # compute per‑node CE loss without reduction
-        ce = F.cross_entropy(logits, targets, weight=self.weight, reduction='none')
+        ce = F.cross_entropy(logits, targets, weight=self.weight, reduction='mean')
         pt = torch.exp(-ce)                # pt = model’s prob of the true class
         fl = ((1-pt)**self.gamma) * ce     # focal scaling
         if self.reduction=='mean':
@@ -295,7 +314,7 @@ class TrojanGNN(torch.nn.Module):
         self.conv4 = GCNConv(hidden_dim, num_classes)
 
         # Dropout probability
-        self.dropout_p = 0.001
+        self.dropout_p = 0.01
 
     def forward(self, x, edge_index):
         # 1st conv block

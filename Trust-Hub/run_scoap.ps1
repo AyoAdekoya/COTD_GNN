@@ -12,16 +12,17 @@ function Log-Msg {
 }
 
 # === Configuration ===
-# $designs = @(
-#     "c2670_T","c3540_T","c5315_T","c6288_T",
-#     "s1423_T","s13207_T","s15850_T","s35932_T"
-# )
-
-# $designs = @(
-#     "s1423_T","s13207_T","s15850_T","s35932_T"
-# )
-$designs = @("s15850_T"
+$designs = @(
+    "c6288_T"
 )
+#  "c2670_T","c3540_T", "c5315_T","c6288_T","s1423_T","s13207_T","s35932_T","s15850_T"
+
+# $designs = @("c6288_T")
+# # $designs = @(
+# #     "s1423_T","s13207_T","s15850_T","s35932_T"
+# # )
+# $designs = @("s15850_T"
+# )
 
 $scoapExe  = "C:\Users\adeyo\OneDrive\Desktop\IntelResearch\SCOAP_Analysis_Tool-master\SCOAP_Analysis_Tool-master\SCOAPTOOL.EXE"
 $inputBase = "C:\Users\adeyo\OneDrive\Desktop\IntelResearch\ICsDesign\Trojan_GNN\Trust-Hub\Scoap_Inputs\scoap_input"
@@ -39,7 +40,7 @@ Log-Msg "Launched and focused SCOAP tool"
 
 # Outer loop over design prefixes
 foreach ($prefix in $designs) {
-    for ($num = 443; $num -le 489; $num++) {
+    for ($num = 20; $num -le 84; $num++) {
         $suffix = $num.ToString("000")
         $inputFile  = "$inputBase$prefix$suffix.txt"
         $outputFile = "$outputBase$prefix$suffix.txt"

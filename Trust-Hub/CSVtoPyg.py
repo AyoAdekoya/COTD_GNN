@@ -11,6 +11,7 @@ import re
 import ast
 import networkx as nx
 import torch
+import statistics
 import torch.nn.functional as F
 from torch_geometric.data import Data
 from torch_geometric.utils import from_networkx
@@ -32,17 +33,17 @@ def gatetype(line: str) -> str | None:
 
     if prefix.startswith("sdff"):
         return "scan"
-    elif prefix == "dffas":
+    elif prefix.startswith("dffas"):
         return "async_set_ff"
-    elif prefix in ("sdffar", "dffar", "dffcs", "dffarx"):
+    elif prefix.startswith(("sdffar", "dffar", "dffcs", "dffarx")):
         return "async_reset_ff"
-    elif prefix in ("dffle", "dffs", "dffnx", "dffx", "dff"):
+    elif prefix.startswith(("dffle", "dffs", "dffnx", "dffx", "dff")):
         return "dff"
-    elif prefix in ("buf", "ib", "nbuff", "nb1"):
+    elif prefix.startswith(("buf", "ib", "nbuff", "nbuffx", "nb1", "nb")):
         return "buffer"
-    elif prefix in ("inv", "i", "not", "invx"):
+    elif prefix.startswith(("inv", "i", "not", "invx")):
         return "inverter"
-    elif prefix == "hi":
+    elif prefix.startswith("hi"):
         return "const1"
     elif prefix.startswith("lsdn"):
         return "shifter"
@@ -56,22 +57,23 @@ def gatetype(line: str) -> str | None:
         return "ao"
     elif prefix.startswith("oa"):
         return "oa"
-    elif prefix in ("nand", "nnd"):
+    elif prefix.startswith(("nand", "nnd")):
         return "nand"
-    elif prefix == "and":
+    elif prefix.startswith("and"):
         return "and"
     elif prefix.startswith("or"):
         return "or"
-    elif prefix == "nor":
+    elif prefix.startswith("nor"):
         return "nor"
-    elif prefix == "xor":
+    elif prefix.startswith("xor"):
         return "xor"
-    elif prefix in ("xnor", "xnr"):
+    elif prefix.startswith(("xnor", "xnr")):
         return "xnor"
     elif prefix.startswith("mux") or "mxi" in prefix:
         return "mux"
 
     return None
+
 
 # Get primary inputs and output nets from netlist
 def get_primary(text):
@@ -110,8 +112,12 @@ def get_primary(text):
             output_nets.extend(net_list)
 
     return input_nets, output_nets
-
+    
 def create_graph(netlist_path, csv_path, mapping_path):
+    # capture indegree/outdegree
+    indegree_list = []
+    outdegree_list = []
+
     # 1) Load gate attributes from CSV
     gate_attrs = {}
     with open(csv_path) as f:
@@ -123,12 +129,12 @@ def create_graph(netlist_path, csv_path, mapping_path):
             name, cc0, cc1, co, trojan = row
 
             gate_attrs[name] = {
-                # "cc0": normalize_score(cc0, "cc0"),
-                # "cc1": normalize_score(cc1, "cc1"),
-                # "co": normalize_score(co, "co"),
-                "cc0": cc0,
-                "cc1": cc1,
-                "co": co,
+                "cc0": normalize_score(cc0, "cc0"),
+                "cc1": normalize_score(cc1, "cc1"),
+                "co": normalize_score(co, "co"),
+                # "cc0": cc0,
+                # "cc1": cc1,
+                # "co": co,
                 "is_trojan": int(trojan),
             }
 
@@ -262,8 +268,24 @@ def create_graph(netlist_path, csv_path, mapping_path):
                 G.add_edge(driver, inst_name)
 
         for node in G.nodes():
-            G.nodes[node]['outdegree'] = G.out_degree(node)
+            out = G.out_degree(node)
+            G.nodes[node]['outdegree'] = out
+            outdegree_list.append(out)
+
+            ind = G.in_degree(node)
             G.nodes[node]['indegree']  = G.in_degree(node)
+            indegree_list.append(ind)
+
+    ind_mean = sum(indegree_list)/len(indegree_list)
+    out_mean = sum(outdegree_list)/len(outdegree_list)
+    ind_std = statistics.stdev(indegree_list)
+    out_std = statistics.stdev(outdegree_list)
+
+    G.graph['indegree_mean'] = ind_mean
+    G.graph['outdegree_mean'] = out_mean
+    G.graph['indegree_std']  = ind_std
+    G.graph['outdegree_std'] = out_std    
+
     return G
 
 
@@ -298,10 +320,20 @@ def nx_to_pyG(G, design_name):
     labels = []
     num_types = len(types_list)
 
+    # Get mean and std
+    ind_mean = G.graph.get('indegree_mean')
+    ind_std  = G.graph.get('indegree_std')
+    out_mean = G.graph.get('outdegree_mean')
+    out_std  = G.graph.get('outdegree_std')
+
+    # i = 0
     for node in G.nodes():
+        # i+=1
         attrs = G.nodes[node]
         gate = attrs.get("gate_type")
-        
+        # print(gate)
+        # print(i)
+
         type_index = typeToindex[gate]
         type_tensor = torch.tensor(type_index, dtype=torch.long)
         # calling one hot encoding for tensors
@@ -309,16 +341,32 @@ def nx_to_pyG(G, design_name):
     
         # get SCOAP values
         cc0_val = attrs.get("cc0")
+        cc0_val = float(10000) if cc0_val == "#INF" else float(cc0_val)
+
         cc1_val = attrs.get("cc1")
+        cc1_val = float(10000) if cc1_val == "#INF" else float(cc1_val)
+
         co_val = attrs.get("co")
+        co_val = float(10000) if co_val == "#INF" else float(co_val)
+
+        indeg_val = attrs.get("indegree",  0)
+        outdeg_val = attrs.get("outdegree", 0)
+
+        indeg_norm = (indeg_val - ind_mean) / ind_std \
+                    if ind_std > 0 else 0.0
+        outd_norm = (outdeg_val - out_mean) / out_std \
+                    if out_std > 0 else 0.0
 
         cc0 = torch.tensor([cc0_val], dtype=torch.float)
         cc1 = torch.tensor([cc1_val], dtype=torch.float)
         co  = torch.tensor([co_val],  dtype=torch.float)
-        indeg_val = attrs.get("indegree",  0)
-        outdeg_val = attrs.get("outdegree", 0)
-        indegree  = torch.tensor([indeg_val], dtype=torch.float)
-        outdegree = torch.tensor([outdeg_val], dtype=torch.float)
+        
+        indegree  = torch.tensor([indeg_norm], dtype=torch.float)
+        outdegree = torch.tensor([outd_norm], dtype=torch.float)
+
+        # indegree  = torch.tensor([indeg_val], dtype=torch.float)
+        # outdegree = torch.tensor([outdeg_val], dtype=torch.float)
+
 
         # add to features vector
         feature_vector = torch.cat([one_hot, cc0, cc1, co, indegree, outdegree],dim=0)
@@ -419,71 +467,71 @@ def create_all_data():
                 verilog_files_free.append(v_file)
                 design_names_free.append(design_num)
 
-    # Tj trusthub files
-    for design_folder in os.listdir(base_folder):
-        design_path = os.path.join(base_folder, design_folder)
-        if not os.path.isdir(design_path):
-            continue
+    # # Tj trusthub files
+    # for design_folder in os.listdir(base_folder):
+    #     design_path = os.path.join(base_folder, design_folder)
+    #     if not os.path.isdir(design_path):
+    #         continue
 
-        # Handle potential "double folder" case
-        subfolder_path = os.path.join(design_path, design_folder)
-        if os.path.isdir(subfolder_path):
-            # Use the inner folder instead
-            design_path = subfolder_path
+    #     # Handle potential "double folder" case
+    #     subfolder_path = os.path.join(design_path, design_folder)
+    #     if os.path.isdir(subfolder_path):
+    #         # Use the inner folder instead
+    #         design_path = subfolder_path
 
-        # Save design name
-        design_name = design_folder
+    #     # Save design name
+    #     design_name = design_folder
 
-        # Figure out which pattern to use for this design
-        if design_name.startswith("RS232"):
-            # print("skipping RS232")
-            # continue
-            pattern = os.path.join(design_path, "src", "90nm", "*.v")
-            pattern2 = None
-        elif design_name.startswith("s") or design_name.startswith("wb_conmax"):
-            # print("skipping s or wb")
-            # continue
-            pattern = os.path.join(design_path, "src", "TjIn", "*.v")
-            pattern2 = os.path.join(design_path, "src", "TjFree", "*.v")
-        elif design_name.startswith("TRIT-TC") or design_name.startswith("TRIT-TS"):
-            # These folders contain design subfolders directly
-            subdesign_folders = os.listdir(design_path)
-            for sub in subdesign_folders:
-                sub_path = os.path.join(design_path, sub)
-                if not os.path.isdir(sub_path):
-                    continue
-                if sub == 'original_designs':
-                    v_files_free = glob.glob(os.path.join(sub_path, "*.v"))
-                    if v_files_free:
-                        verilog_files_free.extend(v_files_free)
-                        for v_file in v_files_free:
-                            match = re.search(r"([a-zA-Z]\d+)\.v$", v_file)
-                            if match:
-                                design_name_free = match.group(1) + "free"
+    #     # Figure out which pattern to use for this design
+    #     if design_name.startswith("RS232"):
+    #         # print("skipping RS232")
+    #         # continue
+    #         pattern = os.path.join(design_path, "src", "90nm", "*.v")
+    #         pattern2 = None
+    #     elif design_name.startswith("s") or design_name.startswith("wb_conmax"):
+    #         # print("skipping s or wb")
+    #         # continue
+    #         pattern = os.path.join(design_path, "src", "TjIn", "*.v")
+    #         pattern2 = os.path.join(design_path, "src", "TjFree", "*.v")
+    #     elif design_name.startswith("TRIT-TC") or design_name.startswith("TRIT-TS"):
+    #         # These folders contain design subfolders directly
+    #         subdesign_folders = os.listdir(design_path)
+    #         for sub in subdesign_folders:
+    #             sub_path = os.path.join(design_path, sub)
+    #             if not os.path.isdir(sub_path):
+    #                 continue
+    #             if sub == 'original_designs':
+    #                 v_files_free = glob.glob(os.path.join(sub_path, "*.v"))
+    #                 if v_files_free:
+    #                     verilog_files_free.extend(v_files_free)
+    #                     for v_file in v_files_free:
+    #                         match = re.search(r"([a-zA-Z]\d+)\.v$", v_file)
+    #                         if match:
+    #                             design_name_free = match.group(1) + "free"
 
-                            design_names_free.append(design_name_free) # type: ignore
-                else:
-                    v_files = glob.glob(os.path.join(sub_path, "*.v"))
-                    if v_files:
-                        verilog_files.extend(v_files)
-                        design_names.extend([sub] * len(v_files))
-            continue  # Skip to next top-level folder
+    #                         design_names_free.append(design_name_free) # type: ignore
+    #             else:
+    #                 v_files = glob.glob(os.path.join(sub_path, "*.v"))
+    #                 if v_files:
+    #                     verilog_files.extend(v_files)
+    #                     design_names.extend([sub] * len(v_files))
+    #         continue  # Skip to next top-level folder
 
-        else:
-            continue  # Skip unknown designs
+    #     else:
+    #         continue  # Skip unknown designs
 
-        # Find .v files matching pattern
-        v_files = glob.glob(pattern)
-        v_files_free = []
-        if pattern2:
-            v_files_free = glob.glob(pattern2)
-        if v_files:
-            verilog_files.extend(v_files)
-            design_names.extend([design_name] * len(v_files))
-        if v_files_free:
-            verilog_files_free.extend(v_files_free)
-            design_name_free = design_name.split('-')[0] + "-free"
-            design_names_free.extend([design_name_free] * len(v_files_free))
+    #     # Find .v files matching pattern
+    #     v_files = glob.glob(pattern)
+    #     v_files_free = []
+    #     if pattern2:
+    #         v_files_free = glob.glob(pattern2)
+    #     if v_files:
+    #         verilog_files.extend(v_files)
+    #         design_names.extend([design_name] * len(v_files))
+    #     if v_files_free:
+    #         verilog_files_free.extend(v_files_free)
+    #         design_name_free = design_name.split('-')[0] + "-free"
+    #         design_names_free.extend([design_name_free] * len(v_files_free))
 
     def create_data(netlist_path, scoap_csv_path, gate_mapping_path, design_name):
         # Your custom processing logic here
@@ -533,7 +581,7 @@ if __name__ == "__main__":
     #     print("Usage: python CSVtoPyG.py <netlist.v> <attrs.csv> <mapping.txt>")
     #     sys.exit(1)
 
-    # netlist, attrs_csv, mapping = sys.argv[1:]
+    netlist, attrs_csv, mapping = sys.argv[1:]
 
     compute_scoap_stats(folder_path="Trojan_GNN/Trust-Hub/Scoap_Scores")
 
@@ -550,7 +598,7 @@ if __name__ == "__main__":
 
     # print()
     # print("PyG")
-    # data = nx_to_pyG(G)
+    # data = nx_to_pyG(G, "wb_conmax")
     # print(data)
 
     data_list, data_free_list = create_all_data()
