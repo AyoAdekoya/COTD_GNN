@@ -5,6 +5,7 @@ This repository presents a graph-based machine learning pipeline for detecting T
 2. Trust-Hub chip-level Trojan benchmarks: https://www.trust-hub.org/#/benchmarks/chip-level-trojan
 
 **Project Overview**
+
   The goal of this repository is to take circuit designs and predict which **gates in a Trojan-inserted design are malicious**. To do this, we convert each gate-level netlist into a graph and apply a GraphSAGE + GCN model for node-level classification. Each node in the graph represents a gate, and the model predicts whether that gate is Trojaned or not.
   This approach helps reduce the time and cost of hardware Trojan analysis by giving an IC test engineer a more localized region of the chip to inspect, rather than requiring a full manual search across the entire design.
 
@@ -17,6 +18,7 @@ This repository presents a graph-based machine learning pipeline for detecting T
 6. Distance to primary outputs (POs)
 
 **Model**
+
 The repository uses a hybrid GraphSAGE + GCN architecture for Trojan gate detection. At a high level, the pipeline:
 1. Parses gate-level netlists
 2. Converts them into graph representations
