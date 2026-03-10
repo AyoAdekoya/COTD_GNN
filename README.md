@@ -1,8 +1,6 @@
-**HARDWARE TROJAN GATE DETECTION FROM GATE-LEVEL NETLISTS**
+                                                      **HARDWARE TROJAN GATE DETECTION FROM GATE-LEVEL NETLISTS**
 
-  This repository presents a graph-based machine learning pipeline for detecting Trojan-inserted gates in digital circuits starting from gate-level netlists.
-
-  The project was inspired by the ICCAD 2025 Contest, specifically the challenge focused on Trojan detection from gate-level netlists. To build and evaluate the pipeline, we used benchmark designs from both:
+This repository presents a graph-based machine learning pipeline for detecting Trojan-inserted gates in digital circuits starting from gate-level netlists. The project was inspired by the ICCAD 2025 Contest, specifically the challenge focused on Trojan detection from gate-level netlists. To build and evaluate the pipeline, we used benchmark designs from both:
 1. ICCAD 2025 Contest benchmarks
 2. Trust-Hub chip-level Trojan benchmarks: https://www.trust-hub.org/#/benchmarks/chip-level-trojan
 
