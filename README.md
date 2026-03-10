@@ -17,7 +17,7 @@ This repository presents a graph-based machine learning pipeline for detecting T
 6. Distance to primary outputs (POs)
 
 **Model**
-  The repository uses a hybrid GraphSAGE + GCN architecture for Trojan gate detection. At a high level, the pipeline:
+The repository uses a hybrid GraphSAGE + GCN architecture for Trojan gate detection. At a high level, the pipeline:
 1. Parses gate-level netlists
 2. Converts them into graph representations
 3. Extracts node-level features
